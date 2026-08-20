@@ -4,12 +4,36 @@ export const PRICE_REFERENCE={
 };
 
 export const PRODUCTS=[
-  {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1225,sell:1320,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"}},
-  {id:"rice",emoji:"🍚",color:0xf4efe3,cost:198,sell:220,shape:"bag",n:{ur:"باسمتی چاول",hi:"बासमती चावल",en:"Basmati rice"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"}},
-  {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:610,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"}},
-  {id:"oil",emoji:"🧴",color:0xe7a831,cost:580,sell:615,shape:"bottle",n:{ur:"کوکنگ آئل",hi:"कुकिंग ऑयल",en:"Cooking oil"},unit:{ur:"1 لیٹر بوتل",hi:"1 लीटर बोतल",en:"1 litre bottle"}},
-  {id:"biscuit",emoji:"🍪",color:0xd4683a,cost:88,sell:110,shape:"packet",n:{ur:"بسکٹ",hi:"बिस्कुट",en:"Biscuits"},unit:{ur:"100 گرام پیک",hi:"100 ग्राम पैक",en:"100 g pack"}},
-  {id:"toffee",emoji:"🍬",color:0xe84b78,cost:205,sell:240,shape:"pouch",n:{ur:"ٹافی",hi:"टॉफ़ी",en:"Toffee"},unit:{ur:"50 عدد پاؤچ",hi:"50 नग पाउच",en:"50-piece pouch"}}
+  {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1225,sell:1320,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"},brands:[
+    {id:"sunehri",color:"#c88d28",accent:"#773f16",n:{ur:"سنہری آٹا",hi:"सुनहरी आटा",en:"Sunehri Atta"}},
+    {id:"kisan",color:"#3b8d51",accent:"#e9bd47",n:{ur:"کسان چکی",hi:"किसान चक्की",en:"Kisan Chakki"}},
+    {id:"punjab",color:"#b13d32",accent:"#f7d67a",n:{ur:"پنجاب گولڈ",hi:"पंजाब गोल्ड",en:"Punjab Gold"}}
+  ]},
+  {id:"rice",emoji:"🍚",color:0xf4efe3,cost:198,sell:220,shape:"bag",n:{ur:"باسمتی چاول",hi:"बासमती चावल",en:"Basmati rice"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
+    {id:"mehran",color:"#326f9f",accent:"#f2ce57",n:{ur:"مہران باسمتی",hi:"मेहरान बासमती",en:"Mehran Basmati"}},
+    {id:"sella",color:"#6a3c8f",accent:"#f0d36c",n:{ur:"سیلا کنگ",hi:"सेला किंग",en:"Sella King"}},
+    {id:"pakaroma",color:"#267554",accent:"#e9d8a6",n:{ur:"پاک اروما",hi:"पाक अरोमा",en:"Pak Aroma"}}
+  ]},
+  {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:610,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"},brands:[
+    {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف گھی",hi:"लतीफ़ घी",en:"Latif Ghee"}},
+    {id:"handi",color:"#176b56",accent:"#f2c44b",n:{ur:"ہانڈی گھی",hi:"हांडी घी",en:"Handi Ghee"}},
+    {id:"sunehri-banaspati",color:"#e4a526",accent:"#7b321d",n:{ur:"سنہری بناسپتی",hi:"सुनहरी वनस्पति",en:"Sunehri Banaspati"}}
+  ]},
+  {id:"oil",emoji:"🧴",color:0xe7a831,cost:580,sell:615,shape:"bottle",n:{ur:"کوکنگ آئل",hi:"कुकिंग ऑयल",en:"Cooking oil"},unit:{ur:"1 لیٹر بوتل",hi:"1 लीटर बोतल",en:"1 litre bottle"},brands:[
+    {id:"sultan",color:"#df8e1c",accent:"#263b70",n:{ur:"سلطان آئل",hi:"सुल्तान ऑयल",en:"Sultan Oil"}},
+    {id:"canola-gold",color:"#f0b927",accent:"#287848",n:{ur:"کینولا گولڈ",hi:"कैनोला गोल्ड",en:"Canola Gold"}},
+    {id:"pakwan",color:"#bf3c2f",accent:"#ffd662",n:{ur:"پکوان آئل",hi:"पकवान ऑयल",en:"Pakwan Oil"}}
+  ]},
+  {id:"biscuit",emoji:"🍪",color:0xd4683a,cost:88,sell:110,shape:"packet",n:{ur:"بسکٹ",hi:"बिस्कुट",en:"Biscuits"},unit:{ur:"100 گرام پیک",hi:"100 ग्राम पैक",en:"100 g pack"},brands:[
+    {id:"crispy",color:"#c63c2f",accent:"#f7d05b",n:{ur:"کرسپی بائٹ",hi:"क्रिस्पी बाइट",en:"Crispy Bite"}},
+    {id:"chai-time",color:"#744626",accent:"#f5c64b",n:{ur:"چائے ٹائم",hi:"चाय टाइम",en:"Chai Time"}},
+    {id:"fun",color:"#315ea8",accent:"#f4bd3b",n:{ur:"فن بسکٹ",hi:"फन बिस्कुट",en:"Fun Biscuit"}}
+  ]},
+  {id:"toffee",emoji:"🍬",color:0xe84b78,cost:205,sell:240,shape:"pouch",n:{ur:"ٹافی",hi:"टॉफ़ी",en:"Toffee"},unit:{ur:"50 عدد پاؤچ",hi:"50 नग पाउच",en:"50-piece pouch"},brands:[
+    {id:"masti",color:"#db3d75",accent:"#ffd55c",n:{ur:"مستی ٹافی",hi:"मस्ती टॉफ़ी",en:"Masti Toffee"}},
+    {id:"milky",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"ملکی ڈراپ",hi:"मिल्की ड्रॉप",en:"Milky Drop"}},
+    {id:"fruit-pop",color:"#5aa947",accent:"#f4753e",n:{ur:"فروٹ پاپ",hi:"फ्रूट पॉप",en:"Fruit Pop"}}
+  ]}
 ];
 
 export const EVENTS=[
@@ -30,23 +54,39 @@ export const DIFFICULTY={
 export const DEFAULT_STOCK={flour:8,rice:8,ghee:8,oil:8,biscuit:8,toffee:8};
 export const copy=value=>JSON.parse(JSON.stringify(value));
 export const productById=id=>PRODUCTS.find(item=>item.id===id)||PRODUCTS[0];
+export const brandById=(product,id)=>product.brands.find(brand=>brand.id===id)||product.brands[0];
 export const eventForDay=day=>EVENTS[(Math.max(1,day)-1)%EVENTS.length];
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const roundFive=value=>Math.max(5,Math.round(value/5)*5);
+const emptyCargo=()=>Object.fromEntries(PRODUCTS.map(item=>[item.id,0]));
+export function syncCash(state){state.cash=Math.max(0,Number(state.salesFund||0))+Math.max(0,Number(state.operatingBudget||0));return state.cash}
+export function cameraRelativeVector(yaw,inputX,inputForward){
+  return {
+    x:Math.cos(yaw)*inputX-Math.sin(yaw)*inputForward,
+    z:-Math.sin(yaw)*inputX-Math.cos(yaw)*inputForward
+  };
+}
 
 export function createState(saved,legacy){
   const source=saved&&saved.version>=3?saved:null;
   const old=legacy||{};
+  const legacyCash=Math.max(0,Number(source?.cash??old.cash??12000));
+  const hasSplit=Number.isFinite(Number(source?.salesFund))&&Number.isFinite(Number(source?.operatingBudget));
+  const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
+  const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:4,
+    version:5,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
-    cash:Number(source?.cash??old.cash??12000),
+    cash:legacyCash,
+    salesFund,
+    operatingBudget,
     rep:Number(source?.rep??old.rep??35),
     day:Number(source?.day??old.day??1),
     totalSales:Number(source?.totalSales??old.sales??0),
-    shelfStock:{},warehouse:{},
+    shelfStock:{},warehouse:{},truckCargo:{},
+    delivery:{active:Boolean(source?.delivery?.active),cargo:{},progress:Math.max(0,Number(source?.delivery?.progress??0)),duration:Math.max(6,Number(source?.delivery?.duration??10))},
     upgrades:{capacity:0,checkout:0,decor:0},
     staff:{cashier:0},
     carrying:source?.carrying&&PRODUCTS.some(item=>item.id===source.carrying.id)
@@ -61,12 +101,14 @@ export function createState(saved,legacy){
     seen3DIntro:Boolean(source?.seen3DIntro),
     tutorialStep:Number(source?.tutorialStep??0),
     queueRecord:Math.max(0,Number(source?.queueRecord??0)),
-    cameraDistance:clamp(Number(source?.cameraDistance??10.8),8.8,14)
+    cameraDistance:clamp(Number(source?.version>=5?source.cameraDistance:14.5),6.5,22)
   };
   for(const item of PRODUCTS){
     const legacyAmount=old.stock&&Number.isFinite(old.stock[item.id])?old.stock[item.id]:DEFAULT_STOCK[item.id];
     state.shelfStock[item.id]=Math.max(0,Number(source?.shelfStock?.[item.id]??legacyAmount));
     state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??0));
+    state.truckCargo[item.id]=Math.max(0,Number(source?.truckCargo?.[item.id]??0));
+    state.delivery.cargo[item.id]=Math.max(0,Number(source?.delivery?.cargo?.[item.id]??0));
   }
   state.upgrades.capacity=clamp(Number(source?.upgrades?.capacity??old.upgrades?.shelf??0),0,3);
   state.upgrades.checkout=clamp(Number(source?.upgrades?.checkout??0),0,3);
@@ -74,6 +116,7 @@ export function createState(saved,legacy){
   state.staff.cashier=clamp(Number(source?.staff?.cashier??0),0,2);
   if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
+  syncCash(state);
   return state;
 }
 
@@ -103,12 +146,49 @@ export function marketTrend(state,id){
 }
 
 export function buyWarehouse(state,id,quantity){
+  return bargainPurchase(state,id,quantity,"direct",()=>0);
+}
+
+export const BARGAIN_OFFERS={direct:{factor:1,chance:1},fair:{factor:.96,chance:.8},bold:{factor:.9,chance:.46}};
+
+export function bargainPurchase(state,id,quantity,offer="direct",random=Math.random){
   const amount=Math.max(1,Math.floor(quantity));
-  const cost=marketPrice(state,id)*amount;
-  if(state.cash<cost)return {ok:false,reason:"notEnoughCash",cost};
-  state.cash-=cost;
-  state.warehouse[id]=(state.warehouse[id]||0)+amount;
-  return {ok:true,cost,amount};
+  const deal=BARGAIN_OFFERS[offer]||BARGAIN_OFFERS.direct;
+  const unitPrice=roundFive(marketPrice(state,id)*deal.factor);
+  const cost=unitPrice*amount;
+  if(state.salesFund<cost)return {ok:false,reason:"notEnoughSalesFund",cost,unitPrice};
+  const chance=offer==="direct"?1:Math.min(.94,deal.chance+(Number(state.rep)||0)*.0012);
+  if(random()>chance)return {ok:false,reason:"bargainRejected",cost,unitPrice,chance};
+  state.salesFund-=cost;
+  state.truckCargo[id]=(state.truckCargo[id]||0)+amount;
+  syncCash(state);
+  return {ok:true,cost,unitPrice,amount,discount:marketPrice(state,id)-unitPrice,offer};
+}
+
+export function cargoCount(cargo){return PRODUCTS.reduce((sum,item)=>sum+Math.max(0,Number(cargo?.[item.id]||0)),0)}
+export function deliveryFee(state){return 300+Math.min(500,(state.day-1)*20)}
+
+export function dispatchTruck(state){
+  if(state.delivery.active)return {ok:false,reason:"deliveryRunning"};
+  const count=cargoCount(state.truckCargo);
+  if(!count)return {ok:false,reason:"truckEmpty"};
+  const fee=deliveryFee(state);
+  if(state.operatingBudget<fee)return {ok:false,reason:"notEnoughBudget",fee};
+  state.operatingBudget-=fee;
+  state.delivery={active:true,cargo:copy(state.truckCargo),progress:0,duration:10};
+  state.truckCargo=emptyCargo();
+  syncCash(state);
+  return {ok:true,fee,count,duration:state.delivery.duration};
+}
+
+export function advanceDelivery(state,delta){
+  if(!state.delivery.active)return null;
+  state.delivery.progress=Math.min(state.delivery.duration,state.delivery.progress+Math.max(0,Number(delta)||0));
+  if(state.delivery.progress<state.delivery.duration)return {arrived:false,ratio:state.delivery.progress/state.delivery.duration};
+  const cargo=copy(state.delivery.cargo);
+  for(const item of PRODUCTS)state.warehouse[item.id]=(state.warehouse[item.id]||0)+(cargo[item.id]||0);
+  state.delivery={active:false,cargo:emptyCargo(),progress:0,duration:10};
+  return {arrived:true,cargo,count:cargoCount(cargo)};
 }
 
 export function takeCrate(state,id){
@@ -137,7 +217,8 @@ export function createOrder(state,random=Math.random){
   const maxQuantity=Math.min(3,1+Math.floor((state.day-1)/4));
   const quantity=1+Math.floor(random()*Math.max(1,maxQuantity));
   const price=retailPrice(state,item.id)*quantity;
-  return {id:`order-${Date.now()}-${Math.floor(random()*1e6)}`,product:item.id,quantity,unitPrice:retailPrice(state,item.id),price};
+  const brand=item.brands[Math.floor(random()*item.brands.length)]||item.brands[0];
+  return {id:`order-${Date.now()}-${Math.floor(random()*1e6)}`,product:item.id,brand:brand.id,quantity,unitPrice:retailPrice(state,item.id),price};
 }
 
 export function takeShelfItems(state,order){
@@ -147,7 +228,8 @@ export function takeShelfItems(state,order){
 }
 
 export function completeSale(state,order){
-  state.cash+=order.price;
+  state.salesFund+=order.price;
+  syncCash(state);
   state.totalSales++;
   state.servedToday++;
   state.handledToday++;
@@ -191,9 +273,10 @@ export function cashierWage(state){return [0,1100,1800][state.staff.cashier]||0}
 export function hireCashier(state){
   if(state.staff.cashier>=2)return {ok:false,reason:"staffMaxed"};
   const cost=cashierHireCost(state);
-  if(state.cash<cost)return {ok:false,reason:"notEnoughCash",cost};
-  state.cash-=cost;
+  if(state.operatingBudget<cost)return {ok:false,reason:"notEnoughBudget",cost};
+  state.operatingBudget-=cost;
   state.staff.cashier++;
+  syncCash(state);
   return {ok:true,cost,level:state.staff.cashier,wage:cashierWage(state)};
 }
 
@@ -208,13 +291,14 @@ export function maybeFinishDay(state){
   const reward=success?2200+state.day*350:0;
   const expense=dailyExpense(state);
   const wage=cashierWage(state);
-  if(success){state.cash+=reward;state.rep=Math.min(100,state.rep+3)}
+  if(success){state.operatingBudget+=reward;state.rep=Math.min(100,state.rep+3)}
   else state.rep=Math.max(0,state.rep-3);
-  const short=state.cash<expense;
-  state.cash=Math.max(0,state.cash-expense);
+  const short=state.operatingBudget<expense;
+  state.operatingBudget=Math.max(0,state.operatingBudget-expense);
+  syncCash(state);
   if(short)state.rep=Math.max(0,state.rep-2);
   state.dayComplete=true;
-  state.lastDay={day:state.day,served:state.servedToday,missed:state.missedToday,revenue:state.revenueToday,target,reward,expense,wage,success,short};
+  state.lastDay={day:state.day,served:state.servedToday,missed:state.missedToday,revenue:state.revenueToday,target,reward,expense,wage,success,short,salesFund:state.salesFund,operatingBudget:state.operatingBudget};
   return state.lastDay;
 }
 
@@ -238,8 +322,9 @@ export function buyUpgrade(state,key){
   if(!(key in state.upgrades))return {ok:false,reason:"unknownUpgrade"};
   if(state.upgrades[key]>=3)return {ok:false,reason:"maxed"};
   const cost=upgradeCost(state,key);
-  if(state.cash<cost)return {ok:false,reason:"notEnoughCash",cost};
-  state.cash-=cost;
+  if(state.operatingBudget<cost)return {ok:false,reason:"notEnoughBudget",cost};
+  state.operatingBudget-=cost;
   state.upgrades[key]++;
+  syncCash(state);
   return {ok:true,cost,level:state.upgrades[key]};
 }

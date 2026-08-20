@@ -30,7 +30,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Test game rules and packaged assets
-        run: node --test tests/*.test.mjs
+        run: |
+          node tools/build-bundle.mjs
+          node --check app/src/main/assets/game.js
+          node --check app/src/main/assets/sim.js
+          node --check app/src/main/assets/game.bundle.js
+          node --test tests/*.test.mjs
+          git diff --exit-code -- app/src/main/assets/game.bundle.js
 
       - name: Build debug APK
         run: |

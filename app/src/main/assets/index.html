@@ -39,7 +39,8 @@
     <section id="hud" class="hud hidden" aria-live="polite">
       <div class="topbar">
         <div class="brand-chip"><span>ب</span><p><b>BAZAAR BOSS</b><small id="storeName" data-t="storeName">ذیشان سپرمارکیٹ</small></p></div>
-        <div class="stat"><small data-t="cash">رقم</small><b id="cash">₨0</b></div>
+        <div class="stat sales-stat"><small data-t="salesFund">سیلز فنڈ</small><b id="salesFund">₨0</b></div>
+        <div class="stat budget-stat"><small data-t="operatingBudget">کاروباری بجٹ</small><b id="operatingBudget">₨0</b></div>
         <div class="stat"><small data-t="reputation">ساکھ</small><b id="rep">0%</b></div>
         <button id="settingsBtn" class="round-btn" type="button" data-ta="settings">⚙️</button>
       </div>
@@ -54,6 +55,7 @@
       </div>
       <div id="tutorial" class="tutorial"><span>💡</span><b id="tutorialText"></b></div>
       <div id="carrying" class="carrying hidden"><span>📦</span><b id="carryingText"></b></div>
+      <div id="deliveryStatus" class="delivery-status hidden"><span>🚚</span><b id="deliveryText"></b><i><em id="deliveryFill"></em></i></div>
       <div id="lowStock" class="low-stock hidden"><span>⚠️</span><b id="lowStockText"></b></div>
     </section>
 
@@ -90,6 +92,8 @@
           <div><small data-t="expenseSummary">دکان خرچ</small><b id="sumExpense"></b></div>
           <div><small data-t="wageSummary">عملے کی تنخواہ</small><b id="sumWage"></b></div>
           <div><small data-t="queueRecord">سب سے لمبی قطار</small><b id="sumQueue"></b></div>
+          <div><small data-t="salesFund">سیلز فنڈ</small><b id="sumSalesFund"></b></div>
+          <div><small data-t="operatingBudget">کاروباری بجٹ</small><b id="sumBudget"></b></div>
         </div>
         <p id="expenseWarning" class="warning hidden" data-t="expenseShort">خرچ پورا نہ ہونے سے ساکھ کم ہوئی</p>
         <button id="nextDayBtn" class="primary" type="button" data-t="nextDay">اگلا دن شروع کریں</button>

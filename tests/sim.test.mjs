@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import {
-  PRODUCTS,PRICE_REFERENCE,createState,shelfCapacity,marketPrice,retailPrice,buyWarehouse,takeCrate,restockShelf,
+  PRODUCTS,PRICE_REFERENCE,createState,shelfCapacity,marketPrice,retailPrice,buyWarehouse,bargainPurchase,cargoCount,
+  dispatchTruck,advanceDelivery,deliveryFee,syncCash,cameraRelativeVector,takeCrate,restockShelf,
   createOrder,takeShelfItems,completeSale,missSale,dailyTarget,serveTarget,
   customerWait,checkoutDuration,staffCheckoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay,
   cashierHireCost,cashierWage,hireCashier,recordQueue
@@ -12,26 +13,41 @@ import {
 test("new and migrated games keep all six grocery products",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,4);
+  assert.equal(fresh.version,5);
+  assert.equal(fresh.salesFund,9000);
+  assert.equal(fresh.operatingBudget,3000);
+  assert.equal(fresh.cameraDistance,14.5);
   assert.equal(shelfCapacity(fresh),8);
   assert.deepEqual(Object.keys(fresh.shelfStock),PRODUCTS.map(item=>item.id));
   assert.ok(Object.values(fresh.shelfStock).every(amount=>amount===shelfCapacity(fresh)));
+  assert.ok(PRODUCTS.every(item=>item.brands.length>=3));
+  assert.ok(PRODUCTS.find(item=>item.id==="ghee").brands.some(brand=>brand.id==="latif"));
   const migrated=createState(null,{lang:"hi",cash:900,stock:{flour:7},upgrades:{shelf:2}});
   assert.equal(migrated.lang,"hi");
   assert.equal(migrated.cash,900);
+  assert.equal(migrated.salesFund+migrated.operatingBudget,900);
   assert.equal(migrated.shelfStock.flour,7);
   assert.equal(migrated.upgrades.capacity,2);
+  const upgradedV4=createState({version:4,cash:12000,cameraDistance:10.8,shelfStock:fresh.shelfStock,warehouse:fresh.warehouse},null);
+  assert.equal(upgradedV4.cameraDistance,14.5);
   const resumed=createState({...fresh,carrying:{id:"rice",amount:2}},null);
   assert.deepEqual(resumed.carrying,{id:"rice",amount:2});
 });
 
-test("market purchase, crate pickup and shelf restock form one stock loop",()=>{
+test("market purchase, truck delivery, crate pickup and shelf restock form one stock loop",()=>{
   const state=createState(null,null);
   state.shelfStock.flour=2;
-  const before=state.cash;
+  const before=state.salesFund;
   const bought=buyWarehouse(state,"flour",3);
   assert.equal(bought.ok,true);
-  assert.equal(state.cash,before-marketPrice(state,"flour")*3);
+  assert.equal(state.salesFund,before-marketPrice(state,"flour")*3);
+  assert.equal(state.truckCargo.flour,3);
+  assert.equal(state.warehouse.flour,0);
+  const fee=deliveryFee(state);
+  assert.deepEqual(dispatchTruck(state),{ok:true,fee,count:3,duration:10});
+  assert.equal(cargoCount(state.truckCargo),0);
+  assert.equal(advanceDelivery(state,4).arrived,false);
+  assert.equal(advanceDelivery(state,6).arrived,true);
   assert.equal(state.warehouse.flour,3);
   const crate=takeCrate(state,"flour");
   assert.deepEqual(crate,{ok:true,id:"flour",amount:3});
@@ -44,8 +60,8 @@ test("market purchase, crate pickup and shelf restock form one stock loop",()=>{
 
 test("stock cannot be bought without enough cash or exceed shelf capacity",()=>{
   const state=createState(null,null);
-  state.cash=0;
-  assert.equal(buyWarehouse(state,"ghee",3).reason,"notEnoughCash");
+  state.salesFund=0;syncCash(state);
+  assert.equal(buyWarehouse(state,"ghee",3).reason,"notEnoughSalesFund");
   state.shelfStock.ghee=shelfCapacity(state);
   assert.equal(restockShelf(state,{id:"ghee",amount:3}).reason,"shelfFull");
 });
@@ -61,7 +77,7 @@ test("customers remove shelf goods and successful checkouts close the day",()=>{
   assert.equal(state.dayComplete,true);
   assert.equal(result.success,true);
   assert.equal(result.served,dailyTarget(state));
-  assert.ok(state.cash>12000);
+  assert.ok(state.salesFund>9000);
 });
 
 test("missed customers can fail a day and next day resets counters",()=>{
@@ -84,7 +100,7 @@ test("difficulty, events and upgrades change real gameplay values",()=>{
   assert.equal(customerWait(hard),Infinity);
   assert.equal(customerWait(easy),Infinity);
   const normalCheckout=checkoutDuration(easy);
-  easy.cash=99999;
+  easy.operatingBudget=99999;syncCash(easy);
   const cost=upgradeCost(easy,"checkout");
   assert.deepEqual(buyUpgrade(easy,"checkout"),{ok:true,cost,level:1});
   assert.ok(checkoutDuration(easy)<normalCheckout);
@@ -106,16 +122,50 @@ test("Pakistan benchmark pack prices vary each day while preserving a retail mar
 });
 
 test("a hired cashier serves automatically, earns a daily wage and tracks queue records",()=>{
-  const state=createState(null,null);state.cash=100000;
+  const state=createState(null,null);state.operatingBudget=100000;syncCash(state);
   const cost=cashierHireCost(state);
   assert.deepEqual(hireCashier(state),{ok:true,cost,level:1,wage:1100});
-  assert.equal(state.cash,100000-cost);
+  assert.equal(state.operatingBudget,100000-cost);
   assert.equal(cashierWage(state),1100);
   assert.ok(Number.isFinite(staffCheckoutDuration(state)));
   assert.equal(recordQueue(state,5),5);
   assert.equal(recordQueue(state,2),5);
   assert.equal(hireCashier(state).level,2);
   assert.equal(hireCashier(state).reason,"staffMaxed");
+});
+
+test("bargaining can be accepted or rejected and never spends the business budget",()=>{
+  const state=createState(null,null),budget=state.operatingBudget;
+  const rejected=bargainPurchase(state,"rice",3,"bold",()=>1);
+  assert.equal(rejected.reason,"bargainRejected");
+  assert.equal(cargoCount(state.truckCargo),0);
+  const accepted=bargainPurchase(state,"rice",3,"bold",()=>0);
+  assert.equal(accepted.ok,true);
+  assert.ok(accepted.discount>0);
+  assert.equal(state.truckCargo.rice,3);
+  assert.equal(state.operatingBudget,budget);
+});
+
+test("sales refill only the sales fund while staff and upgrades use only the business budget",()=>{
+  const state=createState(null,null);
+  const salesBefore=state.salesFund,budgetBefore=state.operatingBudget;
+  completeSale(state,{price:500});
+  assert.equal(state.salesFund,salesBefore+500);
+  assert.equal(state.operatingBudget,budgetBefore);
+  state.operatingBudget=50000;syncCash(state);
+  const salesAfter=state.salesFund;
+  assert.equal(buyUpgrade(state,"decor").ok,true);
+  assert.equal(state.salesFund,salesAfter);
+});
+
+test("joystick directions remain screen-relative at every camera angle",()=>{
+  assert.deepEqual(cameraRelativeVector(0,0,1),{x:0,z:-1});
+  const rightAtFront=cameraRelativeVector(0,1,0);
+  assert.equal(rightAtFront.x,1);assert.ok(Math.abs(rightAtFront.z)<1e-9);
+  const forwardAtRight=cameraRelativeVector(Math.PI/2,0,1);
+  const rightAtRight=cameraRelativeVector(Math.PI/2,1,0);
+  assert.ok(forwardAtRight.x<-.999&&Math.abs(forwardAtRight.z)<1e-9);
+  assert.ok(rightAtRight.z<-.999&&Math.abs(rightAtRight.x)<1e-9);
 });
 
 test("Urdu, Hindi and English dictionaries have matching keys",()=>{
