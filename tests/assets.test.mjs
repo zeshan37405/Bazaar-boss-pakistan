@@ -44,6 +44,9 @@ test("literal translation calls in game logic have dictionary entries",()=>{
 test("shipped game is a self-contained classic bundle with the Three.js license",()=>{
   assert.ok(bundle.length>400000);
   assert.ok(bundle.includes("Copyright 2010-2026 Three.js Authors"));
+  assert.ok(bundle.includes("2026-07-30"));
+  assert.ok(bundle.includes("shopping-basket"));
+  assert.ok(bundle.includes("queueWait"));
   assert.ok(!/^\s*import\s/m.test(bundle));
   assert.ok(fs.readFileSync(path.join(assets,"THREE-LICENSE.txt"),"utf8").includes("MIT License"));
 });

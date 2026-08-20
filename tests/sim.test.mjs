@@ -3,16 +3,19 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import {
-  PRODUCTS,createState,shelfCapacity,marketPrice,buyWarehouse,takeCrate,restockShelf,
+  PRODUCTS,PRICE_REFERENCE,createState,shelfCapacity,marketPrice,retailPrice,buyWarehouse,takeCrate,restockShelf,
   createOrder,takeShelfItems,completeSale,missSale,dailyTarget,serveTarget,
-  customerWait,checkoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay
+  customerWait,checkoutDuration,staffCheckoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay,
+  cashierHireCost,cashierWage,hireCashier,recordQueue
 } from "../app/src/main/assets/sim.js";
 
 test("new and migrated games keep all six grocery products",()=>{
   const fresh=createState(null,null);
-  assert.equal(fresh.cash,2200);
+  assert.equal(fresh.cash,12000);
+  assert.equal(fresh.version,4);
   assert.equal(shelfCapacity(fresh),8);
   assert.deepEqual(Object.keys(fresh.shelfStock),PRODUCTS.map(item=>item.id));
+  assert.ok(Object.values(fresh.shelfStock).every(amount=>amount===shelfCapacity(fresh)));
   const migrated=createState(null,{lang:"hi",cash:900,stock:{flour:7},upgrades:{shelf:2}});
   assert.equal(migrated.lang,"hi");
   assert.equal(migrated.cash,900);
@@ -58,7 +61,7 @@ test("customers remove shelf goods and successful checkouts close the day",()=>{
   assert.equal(state.dayComplete,true);
   assert.equal(result.success,true);
   assert.equal(result.served,dailyTarget(state));
-  assert.ok(state.cash>2200);
+  assert.ok(state.cash>12000);
 });
 
 test("missed customers can fail a day and next day resets counters",()=>{
@@ -78,7 +81,8 @@ test("difficulty, events and upgrades change real gameplay values",()=>{
   const hard=createState(null,null);hard.difficulty="hard";
   assert.ok(dailyTarget(hard)>dailyTarget(easy));
   assert.ok(serveTarget(hard)>serveTarget(easy));
-  assert.ok(customerWait(hard)<customerWait(easy));
+  assert.equal(customerWait(hard),Infinity);
+  assert.equal(customerWait(easy),Infinity);
   const normalCheckout=checkoutDuration(easy);
   easy.cash=99999;
   const cost=upgradeCost(easy,"checkout");
@@ -86,6 +90,32 @@ test("difficulty, events and upgrades change real gameplay values",()=>{
   assert.ok(checkoutDuration(easy)<normalCheckout);
   assert.equal(eventForDay(2).id,"wedding");
   assert.equal(eventForDay(6).id,"rush");
+});
+
+test("Pakistan benchmark pack prices vary each day while preserving a retail margin",()=>{
+  const state=createState(null,null);
+  assert.equal(PRICE_REFERENCE.asOf,"2026-07-30");
+  assert.ok(product("flour").sell>=1200&&product("flour").sell<=1400);
+  assert.ok(product("rice").sell>=200&&product("rice").sell<=240);
+  const dayOne=PRODUCTS.map(item=>retailPrice(state,item.id));
+  for(const item of PRODUCTS)assert.ok(retailPrice(state,item.id)>marketPrice(state,item.id));
+  state.day=2;
+  const dayTwo=PRODUCTS.map(item=>retailPrice(state,item.id));
+  assert.ok(dayOne.some((price,index)=>price!==dayTwo[index]));
+  function product(id){return PRODUCTS.find(item=>item.id===id)}
+});
+
+test("a hired cashier serves automatically, earns a daily wage and tracks queue records",()=>{
+  const state=createState(null,null);state.cash=100000;
+  const cost=cashierHireCost(state);
+  assert.deepEqual(hireCashier(state),{ok:true,cost,level:1,wage:1100});
+  assert.equal(state.cash,100000-cost);
+  assert.equal(cashierWage(state),1100);
+  assert.ok(Number.isFinite(staffCheckoutDuration(state)));
+  assert.equal(recordQueue(state,5),5);
+  assert.equal(recordQueue(state,2),5);
+  assert.equal(hireCashier(state).level,2);
+  assert.equal(hireCashier(state).reason,"staffMaxed");
 });
 
 test("Urdu, Hindi and English dictionaries have matching keys",()=>{

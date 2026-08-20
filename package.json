@@ -2,7 +2,7 @@
   "name": "bazaar-boss-pakistan",
   "private": true,
   "type": "module",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "check": "node --check app/src/main/assets/game.js && node --check app/src/main/assets/sim.js && npm test"

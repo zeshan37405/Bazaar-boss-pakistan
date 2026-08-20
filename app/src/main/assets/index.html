@@ -30,7 +30,7 @@
           <p><span>🕹️</span><b data-t="intro1">دکان میں آزادانہ چلیں اور کیمرہ گھمائیں</b></p>
           <p><span>📦</span><b data-t="intro2">اسٹور روم سے کریٹ اٹھا کر شیلف بھریں</b></p>
           <p><span>🛒</span><b data-t="intro3">گاہک خریداری کریں گے، آپ کاؤنٹر پر بل بنائیں</b></p>
-          <p><span>⬆️</span><b data-t="intro4">منافع سے دکان اور رفتار بہتر کریں</b></p>
+          <p><span>👨‍💼</span><b data-t="intro4">منافع سے کیشیئر رکھیں اور دکان بڑھائیں</b></p>
         </div>
         <button id="startBtn" class="primary" type="button" data-t="start">کھیل شروع کریں</button>
       </div>
@@ -45,6 +45,7 @@
       </div>
       <div class="status-row">
         <div id="eventPill" class="event-pill"><span id="eventEmoji">☀️</span><p><b id="eventTitle"></b><small id="eventDesc"></small></p></div>
+        <div class="queue-chip"><small data-t="queueLabel">قطار</small><b id="queueCount">0</b></div>
         <div class="day-chip"><small data-t="day">دن</small><b id="dayNo">1</b></div>
       </div>
       <div class="mission-card">
@@ -53,15 +54,17 @@
       </div>
       <div id="tutorial" class="tutorial"><span>💡</span><b id="tutorialText"></b></div>
       <div id="carrying" class="carrying hidden"><span>📦</span><b id="carryingText"></b></div>
+      <div id="lowStock" class="low-stock hidden"><span>⚠️</span><b id="lowStockText"></b></div>
     </section>
 
     <div id="worldLabels" class="world-labels" aria-hidden="true"></div>
-    <div id="scanBox" class="scan-box hidden"><b data-t="scanning">سامان اسکین ہو رہا ہے…</b><i><em id="scanFill"></em></i></div>
+    <div id="scanBox" class="scan-box hidden"><b id="scanText" data-t="scanning">سامان اسکین ہو رہا ہے…</b><i><em id="scanFill"></em></i></div>
 
     <section id="controls" class="controls hidden">
       <div id="joystick" class="joystick"><i id="joystickNub"></i><small data-t="moveHint">چلنے کے لیے جوائے اسٹک</small></div>
       <div class="quick-actions">
         <button id="marketBtn" class="mini-btn" type="button"><span>🧺</span><b data-t="market">ہول سیل منڈی</b></button>
+        <button id="staffBtn" class="mini-btn" type="button"><span>👨‍💼</span><b data-t="staff">عملہ</b></button>
         <button id="upgradesBtn" class="mini-btn" type="button"><span>⬆️</span><b data-t="upgrades">دکان اپ گریڈ</b></button>
       </div>
       <button id="actionBtn" class="action-btn" type="button"><span id="actionIcon">✋</span><b id="actionText" data-t="action">کام کریں</b></button>
@@ -85,6 +88,8 @@
           <div><small data-t="missedSummary">واپس گئے</small><b id="sumMissed"></b></div>
           <div><small data-t="revenueSummary">فروخت</small><b id="sumRevenue"></b></div>
           <div><small data-t="expenseSummary">دکان خرچ</small><b id="sumExpense"></b></div>
+          <div><small data-t="wageSummary">عملے کی تنخواہ</small><b id="sumWage"></b></div>
+          <div><small data-t="queueRecord">سب سے لمبی قطار</small><b id="sumQueue"></b></div>
         </div>
         <p id="expenseWarning" class="warning hidden" data-t="expenseShort">خرچ پورا نہ ہونے سے ساکھ کم ہوئی</p>
         <button id="nextDayBtn" class="primary" type="button" data-t="nextDay">اگلا دن شروع کریں</button>
