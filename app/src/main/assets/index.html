@@ -3,121 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <meta name="theme-color" content="#fffdf7">
+  <meta name="theme-color" content="#163d35">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src data:; media-src 'none'; connect-src 'none'">
-  <title>Bazaar Boss Pakistan</title>
+  <title>Bazaar Boss 3D</title>
   <link rel="stylesheet" href="style.css">
   <script src="translations.js" defer></script>
-  <script src="game.js" defer></script>
+  <script src="game.bundle.js" defer></script>
 </head>
 <body>
-  <div class="app">
-    <header class="top">
-      <div class="brand">
-        <span class="logo">ب</span>
-        <div><p>BAZAAR BOSS</p><small data-t="country">پاکستان</small></div>
-      </div>
-      <div class="top-actions">
-        <button id="langBtn" class="icon-btn lang-btn" data-ta="language">اردو</button>
-        <button id="soundBtn" class="icon-btn" data-ta="sound">🔊</button>
-        <div class="day"><span data-t="day">دن</span><strong id="dayNo">۱</strong></div>
-      </div>
-    </header>
+  <main id="game" aria-label="Bazaar Boss 3D game">
+    <div id="loading" class="loading"><span class="loader">ب</span><strong data-t="loading">3D دکان تیار ہو رہی ہے…</strong></div>
+    <div id="webglError" class="fatal hidden"><span>⚠️</span><strong data-t="webglError">آپ کے فون میں 3D گرافکس شروع نہیں ہو سکے۔</strong></div>
 
-    <section class="stats">
-      <div class="stat"><span>●</span><p><small data-t="cash">رقم</small><strong id="cash">₨ 1,800</strong></p></div>
-      <div class="stat"><span>♥</span><p><small data-t="reputation">ساکھ</small><strong id="rep">15%</strong></p></div>
-      <div class="stat"><span>▰</span><p><small data-t="sales">فروخت</small><strong id="sales">۰</strong></p></div>
-    </section>
-
-    <section class="mission">
-      <span id="missionEmoji">🎯</span>
-      <div class="mission-copy"><small data-t="dailyGoal">آج کا چیلنج</small><strong id="missionTitle"></strong></div>
-      <div class="mission-progress"><b id="missionCount"></b><div class="mini-track"><i id="missionFill"></i></div></div>
-    </section>
-
-    <section class="scene">
-      <div id="event" class="event"></div>
-      <div class="wire"><i></i><i></i><i></i><i></i><i></i></div>
-      <div class="skyline"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <div class="shop">
-        <div class="awning"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div id="sign" class="sign"><strong id="storeName"></strong><small id="signLine"></small></div>
-        <div class="shelves"><div><span>🌾</span><span>🍚</span><span>🫙</span></div><div><span>🧴</span><span>🍪</span><span>🍬</span></div></div>
-        <div class="counter"><b>ب</b><span id="slogan"></span></div>
-      </div>
-      <div class="customer-area">
-        <div class="speech">
-          <div class="speech-head"><strong id="customerName"></strong><span id="timerText" class="timer"></span></div>
-          <div class="patience-track"><i id="patienceFill"></i></div>
-          <p id="customerLine"></p>
-          <div class="request"><span id="productEmoji"></span><p><small data-t="customerWants">مجھے چاہیے</small><strong id="productName"></strong></p></div>
+    <section id="startOverlay" class="start-overlay">
+      <div class="start-card">
+        <div class="start-logo"><span>ب</span><i>3D</i></div>
+        <p class="country" data-t="country">پاکستان</p>
+        <h1 data-t="gameTitle">بازار باس 3D</h1>
+        <p class="tagline" data-t="tagline">اپنی سپرمارکیٹ خود چلائیں</p>
+        <div class="language-picks" aria-label="Language">
+          <button type="button" data-start-lang="ur">اردو</button>
+          <button type="button" data-start-lang="hi">हिन्दी</button>
+          <button type="button" data-start-lang="en">English</button>
         </div>
-        <div id="avatar" class="avatar"></div>
-      </div>
-      <div id="float" class="float hidden"></div>
-    </section>
-
-    <section class="deal">
-      <div class="progress-head"><span data-t="todayCustomers">آج کے گاہک</span><strong id="visitCount">۱ / ۸</strong></div>
-      <div class="track"><i id="dayProgress"></i></div>
-      <div class="offer">
-        <div class="price"><small data-t="customerOffer">گاہک کی پیشکش</small><strong id="offer">₨ 0</strong></div>
-        <div class="pill profit"><small data-t="expectedProfit">ممکنہ منافع</small><strong id="profit">+₨0</strong></div>
-        <div class="pill stock-pill"><small data-t="stock">اسٹاک</small><strong id="currentStock">۰</strong></div>
-      </div>
-      <div id="message" class="message"><b>✦</b><span id="messageText"></span></div>
-      <div class="actions">
-        <button id="accept" class="action accept"><span>✓</span><p><strong data-t="accept">منظور</strong><small data-t="acceptSub">اسی قیمت پر بیچیں</small></p></button>
-        <button id="bargain" class="action bargain"><span>↗</span><p><strong data-t="negotiate">بھاؤ تاؤ</strong><small data-t="negotiateSub">اپنی قیمت چنیں</small></p></button>
-        <button id="refuse" class="action refuse" data-ta="reject">✕</button>
+        <div class="intro-list">
+          <p><span>🕹️</span><b data-t="intro1">دکان میں آزادانہ چلیں اور کیمرہ گھمائیں</b></p>
+          <p><span>📦</span><b data-t="intro2">اسٹور روم سے کریٹ اٹھا کر شیلف بھریں</b></p>
+          <p><span>🛒</span><b data-t="intro3">گاہک خریداری کریں گے، آپ کاؤنٹر پر بل بنائیں</b></p>
+          <p><span>⬆️</span><b data-t="intro4">منافع سے دکان اور رفتار بہتر کریں</b></p>
+        </div>
+        <button id="startBtn" class="primary" type="button" data-t="start">کھیل شروع کریں</button>
       </div>
     </section>
 
-    <section class="inventory">
-      <div class="section-title"><h2 data-t="inventory">دکان کا اسٹاک</h2><button class="link-btn" data-open="market" data-t="marketLink">ہول سیل منڈی ←</button></div>
-      <div id="stockGrid" class="stock-grid"></div>
-    </section>
-  </div>
-
-  <div id="shade" class="shade hidden"></div>
-  <section id="drawer" class="drawer hidden"></section>
-
-  <nav class="nav">
-    <button class="active" data-tab="shop"><span>🏪</span><em data-t="shop">دکان</em></button>
-    <button data-tab="market"><span>🧺</span><em data-t="market">منڈی</em></button>
-    <button data-tab="upgrades"><span>⬆️</span><em data-t="upgrades">اپ گریڈ</em></button>
-    <button data-tab="challenges"><span>🎯</span><em data-t="challenges">چیلنجز</em></button>
-  </nav>
-
-  <div id="dayModal" class="modal hidden">
-    <section class="modal-card">
-      <span class="trophy">🏆</span><p class="eyebrow" data-t="closingTime">دکان بند ہونے کا وقت</p><h2 id="dayTitle"></h2>
-      <div class="summary">
-        <div><small data-t="totalCash">کل رقم</small><strong id="summaryCash"></strong></div>
-        <div><small data-t="grossProfit">آج کا مجموعی منافع</small><strong id="summaryProfit"></strong></div>
-        <div><small data-t="happyCustomers">خوش گاہک</small><strong id="summaryHappy"></strong></div>
-        <div><small data-t="operatingCost">دکان کا خرچ</small><strong id="summaryBill"></strong></div>
+    <section id="hud" class="hud hidden" aria-live="polite">
+      <div class="topbar">
+        <div class="brand-chip"><span>ب</span><p><b>BAZAAR BOSS</b><small id="storeName" data-t="storeName">ذیشان سپرمارکیٹ</small></p></div>
+        <div class="stat"><small data-t="cash">رقم</small><b id="cash">₨0</b></div>
+        <div class="stat"><small data-t="reputation">ساکھ</small><b id="rep">0%</b></div>
+        <button id="settingsBtn" class="round-btn" type="button" data-ta="settings">⚙️</button>
       </div>
-      <div id="challengeResult" class="result"></div>
-      <p data-t="dayTip">اگلے دن منڈی کی قیمت اور گاہکوں کی مانگ بدل سکتی ہے۔ پہلے منصوبہ بنائیں۔</p>
-      <button id="nextDay" class="primary" data-t="nextDay">اگلا دن شروع کریں ←</button>
-    </section>
-  </div>
-
-  <div id="intro" class="modal hidden">
-    <section class="modal-card">
-      <span class="trophy">🏪</span><p class="eyebrow" data-t="welcome">خوش آمدید</p><h2 data-t="introTitle">اپنی دکان سنبھالیں!</h2>
-      <div class="intro-langs"><button data-intro-lang="ur">اردو</button><button data-intro-lang="hi">हिन्दी</button><button data-intro-lang="en">English</button></div>
-      <div class="intro-list">
-        <div data-t="intro1">✓ گاہک کی مقدار، وقت اور قیمت دیکھ کر فیصلہ کریں</div>
-        <div data-t="intro2">✓ تین مختلف خطرے والی قیمتوں پر بھاؤ تاؤ کریں</div>
-        <div data-t="intro3">✓ منڈی کے اتار چڑھاؤ میں صحیح وقت پر اسٹاک خریدیں</div>
-        <div data-t="intro4">✓ روزانہ چیلنج پورا کریں اور دکان کا خرچ نکالیں</div>
+      <div class="status-row">
+        <div id="eventPill" class="event-pill"><span id="eventEmoji">☀️</span><p><b id="eventTitle"></b><small id="eventDesc"></small></p></div>
+        <div class="day-chip"><small data-t="day">دن</small><b id="dayNo">1</b></div>
       </div>
-      <button id="startGame" class="primary" data-t="openShop">دکان کھولیں</button>
+      <div class="mission-card">
+        <span>🎯</span>
+        <div><small data-t="mission">آج کا ہدف</small><b id="missionText"></b><i><em id="missionFill"></em></i></div>
+      </div>
+      <div id="tutorial" class="tutorial"><span>💡</span><b id="tutorialText"></b></div>
+      <div id="carrying" class="carrying hidden"><span>📦</span><b id="carryingText"></b></div>
     </section>
-  </div>
-  <div id="toast" class="toast hidden"></div>
+
+    <div id="worldLabels" class="world-labels" aria-hidden="true"></div>
+    <div id="scanBox" class="scan-box hidden"><b data-t="scanning">سامان اسکین ہو رہا ہے…</b><i><em id="scanFill"></em></i></div>
+
+    <section id="controls" class="controls hidden">
+      <div id="joystick" class="joystick"><i id="joystickNub"></i><small data-t="moveHint">چلنے کے لیے جوائے اسٹک</small></div>
+      <div class="quick-actions">
+        <button id="marketBtn" class="mini-btn" type="button"><span>🧺</span><b data-t="market">ہول سیل منڈی</b></button>
+        <button id="upgradesBtn" class="mini-btn" type="button"><span>⬆️</span><b data-t="upgrades">دکان اپ گریڈ</b></button>
+      </div>
+      <button id="actionBtn" class="action-btn" type="button"><span id="actionIcon">✋</span><b id="actionText" data-t="action">کام کریں</b></button>
+      <p class="camera-tip" data-t="cameraHint">کیمرہ گھمانے کے لیے اسکرین پھیریں</p>
+    </section>
+
+    <div id="modalShade" class="modal-shade hidden">
+      <section id="panel" class="panel" role="dialog" aria-modal="true">
+        <header><div><span id="panelIcon">🏪</span><h2 id="panelTitle"></h2></div><button id="panelClose" type="button" data-ta="close">✕</button></header>
+        <div id="panelBody" class="panel-body"></div>
+      </section>
+    </div>
+
+    <div id="dayModal" class="modal-shade hidden">
+      <section class="day-card" role="dialog" aria-modal="true">
+        <span id="dayResultIcon" class="trophy">🏆</span>
+        <h2 id="dayTitle"></h2>
+        <p id="dayResult"></p>
+        <div class="summary-grid">
+          <div><small data-t="servedSummary">خوش گاہک</small><b id="sumServed"></b></div>
+          <div><small data-t="missedSummary">واپس گئے</small><b id="sumMissed"></b></div>
+          <div><small data-t="revenueSummary">فروخت</small><b id="sumRevenue"></b></div>
+          <div><small data-t="expenseSummary">دکان خرچ</small><b id="sumExpense"></b></div>
+        </div>
+        <p id="expenseWarning" class="warning hidden" data-t="expenseShort">خرچ پورا نہ ہونے سے ساکھ کم ہوئی</p>
+        <button id="nextDayBtn" class="primary" type="button" data-t="nextDay">اگلا دن شروع کریں</button>
+      </section>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </main>
 </body>
 </html>
