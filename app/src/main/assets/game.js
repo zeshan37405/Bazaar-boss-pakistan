@@ -1187,10 +1187,13 @@ function animate(time){
 function initialize(){
   try{
     buildWorld();setupControls();applyLanguage();updateHUD();updateInteractions();updateCarriedCrate();
+    window.__BAZAAR_GAME_READY__=true;
     $("loading").classList.add("hidden");
     requestAnimationFrame(animate);
   }catch(error){
-    console.error(error);$("loading").classList.add("hidden");$("startOverlay").classList.add("hidden");$("webglError").classList.remove("hidden");
+    console.error(error);
+    if(window.__BAZAAR_BOOT_FAIL__)window.__BAZAAR_BOOT_FAIL__("WORLD_INIT",error);
+    else{$("loading").classList.add("hidden");$("startOverlay").classList.add("hidden");$("webglError").classList.remove("hidden")}
   }
 }
 

@@ -1,6 +1,13 @@
-# Bazaar Boss Pakistan 3D — v5
+# Bazaar Boss Pakistan 3D — v6
 
 پاکستانی سپرمارکیٹ پر مبنی ایک آف لائن 3D Android گیم۔ دکان سے باہر اگلی گلی کی منڈی میں جائیں، آڑھتی سے بھاؤ تاؤ کریں، مال ٹرک میں لوڈ کروا کر اسٹور روم منگوائیں، شیلف بھریں اور کرسی پر بیٹھ کر گاہکوں کا بل بنائیں۔
+
+## v6 آغاز کی اصلاح
+
+- v5 کے classic bundle میں Three.js import aliases الٹے بننے کی وجہ سے 3D engine شروع ہونے سے پہلے رک جاتا تھا؛ v6 میں bundler mapping درست ہے
+- APK اب Android کے محفوظ `https://appassets.androidplatform.net` origin سے اپنے packaged assets لوڈ کرتی ہے
+- automated test اب Three.js bundle کو واقعی execute کرکے `Scene`، `WebGLRenderer` اور `BoxGeometry` کی موجودگی چیک کرتا ہے
+- آئندہ startup ناکام ہو تو خاموش ابتدائی صفحے کے بجائے واضح error code اور دوبارہ کوشش کا بٹن دکھے گا
 
 ## گیم پلے
 

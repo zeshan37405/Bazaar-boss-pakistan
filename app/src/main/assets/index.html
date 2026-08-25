@@ -7,13 +7,19 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src data:; media-src 'none'; connect-src 'none'">
   <title>Bazaar Boss 3D</title>
   <link rel="stylesheet" href="style.css">
+  <script src="boot.js" defer></script>
   <script src="translations.js" defer></script>
   <script src="game.bundle.js" defer></script>
 </head>
 <body>
   <main id="game" aria-label="Bazaar Boss 3D game">
     <div id="loading" class="loading"><span class="loader">ب</span><strong data-t="loading">3D دکان تیار ہو رہی ہے…</strong></div>
-    <div id="webglError" class="fatal hidden"><span>⚠️</span><strong data-t="webglError">آپ کے فون میں 3D گرافکس شروع نہیں ہو سکے۔</strong></div>
+    <div id="webglError" class="fatal hidden">
+      <span>⚠️</span>
+      <strong data-t="startupError">گیم مکمل طور پر شروع نہیں ہو سکی۔</strong>
+      <small id="fatalDetail"></small>
+      <button id="retryBtn" class="retry-btn" type="button" data-t="retry">دوبارہ کوشش کریں</button>
+    </div>
 
     <section id="startOverlay" class="start-overlay">
       <div class="start-card">

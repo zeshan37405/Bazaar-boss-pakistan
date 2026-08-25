@@ -32,6 +32,7 @@ jobs:
       - name: Test game rules and packaged assets
         run: |
           node tools/build-bundle.mjs
+          node --check app/src/main/assets/boot.js
           node --check app/src/main/assets/game.js
           node --check app/src/main/assets/sim.js
           node --check app/src/main/assets/game.bundle.js

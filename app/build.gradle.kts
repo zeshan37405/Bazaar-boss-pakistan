@@ -10,8 +10,8 @@ android {
         applicationId = "com.zeeshan.bazaarboss"
         minSdk = 23
         targetSdk = 35
-        versionCode = 5
-        versionName = "5.0.0"
+        versionCode = 6
+        versionName = "6.0.0"
     }
 
     buildTypes {
@@ -28,4 +28,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+dependencies {
+    implementation("androidx.webkit:webkit:1.13.0")
 }

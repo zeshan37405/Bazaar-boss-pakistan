@@ -3,13 +3,18 @@ package com.zeeshan.bazaarboss;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
+
+import androidx.webkit.WebViewAssetLoader;
+import androidx.webkit.WebViewClientCompat;
 
 public class MainActivity extends Activity {
     private WebView gameView;
@@ -24,16 +29,34 @@ public class MainActivity extends Activity {
         getWindow().setNavigationBarColor(Color.rgb(24, 43, 56));
         enterImmersiveMode();
 
+        final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+            .build();
+
         gameView = new WebView(this);
         gameView.setBackgroundColor(Color.rgb(16, 61, 53));
-        gameView.setWebViewClient(new WebViewClient());
+        gameView.setWebViewClient(new WebViewClientCompat() {
+            @Override
+            public WebResourceResponse shouldInterceptRequest(
+                WebView view,
+                WebResourceRequest request
+            ) {
+                return assetLoader.shouldInterceptRequest(request.getUrl());
+            }
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return assetLoader.shouldInterceptRequest(Uri.parse(url));
+            }
+        });
         gameView.setWebChromeClient(new WebChromeClient());
 
         WebSettings settings = gameView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
@@ -44,7 +67,7 @@ public class MainActivity extends Activity {
         settings.setTextZoom(100);
 
         setContentView(gameView);
-        gameView.loadUrl("file:///android_asset/index.html");
+        gameView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }
 
     private void enterImmersiveMode() {

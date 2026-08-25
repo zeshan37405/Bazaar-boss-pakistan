@@ -41,7 +41,11 @@ function bundleThree(){
   if(!finalMatch)throw new Error("Could not locate the Three.js module exports");
   const exports=specifiers(finalMatch[1]);
   source=source.slice(0,finalMatch.index);
-  const aliases=imports.map(({local,exported})=>`${exported}:${local}`).join(",");
+  // ESM `import { Matrix3 as e }` must become `{ Matrix3: e }` when the
+  // imported bindings are reconstructed from the core export object.
+  // Reversing this mapping leaves Three.js' minified locals undefined and the
+  // Android WebView stops before it can attach the Start button handler.
+  const aliases=imports.map(({local,exported})=>`${local}:${exported}`).join(",");
   const all=[...reexports.map(entry=>({...entry,fromCore:true})),...exports.map(entry=>({...entry,fromCore:false}))];
   const entries=all.map(entry=>`${JSON.stringify(entry.exported)}:${entry.fromCore?`__THREE_CORE__.${entry.local}`:entry.local}`).join(",");
   return `${license}const THREE=(()=>{const {${aliases}}=__THREE_CORE__;${source}\nreturn {${entries}};})();`;
