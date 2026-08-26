@@ -1,10 +1,10 @@
 export const PRICE_REFERENCE={
-  asOf:"2026-07-30",
-  label:"Pakistan Bureau of Statistics SPI + Pakistan retail benchmarks"
+  asOf:"2026-08-20",
+  label:"Pakistan Bureau of Statistics Weekly SPI + Pakistan retail benchmarks"
 };
 
 export const PRODUCTS=[
-  {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1225,sell:1320,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"},brands:[
+  {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1215,sell:1325,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"},brands:[
     {id:"sunehri",color:"#c88d28",accent:"#773f16",n:{ur:"سنہری آٹا",hi:"सुनहरी आटा",en:"Sunehri Atta"}},
     {id:"kisan",color:"#3b8d51",accent:"#e9bd47",n:{ur:"کسان چکی",hi:"किसान चक्की",en:"Kisan Chakki"}},
     {id:"punjab",color:"#b13d32",accent:"#f7d67a",n:{ur:"پنجاب گولڈ",hi:"पंजाब गोल्ड",en:"Punjab Gold"}}
@@ -14,7 +14,7 @@ export const PRODUCTS=[
     {id:"sella",color:"#6a3c8f",accent:"#f0d36c",n:{ur:"سیلا کنگ",hi:"सेला किंग",en:"Sella King"}},
     {id:"pakaroma",color:"#267554",accent:"#e9d8a6",n:{ur:"پاک اروما",hi:"पाक अरोमा",en:"Pak Aroma"}}
   ]},
-  {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:610,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"},brands:[
+  {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:615,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"},brands:[
     {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف گھی",hi:"लतीफ़ घी",en:"Latif Ghee"}},
     {id:"handi",color:"#176b56",accent:"#f2c44b",n:{ur:"ہانڈی گھی",hi:"हांडी घी",en:"Handi Ghee"}},
     {id:"sunehri-banaspati",color:"#e4a526",accent:"#7b321d",n:{ur:"سنہری بناسپتی",hi:"सुनहरी वनस्पति",en:"Sunehri Banaspati"}}
@@ -24,9 +24,29 @@ export const PRODUCTS=[
     {id:"canola-gold",color:"#f0b927",accent:"#287848",n:{ur:"کینولا گولڈ",hi:"कैनोला गोल्ड",en:"Canola Gold"}},
     {id:"pakwan",color:"#bf3c2f",accent:"#ffd662",n:{ur:"پکوان آئل",hi:"पकवान ऑयल",en:"Pakwan Oil"}}
   ]},
+  {id:"sugar",emoji:"🧂",color:0xf3e7d1,cost:135,sell:150,shape:"bag",n:{ur:"چینی",hi:"चीनी",en:"Sugar"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
+    {id:"shakar-gold",color:"#d69b32",accent:"#7a3f1d",n:{ur:"شکر گولڈ",hi:"शक्कर गोल्ड",en:"Shakar Gold"}},
+    {id:"meethas",color:"#df5f72",accent:"#fff2d6",n:{ur:"مٹھاس",hi:"मिठास",en:"Meethas"}},
+    {id:"punjab-sugar",color:"#2f8355",accent:"#f1cf66",n:{ur:"پنجاب شوگر",hi:"पंजाब शुगर",en:"Punjab Sugar"}}
+  ]},
+  {id:"pulses",emoji:"🥣",color:0xd57b48,cost:235,sell:260,shape:"pouch",n:{ur:"دال مسور",hi:"मसूर दाल",en:"Masoor lentils"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
+    {id:"sunehri-daal",color:"#d77937",accent:"#ffe08a",n:{ur:"سنہری دال",hi:"सुनहरी दाल",en:"Sunehri Daal"}},
+    {id:"mehran-masoor",color:"#a33b35",accent:"#f5cc75",n:{ur:"مہران مسور",hi:"मेहरान मसूर",en:"Mehran Masoor"}},
+    {id:"kisan-daal",color:"#3b7b4d",accent:"#f1d876",n:{ur:"کسان دال",hi:"किसान दाल",en:"Kisan Daal"}}
+  ]},
+  {id:"milk",emoji:"🥛",color:0xeaf4f7,cost:200,sell:220,shape:"carton",n:{ur:"دودھ",hi:"दूध",en:"Milk"},unit:{ur:"1 لیٹر پیک",hi:"1 लीटर पैक",en:"1 litre carton"},brands:[
+    {id:"sehat-milk",color:"#3a8dcc",accent:"#f7f3dd",n:{ur:"صحت ملک",hi:"सेहत मिल्क",en:"Sehat Milk"}},
+    {id:"punjab-fresh",color:"#2c8a62",accent:"#f4d770",n:{ur:"پنجاب فریش",hi:"पंजाब फ्रेश",en:"Punjab Fresh"}},
+    {id:"doodh-ghar",color:"#7c56a2",accent:"#f4e6ff",n:{ur:"دودھ گھر",hi:"दूध घर",en:"Doodh Ghar"}}
+  ]},
+  {id:"salt",emoji:"🧂",color:0xf5f3ec,cost:55,sell:65,shape:"packet",n:{ur:"نمک",hi:"नमक",en:"Salt"},unit:{ur:"800 گرام پیک",hi:"800 ग्राम पैक",en:"800 g pack"},brands:[
+    {id:"pak-namak",color:"#3277a8",accent:"#f7f7f2",n:{ur:"پاک نمک",hi:"पाक नमक",en:"Pak Namak"}},
+    {id:"mountain-salt",color:"#c25c62",accent:"#ffe0d2",n:{ur:"ماؤنٹین سالٹ",hi:"माउंटेन साल्ट",en:"Mountain Salt"}},
+    {id:"sehat-salt",color:"#21836c",accent:"#f1db6e",n:{ur:"صحت نمک",hi:"सेहत नमक",en:"Sehat Salt"}}
+  ]},
   {id:"biscuit",emoji:"🍪",color:0xd4683a,cost:88,sell:110,shape:"packet",n:{ur:"بسکٹ",hi:"बिस्कुट",en:"Biscuits"},unit:{ur:"100 گرام پیک",hi:"100 ग्राम पैक",en:"100 g pack"},brands:[
     {id:"crispy",color:"#c63c2f",accent:"#f7d05b",n:{ur:"کرسپی بائٹ",hi:"क्रिस्पी बाइट",en:"Crispy Bite"}},
-    {id:"chai-time",color:"#744626",accent:"#f5c64b",n:{ur:"چائے ٹائم",hi:"चाय टाइम",en:"Chai Time"}},
+    {id:"family",color:"#744626",accent:"#f5c64b",n:{ur:"فیملی بسکٹ",hi:"फैमिली बिस्कुट",en:"Family Biscuit"}},
     {id:"fun",color:"#315ea8",accent:"#f4bd3b",n:{ur:"فن بسکٹ",hi:"फन बिस्कुट",en:"Fun Biscuit"}}
   ]},
   {id:"toffee",emoji:"🍬",color:0xe84b78,cost:205,sell:240,shape:"pouch",n:{ur:"ٹافی",hi:"टॉफ़ी",en:"Toffee"},unit:{ur:"50 عدد پاؤچ",hi:"50 नग पाउच",en:"50-piece pouch"},brands:[
@@ -40,9 +60,10 @@ export const EVENTS=[
   {id:"normal",emoji:"☀️"},
   {id:"wedding",emoji:"💍",products:["ghee","oil"],demand:1.18},
   {id:"ration",emoji:"🛒",products:["flour","rice"],demand:1.16},
-  {id:"school",emoji:"🎒",products:["biscuit","toffee"],demand:1.22},
+  {id:"school",emoji:"🎒",products:["biscuit","toffee","milk"],demand:1.22},
   {id:"inflation",emoji:"📈",market:1.09,retail:1.055},
-  {id:"rush",emoji:"⚡",spawn:.68}
+  {id:"rush",emoji:"⚡",spawn:.68},
+  {id:"festival",emoji:"🌙",products:["sugar","pulses","ghee"],demand:1.2}
 ];
 
 export const DIFFICULTY={
@@ -51,7 +72,12 @@ export const DIFFICULTY={
   hard:{customers:11,serveRatio:.82,expense:1.24}
 };
 
-export const DEFAULT_STOCK={flour:8,rice:8,ghee:8,oil:8,biscuit:8,toffee:8};
+export const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18};
+export const BUSINESSES={
+  vending:{cost:9000,level:2,income:650},
+  fruitStand:{cost:15000,level:3,income:1050},
+  foodCart:{cost:26000,level:5,income:1750}
+};
 export const copy=value=>JSON.parse(JSON.stringify(value));
 export const productById=id=>PRODUCTS.find(item=>item.id===id)||PRODUCTS[0];
 export const brandById=(product,id)=>product.brands.find(brand=>brand.id===id)||product.brands[0];
@@ -75,7 +101,7 @@ export function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:5,
+    version:7,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -88,7 +114,13 @@ export function createState(saved,legacy){
     shelfStock:{},warehouse:{},truckCargo:{},
     delivery:{active:Boolean(source?.delivery?.active),cargo:{},progress:Math.max(0,Number(source?.delivery?.progress??0)),duration:Math.max(6,Number(source?.delivery?.duration??10))},
     upgrades:{capacity:0,checkout:0,decor:0},
-    staff:{cashier:0},
+    staff:{cashier:0,restocker:0},
+    businesses:{vending:false,fruitStand:false,foodCart:false},
+    priceMarkup:{},
+    storeLevel:Math.max(1,Number(source?.storeLevel??1)),
+    storeXp:Math.max(0,Number(source?.storeXp??0)),
+    cleanliness:clamp(Number(source?.cleanliness??100),0,100),
+    achievements:Array.isArray(source?.achievements)?source.achievements.filter(value=>typeof value==="string"):[],
     carrying:source?.carrying&&PRODUCTS.some(item=>item.id===source.carrying.id)
       ?{id:source.carrying.id,amount:Math.max(1,Number(source.carrying.amount)||1)}
       :null,
@@ -101,7 +133,7 @@ export function createState(saved,legacy){
     seen3DIntro:Boolean(source?.seen3DIntro),
     tutorialStep:Number(source?.tutorialStep??0),
     queueRecord:Math.max(0,Number(source?.queueRecord??0)),
-    cameraDistance:clamp(Number(source?.version>=5?source.cameraDistance:14.5),6.5,22)
+    cameraDistance:clamp(Number(source?.version>=7?source.cameraDistance:18),8,30)
   };
   for(const item of PRODUCTS){
     const legacyAmount=old.stock&&Number.isFinite(old.stock[item.id])?old.stock[item.id]:DEFAULT_STOCK[item.id];
@@ -109,18 +141,21 @@ export function createState(saved,legacy){
     state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??0));
     state.truckCargo[item.id]=Math.max(0,Number(source?.truckCargo?.[item.id]??0));
     state.delivery.cargo[item.id]=Math.max(0,Number(source?.delivery?.cargo?.[item.id]??0));
+    state.priceMarkup[item.id]=clamp(Number(source?.priceMarkup?.[item.id]??1),.85,1.3);
   }
   state.upgrades.capacity=clamp(Number(source?.upgrades?.capacity??old.upgrades?.shelf??0),0,3);
   state.upgrades.checkout=clamp(Number(source?.upgrades?.checkout??0),0,3);
   state.upgrades.decor=clamp(Number(source?.upgrades?.decor??old.upgrades?.lights??0),0,3);
   state.staff.cashier=clamp(Number(source?.staff?.cashier??0),0,2);
+  state.staff.restocker=clamp(Number(source?.staff?.restocker??0),0,2);
+  for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
   if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
   syncCash(state);
   return state;
 }
 
-export function shelfCapacity(state){return 8+state.upgrades.capacity*4}
+export function shelfCapacity(state){return 18+state.upgrades.capacity*6}
 
 export function marketPrice(state,id){
   const item=productById(id);
@@ -130,13 +165,30 @@ export function marketPrice(state,id){
   return roundFive(item.cost*(eventForDay(state.day).market||1)*(1+wave)*growth);
 }
 
-export function retailPrice(state,id){
+export function recommendedRetailPrice(state,id){
   const item=productById(id);
   const pattern=[.018,-.012,.027,-.02,.011,.032,-.007];
   const wave=pattern[(state.day+PRODUCTS.indexOf(item)*2)%pattern.length];
   const growth=1+Math.min(60,state.day-1)*.0025;
   const price=roundFive(item.sell*(eventForDay(state.day).retail||1)*(1+wave)*growth);
   return Math.max(price,roundFive(marketPrice(state,id)*1.055));
+}
+
+export function retailPrice(state,id){
+  const markup=clamp(Number(state.priceMarkup?.[id]??1),.85,1.3);
+  return Math.max(roundFive(marketPrice(state,id)*1.02),roundFive(recommendedRetailPrice(state,id)*markup));
+}
+
+export function changeRetailMarkup(state,id,delta){
+  if(!PRODUCTS.some(item=>item.id===id))return {ok:false,reason:"unknownProduct"};
+  state.priceMarkup=state.priceMarkup||{};
+  state.priceMarkup[id]=clamp(Math.round(((state.priceMarkup[id]??1)+Number(delta||0))*100)/100,.85,1.3);
+  return {ok:true,markup:state.priceMarkup[id],price:retailPrice(state,id),recommended:recommendedRetailPrice(state,id)};
+}
+
+export function priceAcceptanceChance(state,id){
+  const ratio=retailPrice(state,id)/Math.max(1,recommendedRetailPrice(state,id));
+  return clamp(1-Math.max(0,ratio-1)*2.65,.3,1);
 }
 
 export function marketTrend(state,id){
@@ -206,7 +258,21 @@ export function restockShelf(state,carrying){
   const amount=Math.min(room,carrying.amount);
   state.shelfStock[carrying.id]+=amount;
   carrying.amount-=amount;
+  awardStoreXp(state,amount*3);
   return {ok:true,amount,empty:carrying.amount<=0};
+}
+
+export function xpForNextLevel(level){return 120+Math.max(1,Math.floor(level))*80}
+
+export function awardStoreXp(state,amount){
+  const before=Math.max(1,Math.floor(state.storeLevel||1));
+  state.storeLevel=before;
+  state.storeXp=Math.max(0,Number(state.storeXp||0))+Math.max(0,Number(amount)||0);
+  while(state.storeXp>=xpForNextLevel(state.storeLevel)&&state.storeLevel<30){
+    state.storeXp-=xpForNextLevel(state.storeLevel);
+    state.storeLevel++;
+  }
+  return {level:state.storeLevel,levelsGained:state.storeLevel-before,xp:state.storeXp,next:xpForNextLevel(state.storeLevel)};
 }
 
 export function createOrder(state,random=Math.random){
@@ -235,6 +301,7 @@ export function completeSale(state,order){
   state.handledToday++;
   state.revenueToday+=order.price;
   state.rep=Math.min(100,state.rep+1+state.upgrades.decor);
+  awardStoreXp(state,18+Math.max(1,Number(order.quantity)||1)*4);
   return maybeFinishDay(state);
 }
 
@@ -269,6 +336,9 @@ export function checkoutDuration(state){return Math.max(.85,2.8-state.upgrades.c
 export function staffCheckoutDuration(state){return state.staff.cashier?Math.max(1.45,3.55-state.staff.cashier*.65):Infinity}
 export function cashierHireCost(state){return state.staff.cashier===0?28000:state.staff.cashier===1?18000:0}
 export function cashierWage(state){return [0,1100,1800][state.staff.cashier]||0}
+export function restockerHireCost(state){return state.staff.restocker===0?22000:state.staff.restocker===1?15000:0}
+export function restockerWage(state){return [0,900,1450][state.staff.restocker]||0}
+export function totalStaffWage(state){return cashierWage(state)+restockerWage(state)}
 
 export function hireCashier(state){
   if(state.staff.cashier>=2)return {ok:false,reason:"staffMaxed"};
@@ -280,8 +350,50 @@ export function hireCashier(state){
   return {ok:true,cost,level:state.staff.cashier,wage:cashierWage(state)};
 }
 
+export function hireRestocker(state){
+  if(state.staff.restocker>=2)return {ok:false,reason:"staffMaxed"};
+  const cost=restockerHireCost(state);
+  if(state.operatingBudget<cost)return {ok:false,reason:"notEnoughBudget",cost};
+  state.operatingBudget-=cost;
+  state.staff.restocker++;
+  syncCash(state);
+  return {ok:true,cost,level:state.staff.restocker,wage:restockerWage(state)};
+}
+
+export function restockerTransfer(state,id){
+  if(!state.staff.restocker)return {ok:false,reason:"staffMissing"};
+  const available=Math.max(0,state.warehouse[id]||0);
+  const room=Math.max(0,shelfCapacity(state)-(state.shelfStock[id]||0));
+  const amount=Math.min(available,room,state.staff.restocker===1?2:4);
+  if(!amount)return {ok:false,reason:available?"shelfFull":"warehouseEmpty"};
+  state.warehouse[id]-=amount;
+  state.shelfStock[id]+=amount;
+  awardStoreXp(state,amount*2);
+  return {ok:true,id,amount};
+}
+
+export function adjustCleanliness(state,delta){
+  state.cleanliness=clamp(Number(state.cleanliness??100)+Number(delta||0),0,100);
+  return state.cleanliness;
+}
+
+export function businessDailyIncome(state){
+  return Object.entries(BUSINESSES).reduce((sum,[key,info])=>sum+(state.businesses?.[key]?info.income:0),0);
+}
+
+export function buyBusiness(state,key){
+  const info=BUSINESSES[key];
+  if(!info)return {ok:false,reason:"unknownBusiness"};
+  state.businesses=state.businesses||{};
+  if(state.businesses[key])return {ok:false,reason:"alreadyOwned"};
+  if((state.storeLevel||1)<info.level)return {ok:false,reason:"levelLocked",level:info.level};
+  if(state.operatingBudget<info.cost)return {ok:false,reason:"notEnoughBudget",cost:info.cost};
+  state.operatingBudget-=info.cost;state.businesses[key]=true;syncCash(state);
+  return {ok:true,key,cost:info.cost,income:info.income};
+}
+
 export function dailyExpense(state){
-  return Math.round((850+state.day*110)*DIFFICULTY[state.difficulty].expense)+cashierWage(state);
+  return Math.round((850+state.day*110)*DIFFICULTY[state.difficulty].expense)+totalStaffWage(state);
 }
 
 export function maybeFinishDay(state){
@@ -290,15 +402,17 @@ export function maybeFinishDay(state){
   const success=state.servedToday>=target;
   const reward=success?2200+state.day*350:0;
   const expense=dailyExpense(state);
-  const wage=cashierWage(state);
-  if(success){state.operatingBudget+=reward;state.rep=Math.min(100,state.rep+3)}
+  const wage=totalStaffWage(state);
+  const serviceIncome=businessDailyIncome(state);
+  state.operatingBudget+=serviceIncome;
+  if(success){state.operatingBudget+=reward;state.rep=Math.min(100,state.rep+3);awardStoreXp(state,70+state.day*5)}
   else state.rep=Math.max(0,state.rep-3);
   const short=state.operatingBudget<expense;
   state.operatingBudget=Math.max(0,state.operatingBudget-expense);
   syncCash(state);
   if(short)state.rep=Math.max(0,state.rep-2);
   state.dayComplete=true;
-  state.lastDay={day:state.day,served:state.servedToday,missed:state.missedToday,revenue:state.revenueToday,target,reward,expense,wage,success,short,salesFund:state.salesFund,operatingBudget:state.operatingBudget};
+  state.lastDay={day:state.day,served:state.servedToday,missed:state.missedToday,revenue:state.revenueToday,target,reward,expense,wage,serviceIncome,success,short,salesFund:state.salesFund,operatingBudget:state.operatingBudget};
   return state.lastDay;
 }
 
@@ -311,6 +425,7 @@ export function startNextDay(state){
   state.dayComplete=false;
   state.lastDay=null;
   state.rep=Math.min(100,state.rep+state.upgrades.decor);
+  state.cleanliness=Math.min(100,(state.cleanliness??100)+6);
 }
 
 export function upgradeCost(state,key){

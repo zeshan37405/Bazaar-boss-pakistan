@@ -27,6 +27,10 @@ test("Android entry page uses only packaged assets",()=>{
     assert.ok(!/^https?:/.test(ref),`external asset ${ref}`);
     assert.ok(fs.existsSync(path.join(assets,ref)),`missing asset ${ref}`);
   }
+  for(const texture of ["floor-terrazzo.webp","wall-plaster.webp","shelf-wood.webp","road-asphalt.webp"]){
+    assert.ok(fs.existsSync(path.join(assets,"textures",texture)),`missing texture ${texture}`);
+  }
+  assert.ok(html.includes("img-src 'self' data:"));
 });
 
 test("Android serves packaged assets from a secure same-origin URL",()=>{
@@ -53,12 +57,14 @@ test("literal translation calls in game logic have dictionary entries",()=>{
 test("shipped game is a self-contained classic bundle with the Three.js license",()=>{
   assert.ok(bundle.length>400000);
   assert.ok(bundle.includes("Copyright 2010-2026 Three.js Authors"));
-  assert.ok(bundle.includes("2026-07-30"));
+  assert.ok(bundle.includes("2026-08-20"));
   assert.ok(bundle.includes("shopping-basket"));
   assert.ok(bundle.includes("queueWait"));
   assert.ok(bundle.includes("Latif Ghee"));
   assert.ok(bundle.includes("dispatchTruck"));
   assert.ok(bundle.includes("salesFund"));
+  assert.ok(bundle.includes("restockerTransfer"));
+  assert.ok(bundle.includes("priceAcceptanceChance"));
   assert.ok(!/^\s*import\s/m.test(bundle));
   assert.ok(!/^\s*export\s/m.test(bundle));
   assert.ok(fs.readFileSync(path.join(assets,"THREE-LICENSE.txt"),"utf8").includes("MIT License"));

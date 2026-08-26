@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="theme-color" content="#163d35">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src data:; media-src 'none'; connect-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; media-src 'none'; connect-src 'none'">
   <title>Bazaar Boss 3D</title>
   <link rel="stylesheet" href="style.css">
   <script src="boot.js" defer></script>
@@ -53,6 +53,8 @@
       <div class="status-row">
         <div id="eventPill" class="event-pill"><span id="eventEmoji">☀️</span><p><b id="eventTitle"></b><small id="eventDesc"></small></p></div>
         <div class="queue-chip"><small data-t="queueLabel">قطار</small><b id="queueCount">0</b></div>
+        <div class="level-chip"><small data-t="storeLevel">درجہ</small><b id="storeLevel">1</b></div>
+        <div class="clean-chip"><small data-t="cleanliness">صفائی</small><b id="cleanliness">100%</b></div>
         <div class="day-chip"><small data-t="day">دن</small><b id="dayNo">1</b></div>
       </div>
       <div class="mission-card">
@@ -72,6 +74,7 @@
       <div id="joystick" class="joystick"><i id="joystickNub"></i><small data-t="moveHint">چلنے کے لیے جوائے اسٹک</small></div>
       <div class="quick-actions">
         <button id="marketBtn" class="mini-btn" type="button"><span>🧺</span><b data-t="market">ہول سیل منڈی</b></button>
+        <button id="managementBtn" class="mini-btn" type="button"><span>💻</span><b data-t="management">مینجمنٹ</b></button>
         <button id="staffBtn" class="mini-btn" type="button"><span>👨‍💼</span><b data-t="staff">عملہ</b></button>
         <button id="upgradesBtn" class="mini-btn" type="button"><span>⬆️</span><b data-t="upgrades">دکان اپ گریڈ</b></button>
       </div>
@@ -97,6 +100,7 @@
           <div><small data-t="revenueSummary">فروخت</small><b id="sumRevenue"></b></div>
           <div><small data-t="expenseSummary">دکان خرچ</small><b id="sumExpense"></b></div>
           <div><small data-t="wageSummary">عملے کی تنخواہ</small><b id="sumWage"></b></div>
+          <div><small data-t="serviceIncomeSummary">باہر کے کاروبار کی آمدنی</small><b id="sumServiceIncome"></b></div>
           <div><small data-t="queueRecord">سب سے لمبی قطار</small><b id="sumQueue"></b></div>
           <div><small data-t="salesFund">سیلز فنڈ</small><b id="sumSalesFund"></b></div>
           <div><small data-t="operatingBudget">کاروباری بجٹ</small><b id="sumBudget"></b></div>

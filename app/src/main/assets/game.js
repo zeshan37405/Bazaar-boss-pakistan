@@ -1,9 +1,10 @@
 import * as THREE from "./three.module.min.js";
 import {
-  PRODUCTS,PRICE_REFERENCE,copy,productById,brandById,eventForDay,createState,shelfCapacity,marketPrice,retailPrice,marketTrend,
+  PRODUCTS,PRICE_REFERENCE,BUSINESSES,copy,productById,brandById,eventForDay,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,marketTrend,
   bargainPurchase,cargoCount,deliveryFee,dispatchTruck,advanceDelivery,cameraRelativeVector,takeCrate,restockShelf,createOrder,takeShelfItems,completeSale,missSale,
-  dailyTarget,serveTarget,spawnDelay,checkoutDuration,staffCheckoutDuration,startNextDay,
-  upgradeCost,buyUpgrade,recordQueue,cashierHireCost,cashierWage,hireCashier
+  dailyTarget,serveTarget,spawnDelay,checkoutDuration,staffCheckoutDuration,startNextDay,xpForNextLevel,
+  upgradeCost,buyUpgrade,recordQueue,cashierHireCost,cashierWage,hireCashier,restockerHireCost,restockerWage,hireRestocker,restockerTransfer,
+  adjustCleanliness,buyBusiness,businessDailyIncome
 } from "./sim.js";
 
 const TEXT=window.BAZAAR_TEXT;
@@ -13,31 +14,34 @@ const $=id=>document.getElementById(id);
 const clamp=THREE.MathUtils.clamp;
 const rand=(min,max)=>min+Math.random()*(max-min);
 const PRODUCT_SHELVES={
-  flour:{x:-7,z:-5,side:-1},rice:{x:-7,z:0,side:-1},ghee:{x:-7,z:5,side:-1},
-  oil:{x:7,z:-5,side:1},biscuit:{x:7,z:0,side:1},toffee:{x:7,z:5,side:1}
+  flour:{x:-9.35,z:-7.6,side:-1},rice:{x:-9.35,z:-3.8,side:-1},sugar:{x:-9.35,z:0,side:-1},pulses:{x:-9.35,z:3.8,side:-1},salt:{x:-9.35,z:7.6,side:-1},
+  ghee:{x:9.35,z:-7.6,side:1},oil:{x:9.35,z:-3.8,side:1},milk:{x:9.35,z:0,side:1},biscuit:{x:9.35,z:3.8,side:1},toffee:{x:9.35,z:7.6,side:1}
 };
 const EVENT_TEXT={
   normal:["eventNormal","eventNormalD"],wedding:["eventWedding","eventWeddingD"],
   ration:["eventRation","eventRationD"],school:["eventSchool","eventSchoolD"],
-  inflation:["eventInflation","eventInflationD"],rush:["eventRush","eventRushD"]
+  inflation:["eventInflation","eventInflationD"],rush:["eventRush","eventRushD"],
+  festival:["eventFestival","eventFestivalD"]
 };
-const COLORS=[0x4f80c9,0xdf684d,0x4c9b72,0xd28a38,0x8d68ba,0x379eae,0xd55e8a];
+const COLORS=[0x315f91,0xa84236,0x2d7254,0x9b612e,0x68498b,0x1d7780,0xa33e68,0x4c5158];
 const SKINS=[0x6f432c,0x8d5524,0xb87952,0xd39a73,0xedb98d,0xf1c7a5];
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
-let scene,camera,renderer,player,playerShadow,marketMarker,cashierMesh,cashierLabel,checkoutSign,mandiSignHolder,deliveryTruck,truckCargoGroup;
+let scene,camera,renderer,player,playerShadow,marketMarker,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,mandiSignHolder,deliveryTruck,truckCargoGroup,serviceArea;
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
-let scan=null,audioContext=null,cashierCooldown=.8,truckArrivalHold=0;
+let scan=null,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0;
 const shelves=new Map();
 const packageTextureCache=new Map();
+const surfaceTextureCache=new Map();
 const blockers=[];
 const zones=[];
 const customers=[];
 const checkoutQueue=[];
 const worldLabels=[];
 const movingDecor=[];
+const trashItems=[];
 const keys={};
 const joystick={x:0,y:0,id:null};
 
@@ -121,6 +125,18 @@ function tone(kind="coin"){
 function standard(color,roughness=.78){return new THREE.MeshStandardMaterial({color,roughness,metalness:.03})}
 function basic(color){return new THREE.MeshBasicMaterial({color})}
 
+function texturedMaterial(path,{repeat=[1,1],roughness=.82,color=0xffffff,metalness=.02}={}){
+  const key=`${path}:${repeat.join("x")}`;
+  let texture=surfaceTextureCache.get(key);
+  if(!texture){
+    texture=new THREE.TextureLoader().load(path,undefined,undefined,()=>{});
+    texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;
+    texture.repeat.set(repeat[0],repeat[1]);texture.anisotropy=renderer?Math.min(4,renderer.capabilities.getMaxAnisotropy()):1;
+    surfaceTextureCache.set(key,texture);
+  }
+  return new THREE.MeshStandardMaterial({map:texture,color,roughness,metalness});
+}
+
 function enableShadows(mesh){
   mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
 }
@@ -170,7 +186,7 @@ function buildWorld(){
   scene=new THREE.Scene();
   scene.background=new THREE.Color(0x78c6df);
   scene.fog=new THREE.Fog(0x9fd3df,34,76);
-  camera=new THREE.PerspectiveCamera(44,innerWidth/innerHeight,.1,130);
+  camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,150);
   renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));
   renderer.setSize(innerWidth,innerHeight);
@@ -187,16 +203,17 @@ function buildWorld(){
   sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
   const fill=new THREE.DirectionalLight(0xaad5ff,.75);fill.position.set(10,7,-8);scene.add(fill);
 
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(18,23),standard(0xf1d6a5));
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(24,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[6,6],roughness:.82}));
   floor.rotation.x=-Math.PI/2;floor.position.z=-.1;floor.receiveShadow=true;scene.add(floor);
-  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(7.5,18),standard(0xf9ead0));
-  aisle.rotation.x=-Math.PI/2;aisle.position.set(0,.012,-.4);scene.add(aisle);
+  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(14.5,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
+  aisle.rotation.x=-Math.PI/2;aisle.position.set(0,.018,-.4);scene.add(aisle);
   addFloorTiles();
   buildWalls();
   buildOutside();
   buildShelves();
   buildMarketArea();
   buildCheckout();
+  buildManagementDesk();
   buildDecoration();
   player=createHumanoid(0x247d68,0xd39a73,true,{style:"owner"});
   player.position.set(0,0,8.5);scene.add(player);
@@ -204,7 +221,9 @@ function buildWorld(){
   addWorldLabel("interact",()=>new THREE.Vector3(0,3.6,-10.55),()=>t("storeName"));
   addWorldLabel("interact",()=>new THREE.Vector3(0,2.8,10.8),()=>t("entranceLabel"));
   refreshCashierCharacter();
-  camera.position.set(0,9.2,23.5);
+  refreshRestockerCharacter();
+  refreshServiceBusinesses();
+  camera.position.set(0,11.2,27.5);
   camera.lookAt(0,1.1,5);
 }
 
@@ -214,25 +233,25 @@ function addFloorTiles(){
     const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-8.8,.025,z),new THREE.Vector3(8.8,.025,z)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
-  for(let x=-8;x<=8;x+=2){
+  for(let x=-11;x<=11;x+=2){
     const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,.026,-11),new THREE.Vector3(x,.026,11)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
 }
 
 function buildWalls(){
-  const wallMat=standard(0xfff3d9);
-  box(scene,[18,3.4,.3],[0,1.7,-11],0,wallMat);
-  box(scene,[.3,3.4,22],[-8.85,1.7,0],0,wallMat);
-  box(scene,[.3,3.4,22],[8.85,1.7,0],0,wallMat);
-  box(scene,[5.7,3.4,.22],[-6,1.7,11],0,wallMat);
-  box(scene,[5.7,3.4,.22],[6,1.7,11],0,wallMat);
-  box(scene,[18,.3,.3],[0,3.35,-11],0x176b56);
-  box(scene,[.35,.28,22],[-8.78,3.3,0],0xd44a3d);
-  box(scene,[.35,.28,22],[8.78,3.3,0],0xd44a3d);
+  const wallMat=texturedMaterial("textures/wall-plaster.webp",{repeat:[5,2],roughness:.92});
+  box(scene,[24,3.8,.3],[0,1.9,-11],0,wallMat);
+  box(scene,[.3,3.8,22],[-11.85,1.9,0],0,wallMat);
+  box(scene,[.3,3.8,22],[11.85,1.9,0],0,wallMat);
+  box(scene,[9,3.8,.22],[-7.5,1.9,11],0,wallMat);
+  box(scene,[9,3.8,.22],[7.5,1.9,11],0,wallMat);
+  box(scene,[24,.3,.3],[0,3.75,-11],0x176b56);
+  box(scene,[.35,.28,22],[-11.78,3.72,0],0xd44a3d);
+  box(scene,[.35,.28,22],[11.78,3.72,0],0xd44a3d);
   for(let z=-9;z<11;z+=4){
-    box(scene,[.12,2.6,.12],[-8.62,1.35,z],0x176b56);
-    box(scene,[.12,2.6,.12],[8.62,1.35,z],0x176b56);
+    box(scene,[.12,2.9,.12],[-11.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[11.62,1.48,z],0x176b56);
   }
   const signCanvas=document.createElement("canvas");signCanvas.width=512;signCanvas.height=150;
   const context=signCanvas.getContext("2d");
@@ -246,14 +265,14 @@ function buildWalls(){
 }
 
 function buildOutside(){
-  const road=new THREE.Mesh(new THREE.PlaneGeometry(26,17),standard(0x6d7477));
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(34,17),texturedMaterial("textures/road-asphalt.webp",{repeat:[8,4],roughness:.96}));
   road.rotation.x=-Math.PI/2;road.position.set(0,-.02,19.4);scene.add(road);
   const curb=box(scene,[26,.18,1],[0,.08,12.25],0xd9c095);
-  for(let x=-10;x<=10;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
+  for(let x=-14;x<=14;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
   const buildingColors=[0xef8466,0x5aa9b6,0xf0bd58,0x8b75ad,0x68a76f];
-  for(let i=0;i<7;i++){
+  for(let i=0;i<8;i++){
     const group=new THREE.Group();
-    const x=-15+i*5;
+    const x=-17.5+i*5;
     const height=rand(4,7);
     box(group,[4.3,height,3],[0,height/2,0],buildingColors[i%buildingColors.length]);
     box(group,[4.5,.32,3.2],[0,height+.14,0],0xf3e5c2);
@@ -270,22 +289,58 @@ function buildOutside(){
   box(cart,[2,.85,1],[0,.65,0],0xe24f3e);box(cart,[2.3,.17,1.25],[0,1.13,0],0xf3c644);
   for(const x of [-.72,.72])cylinder(cart,.28,.18,[x,.28,.56],0x27343a,12).rotation.z=Math.PI/2;
   cart.position.set(-5.6,0,15);scene.add(cart);
+  buildServiceArea();
+}
+
+function buildServiceArea(){
+  serviceArea=new THREE.Group();scene.add(serviceArea);
+
+  const vending=new THREE.Group();vending.userData.key="vending";
+  box(vending,[1.05,2.15,.8],[0,1.08,0],0x236d7b);box(vending,[.76,1.15,.04],[0,1.36,-.425],0x8bd4da,basic(0x8bd4da));
+  for(let row=0;row<3;row++)for(let col=0;col<3;col++)box(vending,[.16,.24,.05],[-.22+col*.22,.95+row*.3,-.46],COLORS[(row*3+col)%COLORS.length]);
+  box(vending,[.25,.25,.05],[.27,.42,-.46],0x27383e);vending.position.set(2.5,0,23.2);serviceArea.add(vending);
+
+  const fruit=new THREE.Group();fruit.userData.key="fruitStand";
+  box(fruit,[2.55,.82,1.15],[0,.61,0],0x85512f);box(fruit,[2.8,.16,1.45],[0,1.11,0],0x2c8060);
+  for(const x of [-.85,-.42,0,.42,.85])for(const z of [-.3,.15]){
+    const produce=new THREE.Mesh(new THREE.SphereGeometry(.16,12,9),standard((Math.round((x+1)*10)+Math.round(z*10))%2?0xd64a37:0xe9b62d));
+    produce.position.set(x,1.32,z);fruit.add(produce);
+  }
+  for(const x of [-1.08,1.08])cylinder(fruit,.28,.17,[x,.27,.48],0x25292b,14).rotation.z=Math.PI/2;
+  fruit.position.set(6.8,0,23.15);serviceArea.add(fruit);
+
+  const food=new THREE.Group();food.userData.key="foodCart";
+  box(food,[2.8,1.65,1.45],[0,1.12,0],0xc84d3d);box(food,[2.95,.16,1.6],[0,2.0,0],0xf0bd3c);
+  box(food,[1.5,.76,.04],[0,1.35,-.75],0xfff2d2,basic(0xfff2d2));box(food,[.78,.55,.05],[.82,.65,-.76],0x263c45);
+  for(const x of [-1.13,1.13])cylinder(food,.34,.2,[x,.34,.62],0x22272a,16).rotation.z=Math.PI/2;
+  food.position.set(11,0,23.05);serviceArea.add(food);
+
+  addWorldLabel("interact",()=>new THREE.Vector3(2.5,2.8,23.2),()=>state.businesses.vending?`🥤 ${t("vending")}`:`🔒 ${t("vending")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(6.8,2.7,23.15),()=>state.businesses.fruitStand?`🍎 ${t("fruitStand")}`:`🔒 ${t("fruitStand")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(11,2.8,23.05),()=>state.businesses.foodCart?`🌭 ${t("foodCart")}`:`🔒 ${t("foodCart")}`);
+}
+
+function refreshServiceBusinesses(){
+  if(!serviceArea)return;
+  for(const business of serviceArea.children)business.visible=Boolean(state.businesses?.[business.userData.key]);
+  updateWorldLabelText();
 }
 
 function buildShelves(){
+  const wood=texturedMaterial("textures/shelf-wood.webp",{repeat:[2,1],roughness:.66,color:0xd9b18c});
   for(const item of PRODUCTS){
     const layout=PRODUCT_SHELVES[item.id];
     const group=new THREE.Group();
     const backX=layout.side*.43;
-    box(group,[.16,2.45,2.75],[backX,1.25,0],0x7a482f);
-    for(const y of [.35,1.12,1.88])box(group,[.92,.12,2.86],[0,y,0],0xa96a3e);
-    for(const z of [-1.35,1.35])box(group,[.12,2.5,.12],[0,1.25,z],0x75452f);
+    box(group,[.16,2.45,2.75],[backX,1.25,0],0,wood);
+    for(const y of [.35,1.12,1.88])box(group,[.92,.12,2.86],[0,y,0],0,wood);
+    for(const z of [-1.35,1.35])box(group,[.12,2.5,.12],[0,1.25,z],0,wood);
     box(group,[.96,.18,2.9],[0,2.48,0],item.color);
     group.position.set(layout.x,0,layout.z);scene.add(group);
     const entry={id:item.id,group,holders:new THREE.Group(),signHolder:new THREE.Group(),layout};
     group.add(entry.holders,entry.signHolder);shelves.set(item.id,entry);
     blockers.push({minX:layout.x-1.05,maxX:layout.x+1.05,minZ:layout.z-1.65,maxZ:layout.z+1.65});
-    zones.push({kind:"shelf",id:item.id,x:layout.side<0?-5.55:5.55,z:layout.z,icon:item.emoji});
+    zones.push({kind:"shelf",id:item.id,x:layout.side<0?-7.75:7.75,z:layout.z,icon:item.emoji});
     addWorldLabel("shelf",()=>new THREE.Vector3(layout.x-layout.side*.78,3.22,layout.z),()=>`${item.emoji} ${productName(item.id)} • ${money(retailPrice(state,item.id))} • ${t("shelfStock",{stock:localNumber(state.shelfStock[item.id]),cap:localNumber(shelfCapacity(state))})}`);
     refreshShelfVisual(item.id);
   }
@@ -295,16 +350,20 @@ function packageLabelTexture(item,brandId){
   const brand=brandById(item,brandId);
   const key=`${state.lang}-${item.id}-${brand.id}`;
   if(packageTextureCache.has(key))return packageTextureCache.get(key);
-  const canvas=document.createElement("canvas");canvas.width=384;canvas.height=256;
-  const context=canvas.getContext("2d");context.fillStyle="#fffaf0";context.fillRect(0,0,384,256);
-  context.fillStyle=brand.color;context.fillRect(0,0,384,76);
-  context.fillStyle=brand.accent;context.fillRect(0,76,384,10);context.fillRect(0,232,384,24);
+  const canvas=document.createElement("canvas");canvas.width=512;canvas.height=512;
+  const context=canvas.getContext("2d"),gradient=context.createLinearGradient(0,0,512,512);
+  gradient.addColorStop(0,"#fffdf7");gradient.addColorStop(1,"#eee6d5");context.fillStyle=gradient;context.fillRect(0,0,512,512);
+  context.fillStyle=brand.color;context.fillRect(0,0,512,132);
+  context.fillStyle=brand.accent;context.fillRect(0,132,512,16);context.fillRect(0,470,512,42);
   context.textAlign="center";context.textBaseline="middle";context.direction=state.lang==="en"?"ltr":"rtl";
-  context.fillStyle="#ffffff";context.font="900 42px Arial, sans-serif";context.fillText(brandName(item.id,brand.id),192,40,350);
-  context.fillStyle="#17323a";context.font="900 34px Arial, sans-serif";context.fillText(productName(item.id),192,132,340);
-  context.font="700 24px Arial, sans-serif";context.fillText(productUnit(item.id),192,184,340);
-  context.fillStyle=brand.accent;context.beginPath();context.arc(42,130,23,0,Math.PI*2);context.fill();
-  context.fillStyle="#ffffff";context.font="900 21px Arial";context.fillText(brandName(item.id,brand.id).trim().slice(0,1),42,131);
+  context.fillStyle="#ffffff";context.font="900 53px Arial, sans-serif";context.fillText(brandName(item.id,brand.id),256,65,465);
+  context.fillStyle=brand.accent;context.beginPath();context.arc(67,194,34,0,Math.PI*2);context.fill();
+  context.fillStyle="#ffffff";context.font="900 29px Arial";context.fillText(brandName(item.id,brand.id).trim().slice(0,1),67,195);
+  context.fillStyle="#17323a";context.font="900 57px Arial, sans-serif";context.fillText(productName(item.id),256,239,445);
+  context.font="60px Arial";context.fillText(item.emoji,256,331);
+  context.font="800 32px Arial, sans-serif";context.fillText(productUnit(item.id),256,405,430);
+  context.fillStyle="#4a5759";context.font="700 18px Arial";context.fillText("PAKISTAN • QUALITY PACK",256,451,430);
+  context.fillStyle="#1e2729";for(let x=397;x<474;x+=7)context.fillRect(x,169,(x%3)+2,48);
   const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;packageTextureCache.set(key,texture);return texture;
 }
 
@@ -321,18 +380,22 @@ function createProductPackage(item,brandId=item.brands[0].id){
     cylinder(group,.16,.38,[0,-.03,0],displayColor,18);
     cylinder(group,.085,.14,[0,.23,0],0xf2c557,12);
     cylinder(group,.09,.055,[0,.33,0],0x2f7d43,12);
+  }else if(item.shape==="carton"){
+    box(group,[.36,.52,.19],[0,-.01,0],displayColor);
+    const roof=new THREE.Mesh(new THREE.ConeGeometry(.22,.16,4),standard(displayColor));roof.rotation.y=Math.PI/4;roof.position.y=.33;group.add(roof);
+    cylinder(group,.035,.13,[.11,.39,0],0xf3f0e5,8);
   }else if(item.shape==="packet"){
     box(group,[.38,.45,.16],[0,0,0],displayColor);
     box(group,[.39,.08,.165],[0,.06,0],0xf5bd3c);
   }else{
-    const pouch=box(group,[.36,.44,.15],[0,0,0],displayColor);
-    pouch.geometry.translate(0,-.01,0);
-    for(const x of [-.11,0,.11]){
+    const pouch=box(group,[.36,.46,.15],[0,0,0],displayColor);pouch.geometry.translate(0,-.01,0);
+    if(item.id==="toffee")for(const x of [-.11,0,.11]){
       const sweet=new THREE.Mesh(new THREE.SphereGeometry(.045,7,5),standard(x===0?0xf5bd3c:0x63b9d3));sweet.position.set(x,.07,.09);group.add(sweet);
     }
   }
-  const label=new THREE.Mesh(new THREE.PlaneGeometry(.33,.225),new THREE.MeshBasicMaterial({map:packageLabelTexture(item,brand.id),side:THREE.DoubleSide}));
-  label.position.set(0,-.01,.285);group.add(label);
+  const frontZ=(item.shape==="tin"||item.shape==="bottle") ? 0.242 : item.shape==="bag" ? 0.16 : 0.086;
+  const label=new THREE.Mesh(new THREE.PlaneGeometry(.32,.3),new THREE.MeshBasicMaterial({map:packageLabelTexture(item,brand.id),side:THREE.DoubleSide,transparent:true}));
+  label.position.set(0,-.015,frontZ);group.add(label);
   return group;
 }
 
@@ -473,17 +536,30 @@ function buildCheckout(){
   box(counter,[.65,.38,.5],[1.2,1.55,.12],0xddd9ce);
   const scannerGlow=box(counter,[.32,.035,.34],[-.08,1.565,0],0x78e5da,basic(0x78e5da));scannerGlow.userData.scanner=true;
   checkoutSign=new THREE.Group();counter.add(checkoutSign);
-  counter.position.set(5.8,0,8.5);scene.add(counter);
-  buildChair(5.02,9.78,0x176b56);buildChair(6.45,9.78,0x245b88);
-  blockers.push({minX:3.6,maxX:8.1,minZ:7.45,maxZ:9.55});
-  zones.push({kind:"checkout",x:3.15,z:8.45,icon:"🧾"});
-  addWorldLabel("interact",()=>new THREE.Vector3(5.8,2.65,8.5),()=>`🧾 ${t("checkoutLabel")}`);
-  addWorldLabel("customer",()=>new THREE.Vector3(3.45,2.4,6.85),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
+  counter.position.set(4.95,0,9.2);scene.add(counter);
+  buildChair(4.18,10.35,0x176b56);buildChair(5.68,10.35,0x245b88);
+  blockers.push({minX:2.72,maxX:7.25,minZ:8.12,maxZ:10.82});
+  zones.push({kind:"checkout",x:2.25,z:9.0,icon:"🧾"});
+  addWorldLabel("interact",()=>new THREE.Vector3(4.95,2.65,9.2),()=>`🧾 ${t("checkoutLabel")}`);
+  addWorldLabel("customer",()=>new THREE.Vector3(2.35,2.4,7.55),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
   for(let index=0;index<6;index++){
     const marker=new THREE.Mesh(new THREE.RingGeometry(.3,.38,20),new THREE.MeshBasicMaterial({color:index?0xf0b83d:0x2cb78b,transparent:true,opacity:.55,side:THREE.DoubleSide}));
-    marker.rotation.x=-Math.PI/2;marker.position.set(3.15,.035,6.85-index*1.02);scene.add(marker);
+    marker.rotation.x=-Math.PI/2;marker.position.set(2.25,.035,7.55-index*1.02);scene.add(marker);
   }
   refreshCheckoutSign();
+}
+
+function buildManagementDesk(){
+  const desk=new THREE.Group();
+  box(desk,[3.2,.14,1.05],[0,1.14,0],0, texturedMaterial("textures/shelf-wood.webp",{repeat:[2,1],roughness:.62,color:0xc89972}));
+  for(const x of [-1.35,1.35])box(desk,[.14,1.15,.85],[x,.57,0],0x44382f);
+  box(desk,[1.15,.76,.12],[0,1.72,-.22],0x263d45);box(desk,[.95,.56,.035],[0,1.72,-.29],0x59a8aa,basic(0x59a8aa));
+  box(desk,[.72,.055,.35],[0,1.25,.32],0xd8d5ca);for(let x=-.28;x<=.28;x+=.14)for(let z=.21;z<=.41;z+=.1)box(desk,[.09,.018,.055],[x,1.286,z],0x354146,basic(0x354146));
+  const sign=labelledPlane(2.55,.62,["💻",t("management")],{background:"#24596a",accent:"#f5bd3c"});sign.position.set(0,2.55,.02);desk.add(sign);
+  desk.position.set(0,0,-9.75);scene.add(desk);
+  blockers.push({minX:-1.8,maxX:1.8,minZ:-10.55,maxZ:-8.95});
+  zones.push({kind:"management",x:0,z:-8.25,icon:"💻"});
+  addWorldLabel("interact",()=>new THREE.Vector3(0,3.05,-9.65),()=>`💻 ${t("management")}`);
 }
 
 function buildChair(x,z,color){
@@ -520,8 +596,55 @@ function refreshCashierCharacter(){
   removeCashier();
   if(!state.staff.cashier)return;
   cashierMesh=createHumanoid(0x245b88,SKINS[3],false,{style:"cashier"});
-  cashierMesh.position.set(6.45,-.17,9.72);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
+  cashierMesh.position.set(5.68,-.17,10.29);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
   cashierLabel=addWorldLabel("interact",()=>cashierMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`👨‍💼 ${t("cashierLabel")} • ${localNumber(state.staff.cashier)}/2`);
+}
+
+function removeRestocker(){
+  if(restockerMesh){scene.remove(restockerMesh);restockerMesh=null}
+  if(restockerLabel){
+    const index=worldLabels.indexOf(restockerLabel);if(index>=0)worldLabels.splice(index,1);
+    restockerLabel.element.remove();restockerLabel=null;
+  }
+  restockerJob=null;
+}
+
+function refreshRestockerCharacter(){
+  if(!scene)return;
+  removeRestocker();
+  if(!state.staff.restocker)return;
+  restockerMesh=createHumanoid(0xb46c35,SKINS[1],false,{style:"restocker",kind:1});
+  restockerMesh.position.set(-3.1,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
+  restockerLabel=addWorldLabel("interact",()=>restockerMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`📦 ${t("restocker")} • ${restockerJob?t("staffWorking"):t("ready")}`);
+}
+
+function updateRestocker(delta){
+  if(!restockerMesh||state.dayComplete)return;
+  if(!restockerJob){
+    restockerCooldown-=delta;
+    if(restockerCooldown>0)return;
+    const item=PRODUCTS.filter(candidate=>(state.warehouse[candidate.id]||0)>0&&state.shelfStock[candidate.id]<shelfCapacity(state))
+      .sort((a,b)=>state.shelfStock[a.id]-state.shelfStock[b.id])[0];
+    if(!item){restockerCooldown=2.5;animateHumanoid(restockerMesh,false,0);return}
+    const layout=PRODUCT_SHELVES[item.id];
+    restockerJob={id:item.id,phase:"toShelf",timer:.9,target:new THREE.Vector3(layout.side<0?-7.75:7.75,0,layout.z)};
+    updateWorldLabelText();
+  }
+  if(restockerJob.phase==="toShelf"){
+    const done=moveToward({mesh:restockerMesh},restockerJob.target,delta*(state.staff.restocker===2?2.35:1.85));
+    if(done)restockerJob.phase="stocking";
+    return;
+  }
+  if(restockerJob.phase==="stocking"){
+    animateCheckoutHands(restockerMesh);restockerJob.timer-=delta;
+    if(restockerJob.timer>0)return;
+    const before=state.storeLevel,result=restockerTransfer(state,restockerJob.id);
+    if(result.ok){refreshShelfVisual(restockerJob.id);if(state.storeLevel>before)toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300);save();updateHUD();updateWorldLabelText()}
+    restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-3.1,0,-8.15);return;
+  }
+  if(moveToward({mesh:restockerMesh},restockerJob.target,delta*2.1)){
+    restockerJob=null;restockerCooldown=state.staff.restocker===2?2.2:4.2;updateWorldLabelText();
+  }
 }
 
 function buildDecoration(){
@@ -558,14 +681,15 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   const shadow=fakeShadow(group,isPlayer ? .52 : .44);
   const style=appearance.style||"customer";
   const kind=appearance.kind??Math.floor(Math.random()*4);
-  const trousers=style==="cashier"?0x1d2f44:isPlayer?0xf1e4c9:[0x273d55,0x493a36,0x2d5147,0x4b4260][kind];
+  const staffStyle=style==="cashier"||style==="restocker";
+  const trousers=staffStyle?0x1d2f44:isPlayer?0xf1e4c9:[0x273d55,0x493a36,0x2d5147,0x4b4260][kind];
   const hairColor=[0x211a17,0x3d2b23,0x17191a,0x553929][kind];
 
   const makeLeg=x=>{
     const limb=new THREE.Group();limb.position.set(x,1.08,0);group.add(limb);
     cylinder(limb,.13,.52,[0,-.25,0],trousers,14);
     cylinder(limb,.115,.5,[0,-.72,.015],trousers,14);
-    const shoe=box(limb,[.27,.14,.44],[0,-1.01,.12],style==="cashier"?0x161b20:0x342b28);shoe.geometry.translate(0,0,.04);
+    const shoe=box(limb,[.27,.14,.44],[0,-1.01,.12],staffStyle?0x161b20:0x342b28);shoe.geometry.translate(0,0,.04);
     return limb;
   };
   const leftLeg=makeLeg(-.21),rightLeg=makeLeg(.21);
@@ -578,7 +702,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
     const waistcoat=box(group,[.62,.82,.1],[0,1.59,.4],0x173f39);waistcoat.rotation.x=-.03;
     box(group,[.035,.68,.02],[0,1.57,.46],0xf5bd3c,basic(0xf5bd3c));
   }
-  if(style==="cashier"){
+  if(staffStyle){
     box(group,[.62,.22,.06],[0,1.56,.48],0xf3f6f4);
     box(group,[.2,.13,.025],[.18,1.63,.525],0xf5bd3c,basic(0xf5bd3c));
   }
@@ -602,7 +726,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
       const backHair=box(group,[.4,.42,.1],[0,2.37,-.23],hairColor);backHair.rotation.x=.08;
     }
   }
-  if(style==="cashier"){
+  if(staffStyle){
     cylinder(group,.255,.09,[0,2.69,0],0x173f66,18);
     box(group,[.36,.035,.19],[0,2.69,.2],0x173f66);
   }else if(isPlayer){
@@ -650,7 +774,7 @@ function makeCustomer(){
   const mesh=createHumanoid(COLORS[Math.floor(Math.random()*COLORS.length)],SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind});
   mesh.scale.setScalar(rand(.88,1.04));mesh.position.set(rand(-.35,.35),0,13.5);scene.add(mesh);
   const shelf=PRODUCT_SHELVES[order.product];
-  const accessX=shelf.side<0?-5.55:5.55;
+  const accessX=shelf.side<0?-7.75:7.75;
   const customer={mesh,order,phase:"enter",path:[new THREE.Vector3(0,0,10),new THREE.Vector3(0,0,shelf.z),new THREE.Vector3(accessX,0,shelf.z)],pathIndex:0,speed:rand(1.5,1.9),timer:0,waited:0,label:null};
   customer.label=addWorldLabel("customer",()=>customer.mesh.position.clone().add(new THREE.Vector3(0,2.75,0)),()=>customerLabelText(customer));
   customers.push(customer);
@@ -673,7 +797,7 @@ function updateCustomer(customer,delta){
   }else if(customer.phase==="queue"){
     const index=checkoutQueue.indexOf(customer);
     if(index<0)return;
-    const target=new THREE.Vector3(3.15,0,6.9-index*1.05);
+    const target=new THREE.Vector3(2.25,0,7.55-index*1.05);
     moveToward(customer,target,delta*1.55);
     customer.waited+=delta;
     customer.label.element.textContent=customerLabelText(customer);
@@ -710,11 +834,16 @@ function customerPathFinished(customer){
 
 function finishShopping(customer){
   animateHumanoid(customer.mesh,false,0);
+  if(Math.random()>priceAcceptanceChance(state,customer.order.product)){
+    const result=missSale(state,1);
+    toast(t("priceTooHigh",{item:productName(customer.order.product)}),1900);tone("miss");
+    sendCustomerOut(customer);finishDayIfNeeded(result);save();updateHUD();return;
+  }
   const okay=takeShelfItems(state,customer.order);
   if(okay){
     refreshShelfVisual(customer.order.product);
     attachCustomerBasket(customer);
-    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,6.6),new THREE.Vector3(2.75,0,6.8)],"toCheckout");
+    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,7.45),new THREE.Vector3(2.05,0,7.55)],"toCheckout");
     save();updateHUD();updateWorldLabelText();
   }else{
     const result=missSale(state,1);
@@ -735,6 +864,36 @@ function attachCustomerBasket(customer){
 
 function sendCustomerOut(customer){
   setCustomerPath(customer,[new THREE.Vector3(0,0,Math.max(8.8,customer.mesh.position.z)),new THREE.Vector3(0,0,13.6)],"leaving");
+}
+
+function spawnTrash(){
+  if(trashItems.length>=5)return;
+  let x=rand(-6.4,6.4),z=rand(-7.5,5.5),tries=0;
+  while(blocked(x,z)&&tries++<12){x=rand(-6.4,6.4);z=rand(-7.5,5.5)}
+  if(blocked(x,z))return;
+  const mesh=new THREE.Group();
+  if(Math.random()<.5){
+    const paper=box(mesh,[.48,.025,.34],[0,.03,0],0xf1e6c7,basic(0xf1e6c7));paper.rotation.y=rand(-1,1);
+  }else{
+    const can=cylinder(mesh,.1,.35,[0,.18,0],0xd95745,12);can.rotation.z=rand(-.8,.8);
+  }
+  mesh.position.set(x,0,z);scene.add(mesh);
+  const zone={kind:"trash",x,z,icon:"🧹",mesh};zones.push(zone);trashItems.push(zone);
+  adjustCleanliness(state,-8);save();updateHUD();
+}
+
+function cleanTrash(zone){
+  scene.remove(zone.mesh);
+  const zoneIndex=zones.indexOf(zone);if(zoneIndex>=0)zones.splice(zoneIndex,1);
+  const itemIndex=trashItems.indexOf(zone);if(itemIndex>=0)trashItems.splice(itemIndex,1);
+  adjustCleanliness(state,14);state.storeXp+=8;toast(t("trashCleaned"));tone("coin");save();updateHUD();
+}
+
+function clearTrash(){
+  for(const zone of [...trashItems]){
+    scene.remove(zone.mesh);const index=zones.indexOf(zone);if(index>=0)zones.splice(index,1);
+  }
+  trashItems.length=0;
 }
 
 function removeCustomer(customer){
@@ -825,7 +984,7 @@ function updateScan(delta){
   if(!scan.auto&&!player.userData.seated){
     scan.seatElapsed+=delta;
     const ratio=Math.min(1,scan.seatElapsed/scan.seatDuration),smooth=ratio*ratio*(3-2*ratio);
-    player.position.lerpVectors(scan.seatFrom,new THREE.Vector3(5.02,-.17,9.72),smooth);
+    player.position.lerpVectors(scan.seatFrom,new THREE.Vector3(4.18,-.17,10.29),smooth);
     player.rotation.y=THREE.MathUtils.lerp(scan.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
     if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=false}
     return;
@@ -837,8 +996,10 @@ function updateScan(delta){
   const activeScan=scan,customer=scan.customer,automatic=scan.auto;
   if(!automatic)leaveOwnerSeat(activeScan);
   scan=null;$("scanBox").classList.add("hidden");
-  const result=completeSale(state,customer.order);
+  const beforeLevel=state.storeLevel,result=completeSale(state,customer.order);
   toast(t("saleDone",{price:money(customer.order.price).replace("₨","")}));tone("coin");
+  if(state.storeLevel>beforeLevel)setTimeout(()=>toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300),500);
+  if(Math.random()<.24)spawnTrash();
   if(state.tutorialStep===5){state.tutorialStep=6;toast(t("tutorialDone"),2300)}
   if(automatic)cashierCooldown=.65;
   sendCustomerOut(customer);finishDayIfNeeded(result);save();updateHUD();updateWorldLabelText();
@@ -870,6 +1031,7 @@ function showDaySummary(){
   $("sumRevenue").textContent=money(summary.revenue);
   $("sumExpense").textContent=`−${money(summary.expense)}`;
   $("sumWage").textContent=summary.wage?`−${money(summary.wage)}`:money(0);
+  $("sumServiceIncome").textContent=`+${money(summary.serviceIncome||0)}`;
   $("sumQueue").textContent=localNumber(state.queueRecord||0);
   $("sumSalesFund").textContent=money(summary.salesFund??state.salesFund);
   $("sumBudget").textContent=money(summary.operatingBudget??state.operatingBudget);
@@ -884,7 +1046,7 @@ function nextDay(){
 
 function blocked(x,z){
   const radius=.42;
-  if(x<-8.25+radius||x>8.25-radius||z<-10.45+radius||z>25.8-radius)return true;
+  if(x<-11.25+radius||x>11.25-radius||z<-10.45+radius||z>25.8-radius)return true;
   return blockers.some(rect=>x+radius>rect.minX&&x-radius<rect.maxX&&z+radius>rect.minZ&&z-radius<rect.maxZ);
 }
 
@@ -908,7 +1070,7 @@ function updatePlayer(delta){
 
 function updateCamera(delta){
   if(!player||!camera)return;
-  const distance=state.cameraDistance,height=5.25+cameraPitch*6.2+Math.max(0,distance-14)*.12;
+  const distance=state.cameraDistance,height=5.65+cameraPitch*6.5+Math.max(0,distance-14)*.17;
   const desired=new THREE.Vector3(player.position.x+Math.sin(cameraYaw)*distance,height,player.position.z+Math.cos(cameraYaw)*distance);
   camera.position.lerp(desired,1-Math.pow(.002,delta));
   const target=new THREE.Vector3(player.position.x,1.05,player.position.z-1.1);
@@ -941,6 +1103,8 @@ function updateInteractions(){
   if(currentZone.kind==="market")label.textContent=t("openMarket");
   else if(currentZone.kind==="stockroom")label.textContent=t("openStockroom");
   else if(currentZone.kind==="checkout")label.textContent=t("checkout");
+  else if(currentZone.kind==="management")label.textContent=t("openManagement");
+  else if(currentZone.kind==="trash")label.textContent=t("cleanTrash");
   else label.textContent=t("restock");
 }
 
@@ -953,15 +1117,18 @@ function interact(){
   }
   if(currentZone.kind==="stockroom"){openPanel("stockroom");return}
   if(currentZone.kind==="checkout"){startScanning();return}
+  if(currentZone.kind==="management"){openPanel("management");return}
+  if(currentZone.kind==="trash"){cleanTrash(currentZone);return}
   if(currentZone.kind==="shelf")restockAtShelf(currentZone.id);
 }
 
 function restockAtShelf(id){
   if(!carrying){toast(t("notCarrying"));return}
   if(carrying.id!==id){toast(t("wrongShelf"));tone("miss");return}
-  const item=productById(id);const result=restockShelf(state,carrying);
+  const beforeLevel=state.storeLevel;const result=restockShelf(state,carrying);
   if(!result.ok){toast(t(result.reason));return}
   toast(t("restocked",{amount:localNumber(result.amount),item:productName(id)}));tone("coin");
+  if(state.storeLevel>beforeLevel)setTimeout(()=>toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300),500);
   if(result.empty)carrying=null;
   if(state.tutorialStep===4)state.tutorialStep=5;
   refreshShelfVisual(id);save();updateHUD();updateWorldLabelText();updateCarriedCrate();
@@ -970,6 +1137,8 @@ function restockAtShelf(id){
 function updateHUD(){
   if(!TEXT)return;
   $("salesFund").textContent=money(state.salesFund);$("operatingBudget").textContent=money(state.operatingBudget);$("rep").textContent=`${localNumber(state.rep)}%`;$("dayNo").textContent=localNumber(state.day);
+  $("storeLevel").textContent=localNumber(state.storeLevel);$("cleanliness").textContent=`${localNumber(state.cleanliness)}%`;
+  $("cleanliness").parentElement.classList.toggle("warning-clean",state.cleanliness<55);
   $("queueCount").textContent=localNumber(checkoutQueue.length+(scan?1:0));
   const event=eventForDay(state.day);const eventKeys=EVENT_TEXT[event.id]||EVENT_TEXT.normal;
   $("eventEmoji").textContent=event.emoji;$("eventTitle").textContent=t(eventKeys[0]);$("eventDesc").textContent=t(eventKeys[1]);
@@ -989,7 +1158,7 @@ function updateHUD(){
   const low=PRODUCTS.filter(item=>state.shelfStock[item.id]<=2).map(item=>productName(item.id));
   $("lowStock").classList.toggle("hidden",!low.length);
   if(low.length)$("lowStockText").textContent=t("lowStock",{items:low.join("، ")});
-  $("staffBtn").classList.toggle("staff-active",Boolean(state.staff.cashier));
+  $("staffBtn").classList.toggle("staff-active",Boolean(state.staff.cashier||state.staff.restocker));
   if(marketMarker)marketMarker.visible=state.tutorialStep<=2;
 }
 
@@ -1003,7 +1172,41 @@ function renderPanel(type){
   else if(type==="stockroom")renderStockroom();
   else if(type==="upgrades")renderUpgrades();
   else if(type==="staff")renderStaff();
+  else if(type==="management")renderManagement();
   else renderSettings();
+}
+
+function achievementRows(){
+  const goals=[
+    ["firstSale",state.totalSales>=1,"🧾"],
+    ["busyQueue",state.queueRecord>=5,"👥"],
+    ["cleanStore",state.cleanliness>=95&&state.totalSales>=3,"🧹"],
+    ["storeManager",state.storeLevel>=3,"🏆"]
+  ];
+  return goals.map(([key,done,icon])=>`<div class="achievement ${done?"done":""}"><span>${done?"✓":icon}</span><b>${t(key)}</b></div>`).join("");
+}
+
+function renderManagement(){
+  const next=xpForNextLevel(state.storeLevel),xp=Math.min(next,state.storeXp);
+  const pricing=PRODUCTS.map(item=>{
+    const price=retailPrice(state,item.id),recommended=recommendedRetailPrice(state,item.id);
+    return `<article class="price-card"><div class="product-art">${item.emoji}</div><div class="card-copy"><strong>${productName(item.id)}</strong><small>${brandName(item.id,item.brands[0].id)}</small><small>${t("recommendedPrice",{price:localNumber(recommended)})}</small><b>${t("currentPrice",{price:localNumber(price)})}</b></div><div class="price-controls"><button data-price="${item.id}" data-delta="-.05">−</button><button data-price="${item.id}" data-delta=".05">+</button></div></article>`;
+  }).join("");
+  const businessIcons={vending:"🥤",fruitStand:"🍎",foodCart:"🌭"};
+  const businesses=Object.entries(BUSINESSES).map(([key,info])=>{
+    const owned=state.businesses[key],locked=state.storeLevel<info.level;
+    const status=owned?t("owned"):locked?t("levelLocked",{level:localNumber(info.level)}):money(info.cost);
+    return `<article class="upgrade-card"><div class="product-art">${businessIcons[key]}</div><div class="card-copy"><strong>${t(key)}</strong><small>${t("dailyIncome",{income:localNumber(info.income)})}</small><small>${t("businessLocation")}</small></div><button class="card-btn green" data-business="${key}" ${owned||locked||state.operatingBudget<info.cost?"disabled":""}>${status}</button></article>`;
+  }).join("");
+  panelFrame("💻",t("management"),`<section class="manager-overview"><div><small>${t("storeLevel")}</small><b>${localNumber(state.storeLevel)}</b></div><div><small>${t("cleanliness")}</small><b>${localNumber(state.cleanliness)}%</b></div><div><small>${t("dailyIncomeLabel")}</small><b>${money(businessDailyIncome(state))}</b></div><i><em style="width:${xp/next*100}%"></em></i><small>${t("xpProgress",{xp:localNumber(xp),next:localNumber(next)})}</small></section><h3 class="panel-heading">🏷️ ${t("pricing")}</h3><p class="panel-note price-note">${t("pricingHint")}</p><div class="card-list">${pricing}</div><h3 class="panel-heading">🏪 ${t("businessServices")}</h3><div class="card-list">${businesses}</div><h3 class="panel-heading">🎯 ${t("achievements")}</h3><div class="achievement-grid">${achievementRows()}</div>`);
+  $("panelBody").querySelectorAll("[data-price]").forEach(button=>button.addEventListener("click",()=>{
+    changeRetailMarkup(state,button.dataset.price,Number(button.dataset.delta));save();refreshShelfVisual(button.dataset.price);updateHUD();updateWorldLabelText();renderManagement();
+  }));
+  $("panelBody").querySelectorAll("[data-business]").forEach(button=>button.addEventListener("click",()=>{
+    const result=buyBusiness(state,button.dataset.business);
+    if(!result.ok){toast(t(result.reason,{level:localNumber(result.level||0)}));tone("miss");return}
+    refreshServiceBusinesses();save();updateHUD();toast(t("businessBought"),2100);tone("up");renderManagement();
+  }));
 }
 
 function renderMarket(){
@@ -1037,13 +1240,21 @@ function renderStaff(){
   const action=max?t("staffMaxed"):level?t("upgradeCashier"):t("hireCashier");
   const status=level?`<small class="active-staff">✓ ${t("automaticCheckout")}</small>`:"";
   const button=max?`<button class="card-btn green" disabled>${t("maxed")}</button>`:`<button class="card-btn green" id="hireCashierBtn" ${state.operatingBudget<cost?"disabled":""}>${action}<br>${money(cost)}</button>`;
-  const card=`<article class="upgrade-card"><div class="product-art">👨‍💼</div><div class="card-copy"><strong>${t("cashier")}</strong><small>${t("cashierDesc")}</small><small>${t("cashierLevel",{level:localNumber(level)})}</small><small>${t("dailyWage",{wage:localNumber(wage)})}</small>${status}</div>${button}</article>`;
-  panelFrame("👨‍💼",t("staff"),`<p class="panel-note">${t("staffHint")}</p><div class="card-list">${card}</div>`);
-  const hireButton=$("hireCashierBtn");if(!hireButton)return;
-  hireButton.addEventListener("click",()=>{
+  const cashierCard=`<article class="upgrade-card"><div class="product-art">👨‍💼</div><div class="card-copy"><strong>${t("cashier")}</strong><small>${t("cashierDesc")}</small><small>${t("cashierLevel",{level:localNumber(level)})}</small><small>${t("dailyWage",{wage:localNumber(wage)})}</small>${status}</div>${button}</article>`;
+  const restockLevel=state.staff.restocker,restockCost=restockerHireCost(state),restockWage=restockerWage(state),restockMax=restockLevel>=2;
+  const restockAction=restockMax?t("staffMaxed"):restockLevel?t("upgradeRestocker"):t("hireRestocker");
+  const restockButton=restockMax?`<button class="card-btn green" disabled>${t("maxed")}</button>`:`<button class="card-btn green" id="hireRestockerBtn" ${state.operatingBudget<restockCost?"disabled":""}>${restockAction}<br>${money(restockCost)}</button>`;
+  const restockCard=`<article class="upgrade-card"><div class="product-art">📦</div><div class="card-copy"><strong>${t("restocker")}</strong><small>${t("restockerDesc")}</small><small>${t("cashierLevel",{level:localNumber(restockLevel)})}</small><small>${t("dailyWage",{wage:localNumber(restockWage)})}</small>${restockLevel?`<small class="active-staff">✓ ${t("automaticRestock")}</small>`:""}</div>${restockButton}</article>`;
+  panelFrame("👨‍💼",t("staff"),`<p class="panel-note">${t("staffHint")}</p><div class="card-list">${cashierCard}${restockCard}</div>`);
+  $("hireCashierBtn")?.addEventListener("click",()=>{
     const result=hireCashier(state);
     if(!result.ok){toast(t(result.reason));tone("miss");return}
     cashierCooldown=.5;refreshCashierCharacter();save();updateHUD();updateWorldLabelText();toast(t("staffHired"),2200);tone("up");renderStaff();
+  });
+  $("hireRestockerBtn")?.addEventListener("click",()=>{
+    const result=hireRestocker(state);
+    if(!result.ok){toast(t(result.reason));tone("miss");return}
+    restockerCooldown=.5;refreshRestockerCharacter();save();updateHUD();updateWorldLabelText();toast(t("restockerHired"),2200);tone("up");renderStaff();
   });
 }
 
@@ -1091,7 +1302,7 @@ function renderSettings(){
   $("panelBody").querySelectorAll("[data-sound]").forEach(button=>button.addEventListener("click",()=>{state.sound=button.dataset.sound==="on";save();renderSettings();if(state.sound)tone("up")}));
   $("resetBtn").addEventListener("click",()=>{
     if(!confirm(t("resetConfirm")))return;
-    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;truckArrivalHold=0;refreshAllShelfVisuals();refreshCashierCharacter();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
+    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
   });
 }
 
@@ -1116,6 +1327,7 @@ function setupControls(){
     }else{toast(t("walkCloser"));marketMarker.visible=true}
   });
   $("upgradesBtn").addEventListener("click",()=>openPanel("upgrades"));
+  $("managementBtn").addEventListener("click",()=>openPanel("management"));
   $("staffBtn").addEventListener("click",()=>openPanel("staff"));
   $("actionBtn").addEventListener("click",interact);
   $("panelClose").addEventListener("click",closePanel);
@@ -1149,7 +1361,7 @@ function setupControls(){
     cameraPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
     if(cameraPointers.size>=2){
       const points=[...cameraPointers.values()],distance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);
-      state.cameraDistance=clamp(state.cameraDistance-(distance-pinchDistance)*.028,6.5,22);pinchDistance=distance;event.preventDefault();return;
+      state.cameraDistance=clamp(state.cameraDistance-(distance-pinchDistance)*.034,8,30);pinchDistance=distance;event.preventDefault();return;
     }
     if(!drag||drag.id!==event.pointerId)return;
     const dx=event.clientX-drag.x,dy=event.clientY-drag.y;drag.x=event.clientX;drag.y=event.clientY;
@@ -1162,11 +1374,12 @@ function setupControls(){
     save();
   };
   renderer.domElement.addEventListener("pointerup",endDrag);renderer.domElement.addEventListener("pointercancel",endDrag);
-  renderer.domElement.addEventListener("wheel",event=>{state.cameraDistance=clamp(state.cameraDistance+Math.sign(event.deltaY)*.9,6.5,22);save();event.preventDefault()},{passive:false});
+  renderer.domElement.addEventListener("wheel",event=>{state.cameraDistance=clamp(state.cameraDistance+Math.sign(event.deltaY)*1.1,8,30);save();event.preventDefault()},{passive:false});
   addEventListener("keydown",event=>{keys[event.code]=true;if(event.code==="KeyE"||event.code==="Space"){event.preventDefault();interact()}if(event.code==="Escape")closePanel()});
   addEventListener("keyup",event=>{keys[event.code]=false});
   addEventListener("resize",onResize);
   document.addEventListener("visibilitychange",()=>{if(document.hidden){joystick.x=0;joystick.y=0}});
+  addEventListener("pagehide",save);
 }
 
 function onResize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35))}
@@ -1179,7 +1392,8 @@ function animate(time){
   if(started&&!isPaused(false)){
     updateDeliveryTruck(delta);updatePlayer(delta);updateSpawning(delta);
     for(const customer of [...customers])updateCustomer(customer,delta);
-    updateAutomaticCheckout(delta);updateScan(delta);animateCashier(delta);updateInteractions();
+    updateAutomaticCheckout(delta);updateScan(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
+    autosaveClock+=delta;if(autosaveClock>=5){autosaveClock=0;save()}
   }
   updateCamera(delta);updateLabels();renderer.render(scene,camera);
 }

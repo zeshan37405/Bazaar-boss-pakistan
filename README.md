@@ -1,20 +1,22 @@
-# Bazaar Boss Pakistan 3D — v6
+# Bazaar Boss Pakistan 3D — v7
 
 پاکستانی سپرمارکیٹ پر مبنی ایک آف لائن 3D Android گیم۔ دکان سے باہر اگلی گلی کی منڈی میں جائیں، آڑھتی سے بھاؤ تاؤ کریں، مال ٹرک میں لوڈ کروا کر اسٹور روم منگوائیں، شیلف بھریں اور کرسی پر بیٹھ کر گاہکوں کا بل بنائیں۔
 
-## v6 آغاز کی اصلاح
+## v7 سپرمارکیٹ مینجمنٹ اپڈیٹ
 
-- v5 کے classic bundle میں Three.js import aliases الٹے بننے کی وجہ سے 3D engine شروع ہونے سے پہلے رک جاتا تھا؛ v6 میں bundler mapping درست ہے
-- APK اب Android کے محفوظ `https://appassets.androidplatform.net` origin سے اپنے packaged assets لوڈ کرتی ہے
-- automated test اب Three.js bundle کو واقعی execute کرکے `Scene`، `WebGLRenderer` اور `BoxGeometry` کی موجودگی چیک کرتا ہے
-- آئندہ startup ناکام ہو تو خاموش ابتدائی صفحے کے بجائے واضح error code اور دوبارہ کوشش کا بٹن دکھے گا
+- دس الگ grocery categories، 18/18 بھری shelves، بڑے category/brand/rate boards اور ہر پیک پر اپنا نام
+- آٹا، چاول، گھی، آئل، چینی، دال، دودھ، نمک، بسکٹ اور ٹافی کے پاکستانی benchmark نرخ
+- دکان کا level/XP، اپنی retail pricing، قیمت زیادہ ہونے پر گاہک کا انکار، صفائی challenge اور achievements
+- کیشیئر کے ساتھ خودکار shelf worker؛ warehouse سے صحیح مال اٹھا کر متعلقہ shelf بھرتا ہے
+- level کے ساتھ کھلنے والی vending machine، fruit stand اور food cart، جن کی الگ روزانہ آمدنی ہے
+- بڑا store floor، offline generated material textures اور 8–30 میٹر pinch zoom camera
 
 ## گیم پلے
 
 - زیادہ حقیقی انسانی تناسب والے تھرڈ پرسن 3D کردار، جسمانی حرکات اور چہرے کی باریک تفصیل
-- درست سمت والا موبائل جوائے اسٹک، پہلے سے زیادہ دور کیمرا اور 6.5–22 میٹر pinch zoom
-- نیا کھیل ہر شیلف مکمل 8/8 اسٹاک سے شروع ہوتا ہے
-- آٹا، باسمتی چاول، گھی، کوکنگ آئل، بسکٹ اور ٹافی کے الگ پیک ماڈل اور الگ 3D شیلف
+- درست سمت والا موبائل جوائے اسٹک، پہلے سے زیادہ دور کیمرا اور 8–30 میٹر pinch zoom
+- نیا کھیل ہر شیلف مکمل 18/18 اسٹاک سے شروع ہوتا ہے
+- دس grocery categories کے الگ پیک ماڈل اور الگ 3D شیلف
 - ہر شیلف پر چیز کا نام، تین دستیاب برانڈ، پیک سائز، روز کی فروخت قیمت اور موجودہ تعداد واضح ہے
 - ہر پیکٹ پر بڑا برانڈ اور چیز کا نام؛ لطیف گھی، ہانڈی گھی، سنہری آٹا، مہران باسمتی اور دوسرے اصل in-game برانڈ ڈیزائن
 - گاہک مطلوبہ شیلف سے سامان اٹھاتے، باسکٹ میں رکھتے اور بلنگ کاؤنٹر پر قطار بناتے ہیں
@@ -63,4 +65,4 @@ APK یہاں بنے گی:
 
 ## قیمتوں کا ریفرنس
 
-آف لائن گیم کے بنیادی نرخ [30 جولائی 2026 کے پاکستان بیورو آف اسٹیٹسٹکس SPI](https://www.pbs.gov.pk/wp-content/uploads/2020/07/Executive-Summary-SPI-Report_30.07.2026.pdf)، [Carrefour Pakistan](https://www.carrefour.pk/mafpak/en/c/FPAK1710000) اور [METRO Pakistan](https://www.metro-online.pk/search/Biscuits) کے ریٹیل بینچ مارکس کے مطابق رکھے گئے ہیں۔ یہ لائیو آن لائن فیڈ نہیں؛ گیم ہر نئے دن انہی بنیادوں پر محدود اتار چڑھاؤ پیدا کرتی ہے۔
+آف لائن گیم کے بنیادی نرخ [20 اگست 2026 کے پاکستان بیورو آف اسٹیٹسٹکس Weekly SPI](https://www.pbs.gov.pk/weekly-sensitive-price-indicator-spi-for-the-week-ended-on-20-08-2026/) کے قومی اوسط اور پاکستانی retail benchmarks کے مطابق رکھے گئے ہیں۔ یہ لائیو آن لائن فیڈ نہیں؛ گیم ہر نئے دن انہی بنیادوں پر محدود اتار چڑھاؤ پیدا کرتی ہے۔

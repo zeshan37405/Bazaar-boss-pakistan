@@ -3,21 +3,22 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import {
-  PRODUCTS,PRICE_REFERENCE,createState,shelfCapacity,marketPrice,retailPrice,buyWarehouse,bargainPurchase,cargoCount,
+  PRODUCTS,PRICE_REFERENCE,BUSINESSES,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,buyWarehouse,bargainPurchase,cargoCount,
   dispatchTruck,advanceDelivery,deliveryFee,syncCash,cameraRelativeVector,takeCrate,restockShelf,
   createOrder,takeShelfItems,completeSale,missSale,dailyTarget,serveTarget,
   customerWait,checkoutDuration,staffCheckoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay,
-  cashierHireCost,cashierWage,hireCashier,recordQueue
+  cashierHireCost,cashierWage,hireCashier,restockerHireCost,restockerWage,hireRestocker,restockerTransfer,buyBusiness,businessDailyIncome,adjustCleanliness,recordQueue
 } from "../app/src/main/assets/sim.js";
 
-test("new and migrated games keep all six grocery products",()=>{
+test("new and migrated games keep all ten fully stocked grocery categories",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,5);
+  assert.equal(fresh.version,7);
   assert.equal(fresh.salesFund,9000);
   assert.equal(fresh.operatingBudget,3000);
-  assert.equal(fresh.cameraDistance,14.5);
-  assert.equal(shelfCapacity(fresh),8);
+  assert.equal(fresh.cameraDistance,18);
+  assert.equal(shelfCapacity(fresh),18);
+  assert.equal(PRODUCTS.length,10);
   assert.deepEqual(Object.keys(fresh.shelfStock),PRODUCTS.map(item=>item.id));
   assert.ok(Object.values(fresh.shelfStock).every(amount=>amount===shelfCapacity(fresh)));
   assert.ok(PRODUCTS.every(item=>item.brands.length>=3));
@@ -29,7 +30,7 @@ test("new and migrated games keep all six grocery products",()=>{
   assert.equal(migrated.shelfStock.flour,7);
   assert.equal(migrated.upgrades.capacity,2);
   const upgradedV4=createState({version:4,cash:12000,cameraDistance:10.8,shelfStock:fresh.shelfStock,warehouse:fresh.warehouse},null);
-  assert.equal(upgradedV4.cameraDistance,14.5);
+  assert.equal(upgradedV4.cameraDistance,18);
   const resumed=createState({...fresh,carrying:{id:"rice",amount:2}},null);
   assert.deepEqual(resumed.carrying,{id:"rice",amount:2});
 });
@@ -110,7 +111,7 @@ test("difficulty, events and upgrades change real gameplay values",()=>{
 
 test("Pakistan benchmark pack prices vary each day while preserving a retail margin",()=>{
   const state=createState(null,null);
-  assert.equal(PRICE_REFERENCE.asOf,"2026-07-30");
+  assert.equal(PRICE_REFERENCE.asOf,"2026-08-20");
   assert.ok(product("flour").sell>=1200&&product("flour").sell<=1400);
   assert.ok(product("rice").sell>=200&&product("rice").sell<=240);
   const dayOne=PRODUCTS.map(item=>retailPrice(state,item.id));
@@ -119,6 +120,31 @@ test("Pakistan benchmark pack prices vary each day while preserving a retail mar
   const dayTwo=PRODUCTS.map(item=>retailPrice(state,item.id));
   assert.ok(dayOne.some((price,index)=>price!==dayTwo[index]));
   function product(id){return PRODUCTS.find(item=>item.id===id)}
+});
+
+test("owner pricing changes customer acceptance without breaking the Pakistan benchmark floor",()=>{
+  const state=createState(null,null),recommended=recommendedRetailPrice(state,"rice");
+  assert.equal(priceAcceptanceChance(state,"rice"),1);
+  changeRetailMarkup(state,"rice",.3);
+  assert.ok(retailPrice(state,"rice")>recommended);
+  assert.ok(priceAcceptanceChance(state,"rice")<1);
+  changeRetailMarkup(state,"rice",-1);
+  assert.ok(retailPrice(state,"rice")>marketPrice(state,"rice"));
+});
+
+test("restocker, cleanliness and side businesses form a management progression",()=>{
+  const state=createState(null,null);state.operatingBudget=100000;syncCash(state);
+  const cost=restockerHireCost(state);
+  assert.deepEqual(hireRestocker(state),{ok:true,cost,level:1,wage:900});
+  assert.equal(restockerWage(state),900);
+  state.shelfStock.rice=5;state.warehouse.rice=4;
+  assert.deepEqual(restockerTransfer(state,"rice"),{ok:true,id:"rice",amount:2});
+  assert.equal(state.shelfStock.rice,7);
+  assert.equal(adjustCleanliness(state,-30),70);
+  assert.equal(buyBusiness(state,"vending").reason,"levelLocked");
+  state.storeLevel=2;
+  assert.equal(buyBusiness(state,"vending").ok,true);
+  assert.equal(businessDailyIncome(state),BUSINESSES.vending.income);
 });
 
 test("a hired cashier serves automatically, earns a daily wage and tracks queue records",()=>{

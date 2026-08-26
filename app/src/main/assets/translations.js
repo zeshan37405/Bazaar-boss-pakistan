@@ -53,3 +53,27 @@ window.BAZAAR_TEXT={
     loading:"Building the larger 3D store…",webglError:"3D graphics could not start on this phone.",startupError:"The game could not finish starting.",retry:"Try again",customerName:"Customer"
   }
 };
+
+Object.assign(window.BAZAAR_TEXT.ur,{
+  management:"دکان مینجمنٹ",openManagement:"مینجمنٹ کھولیں",storeLevel:"دکان درجہ",cleanliness:"صفائی",dailyIncomeLabel:"روزانہ سروس آمدنی",xpProgress:"تجربہ {xp}/{next}",
+  pricing:"شیلف کے نرخ",pricingHint:"نرخ کم ہوں تو گاہک خوش، بہت زیادہ ہوں تو گاہک سامان چھوڑ کر جا سکتا ہے۔ ہر شیلف کا بورڈ فوراً نئے نرخ کے ساتھ بدلتا ہے۔",recommendedPrice:"پاکستانی حوالہ ₨{price}",currentPrice:"آپ کا نرخ ₨{price}",priceTooHigh:"{item} کا نرخ زیادہ تھا—گاہک نے خریداری چھوڑ دی",levelUp:"مبارک! دکان درجہ {level} ہو گئی",cleanTrash:"فرش صاف کریں",trashCleaned:"صفائی مکمل—دکان بہتر ہو گئی!",ready:"تیار",
+  restocker:"شیلف ورکر",restockerDesc:"اسٹور روم سے مال خود اٹھا کر صحیح شیلف بھرتا ہے",hireRestocker:"شیلف ورکر رکھیں",upgradeRestocker:"رفتار بڑھائیں",automaticRestock:"خودکار شیلف فلنگ چالو",restockerHired:"شیلف ورکر نے کام سنبھال لیا!",
+  businessServices:"باہر کے اضافی کاروبار",businessLocation:"دکان کے باہر سڑک پر نظر آئے گا",vending:"وینڈنگ مشین",fruitStand:"فروٹ اسٹال",foodCart:"فوڈ کارٹ",dailyIncome:"روزانہ +₨{income}",owned:"خریدا ہوا",levelLocked:"درجہ {level} پر کھلے گا",alreadyOwned:"یہ کاروبار پہلے ہی خریدا ہوا ہے",businessBought:"نیا کاروبار کھل گیا!",serviceIncomeSummary:"اضافی کاروباری آمدنی",
+  achievements:"کامیابیاں اور چیلنج",firstSale:"پہلی فروخت مکمل کریں",busyQueue:"پانچ گاہکوں کی قطار سنبھالیں",cleanStore:"تین فروخت کے بعد صفائی 95% رکھیں",storeManager:"دکان درجہ 3 حاصل کریں",eventFestival:"تہوار کی خریداری",eventFestivalD:"چینی، دال اور گھی کی مانگ زیادہ"
+});
+
+Object.assign(window.BAZAAR_TEXT.hi,{
+  management:"स्टोर मैनेजमेंट",openManagement:"मैनेजमेंट खोलें",storeLevel:"स्टोर स्तर",cleanliness:"सफाई",dailyIncomeLabel:"रोज़ की सेवा आय",xpProgress:"अनुभव {xp}/{next}",
+  pricing:"शेल्फ की दरें",pricingHint:"कम दाम ग्राहक को खुश रखते हैं; बहुत ज़्यादा दाम पर ग्राहक सामान छोड़ सकता है। शेल्फ बोर्ड तुरंत नई दर दिखाएगा।",recommendedPrice:"पाकिस्तानी संदर्भ ₨{price}",currentPrice:"आपकी दर ₨{price}",priceTooHigh:"{item} की दर ज़्यादा थी—ग्राहक ने खरीदारी छोड़ दी",levelUp:"बधाई! स्टोर स्तर {level} हुआ",cleanTrash:"फर्श साफ करें",trashCleaned:"सफाई पूरी—स्टोर बेहतर हुआ!",ready:"तैयार",
+  restocker:"शेल्फ वर्कर",restockerDesc:"स्टोर रूम से सही माल लाकर शेल्फ अपने-आप भरता है",hireRestocker:"शेल्फ वर्कर रखें",upgradeRestocker:"रफ्तार बढ़ाएँ",automaticRestock:"ऑटो शेल्फ फिलिंग चालू",restockerHired:"शेल्फ वर्कर ने काम संभाल लिया!",
+  businessServices:"बाहर के अतिरिक्त कारोबार",businessLocation:"दुकान के बाहर सड़क पर दिखाई देगा",vending:"वेंडिंग मशीन",fruitStand:"फ्रूट स्टॉल",foodCart:"फूड कार्ट",dailyIncome:"रोज़ +₨{income}",owned:"खरीदा हुआ",levelLocked:"स्तर {level} पर खुलेगा",alreadyOwned:"यह कारोबार पहले ही खरीदा है",businessBought:"नया कारोबार खुल गया!",serviceIncomeSummary:"अतिरिक्त कारोबार आय",
+  achievements:"उपलब्धियाँ और चुनौती",firstSale:"पहली बिक्री पूरी करें",busyQueue:"पाँच ग्राहकों की लाइन संभालें",cleanStore:"तीन बिक्री के बाद सफाई 95% रखें",storeManager:"स्टोर स्तर 3 पाएँ",eventFestival:"त्योहार की खरीदारी",eventFestivalD:"चीनी, दाल और घी की माँग अधिक"
+});
+
+Object.assign(window.BAZAAR_TEXT.en,{
+  management:"Store management",openManagement:"Open management",storeLevel:"Store level",cleanliness:"Cleanliness",dailyIncomeLabel:"Daily service income",xpProgress:"Experience {xp}/{next}",
+  pricing:"Shelf prices",pricingHint:"Lower prices please customers; customers may abandon overpriced goods. Every shelf sign updates instantly.",recommendedPrice:"Pakistan benchmark ₨{price}",currentPrice:"Your price ₨{price}",priceTooHigh:"The {item} price was too high—the customer walked away",levelUp:"Congratulations! Store level {level}",cleanTrash:"Clean the floor",trashCleaned:"Cleaning complete—the store looks better!",ready:"Ready",
+  restocker:"Shelf worker",restockerDesc:"Collects the correct stock from the stockroom and automatically fills shelves",hireRestocker:"Hire shelf worker",upgradeRestocker:"Improve speed",automaticRestock:"Automatic restocking active",restockerHired:"Your shelf worker is now on duty!",
+  businessServices:"Outside side businesses",businessLocation:"Appears outside the store along the street",vending:"Vending machine",fruitStand:"Fruit stand",foodCart:"Food cart",dailyIncome:"Daily +₨{income}",owned:"Owned",levelLocked:"Unlocks at level {level}",alreadyOwned:"This business is already owned",businessBought:"New business opened!",serviceIncomeSummary:"Side-business income",
+  achievements:"Achievements and challenges",firstSale:"Complete your first sale",busyQueue:"Manage a queue of five customers",cleanStore:"Keep 95% cleanliness after three sales",storeManager:"Reach store level 3",eventFestival:"Festival shopping",eventFestivalD:"Demand is higher for sugar, lentils and ghee"
+});
