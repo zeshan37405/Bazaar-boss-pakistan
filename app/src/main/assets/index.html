@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="theme-color" content="#163d35">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; media-src 'none'; connect-src 'none'">
-  <title>Bazaar Boss 3D</title>
+  <title>Bazaar Boss</title>
   <link rel="stylesheet" href="style.css">
   <script src="boot.js" defer></script>
   <script src="translations.js" defer></script>
   <script src="game.bundle.js" defer></script>
 </head>
 <body>
-  <main id="game" aria-label="Bazaar Boss 3D game">
-    <div id="loading" class="loading"><span class="loader">ب</span><strong data-t="loading">3D دکان تیار ہو رہی ہے…</strong></div>
+  <main id="game" aria-label="Bazaar Boss game">
+    <div id="loading" class="loading"><span class="loader">ب</span><strong data-t="loading">دکان تیار ہو رہی ہے…</strong></div>
     <div id="webglError" class="fatal hidden">
       <span>⚠️</span>
       <strong data-t="startupError">گیم مکمل طور پر شروع نہیں ہو سکی۔</strong>
@@ -23,9 +23,9 @@
 
     <section id="startOverlay" class="start-overlay">
       <div class="start-card">
-        <div class="start-logo"><span>ب</span><i>3D</i></div>
+        <div class="start-logo"><span>ب</span></div>
         <p class="country" data-t="country">پاکستان</p>
-        <h1 data-t="gameTitle">بازار باس 3D</h1>
+        <h1 data-t="gameTitle">Bazaar Boss</h1>
         <p class="tagline" data-t="tagline">اپنی سپرمارکیٹ خود چلائیں</p>
         <div class="language-picks" aria-label="Language">
           <button type="button" data-start-lang="ur">اردو</button>
@@ -74,6 +74,7 @@
       <div id="joystick" class="joystick"><i id="joystickNub"></i><small data-t="moveHint">چلنے کے لیے جوائے اسٹک</small></div>
       <div class="quick-actions">
         <button id="marketBtn" class="mini-btn" type="button"><span>🧺</span><b data-t="market">ہول سیل منڈی</b></button>
+        <button id="truckBtn" class="mini-btn" type="button"><span>🚚</span><b data-t="transport">ٹرک اور مزدور</b></button>
         <button id="managementBtn" class="mini-btn" type="button"><span>💻</span><b data-t="management">مینجمنٹ</b></button>
         <button id="staffBtn" class="mini-btn" type="button"><span>👨‍💼</span><b data-t="staff">عملہ</b></button>
         <button id="upgradesBtn" class="mini-btn" type="button"><span>⬆️</span><b data-t="upgrades">دکان اپ گریڈ</b></button>

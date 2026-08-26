@@ -5,54 +5,54 @@ export const PRICE_REFERENCE={
 
 export const PRODUCTS=[
   {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1215,sell:1325,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"},brands:[
-    {id:"sunehri",color:"#c88d28",accent:"#773f16",n:{ur:"سنہری آٹا",hi:"सुनहरी आटा",en:"Sunehri Atta"}},
-    {id:"kisan",color:"#3b8d51",accent:"#e9bd47",n:{ur:"کسان چکی",hi:"किसान चक्की",en:"Kisan Chakki"}},
-    {id:"punjab",color:"#b13d32",accent:"#f7d67a",n:{ur:"پنجاب گولڈ",hi:"पंजाब गोल्ड",en:"Punjab Gold"}}
+    {id:"sunridge",color:"#f0a624",accent:"#7e321d",n:{ur:"سن رج سپر وائٹ آٹا",hi:"सनरिज सुपर व्हाइट आटा",en:"Sunridge Super White Atta"}},
+    {id:"sunny",color:"#e8d24a",accent:"#26734a",n:{ur:"سنی وائٹ آٹا",hi:"सनी व्हाइट आटा",en:"Sunny White Atta"}},
+    {id:"daali",color:"#b63c32",accent:"#f6d269",n:{ur:"دالی ہول ویٹ آٹا",hi:"डाली होल व्हीट आटा",en:"Daali Whole Wheat Atta"}}
   ]},
   {id:"rice",emoji:"🍚",color:0xf4efe3,cost:198,sell:220,shape:"bag",n:{ur:"باسمتی چاول",hi:"बासमती चावल",en:"Basmati rice"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"mehran",color:"#326f9f",accent:"#f2ce57",n:{ur:"مہران باسمتی",hi:"मेहरान बासमती",en:"Mehran Basmati"}},
-    {id:"sella",color:"#6a3c8f",accent:"#f0d36c",n:{ur:"سیلا کنگ",hi:"सेला किंग",en:"Sella King"}},
-    {id:"pakaroma",color:"#267554",accent:"#e9d8a6",n:{ur:"پاک اروما",hi:"पाक अरोमा",en:"Pak Aroma"}}
+    {id:"guard-supreme",color:"#2c7454",accent:"#f2ce57",n:{ur:"گارڈ سپریم باسمتی",hi:"गार्ड सुप्रीम बासमती",en:"Guard Supreme Basmati"}},
+    {id:"falak-extreme",color:"#7a3c91",accent:"#f0d36c",n:{ur:"فلک ایکسٹریم باسمتی",hi:"फलक एक्सट्रीम बासमती",en:"Falak Extreme Basmati"}},
+    {id:"falak-select",color:"#28699d",accent:"#e9d8a6",n:{ur:"فلک سلیکٹ سپر کرنل",hi:"फलक सिलेक्ट सुपर कर्नल",en:"Falak Select Super Kernel"}}
   ]},
   {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:615,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"},brands:[
-    {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف گھی",hi:"लतीफ़ घी",en:"Latif Ghee"}},
-    {id:"handi",color:"#176b56",accent:"#f2c44b",n:{ur:"ہانڈی گھی",hi:"हांडी घी",en:"Handi Ghee"}},
-    {id:"sunehri-banaspati",color:"#e4a526",accent:"#7b321d",n:{ur:"سنہری بناسپتی",hi:"सुनहरी वनस्पति",en:"Sunehri Banaspati"}}
+    {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف بناسپتی گھی",hi:"लतीफ़ वनस्पति घी",en:"Latif Banaspati Ghee"}},
+    {id:"dalda-ghee",color:"#176b56",accent:"#f2c44b",n:{ur:"ڈالڈا بناسپتی گھی",hi:"डालडा वनस्पति घी",en:"Dalda Banaspati Ghee"}},
+    {id:"sufi-ghee",color:"#e4a526",accent:"#7b321d",n:{ur:"صوفی بناسپتی گھی",hi:"सूफी वनस्पति घी",en:"Sufi Banaspati Ghee"}}
   ]},
   {id:"oil",emoji:"🧴",color:0xe7a831,cost:580,sell:615,shape:"bottle",n:{ur:"کوکنگ آئل",hi:"कुकिंग ऑयल",en:"Cooking oil"},unit:{ur:"1 لیٹر بوتل",hi:"1 लीटर बोतल",en:"1 litre bottle"},brands:[
-    {id:"sultan",color:"#df8e1c",accent:"#263b70",n:{ur:"سلطان آئل",hi:"सुल्तान ऑयल",en:"Sultan Oil"}},
-    {id:"canola-gold",color:"#f0b927",accent:"#287848",n:{ur:"کینولا گولڈ",hi:"कैनोला गोल्ड",en:"Canola Gold"}},
-    {id:"pakwan",color:"#bf3c2f",accent:"#ffd662",n:{ur:"پکوان آئل",hi:"पकवान ऑयल",en:"Pakwan Oil"}}
+    {id:"mezan-oil",color:"#df8e1c",accent:"#263b70",n:{ur:"میزان کوکنگ آئل",hi:"मेज़ान कुकिंग ऑयल",en:"Mezan Cooking Oil"}},
+    {id:"dalda-oil",color:"#2f8752",accent:"#f0cf58",n:{ur:"ڈالڈا کوکنگ آئل",hi:"डालडा कुकिंग ऑयल",en:"Dalda Cooking Oil"}},
+    {id:"sufi-oil",color:"#bf3c2f",accent:"#ffd662",n:{ur:"صوفی کینولا آئل",hi:"सूफी कैनोला ऑयल",en:"Sufi Canola Oil"}}
   ]},
   {id:"sugar",emoji:"🧂",color:0xf3e7d1,cost:135,sell:150,shape:"bag",n:{ur:"چینی",hi:"चीनी",en:"Sugar"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"shakar-gold",color:"#d69b32",accent:"#7a3f1d",n:{ur:"شکر گولڈ",hi:"शक्कर गोल्ड",en:"Shakar Gold"}},
-    {id:"meethas",color:"#df5f72",accent:"#fff2d6",n:{ur:"مٹھاس",hi:"मिठास",en:"Meethas"}},
-    {id:"punjab-sugar",color:"#2f8355",accent:"#f1cf66",n:{ur:"پنجاب شوگر",hi:"पंजाब शुगर",en:"Punjab Sugar"}}
+    {id:"local-desi",color:"#d69b32",accent:"#7a3f1d",n:{ur:"لوکل دیسی شوگر",hi:"लोकल देसी शुगर",en:"Local Desi Sugar"}},
+    {id:"naheed-fine",color:"#df5f72",accent:"#fff2d6",n:{ur:"ناہید فائن شوگر",hi:"नाहीद फाइन शुगर",en:"Naheed Fine Sugar"}},
+    {id:"sugarie",color:"#2f8355",accent:"#f1cf66",n:{ur:"شوگری کین شوگر",hi:"शुगरी केन शुगर",en:"Sugarie Cane Sugar"}}
   ]},
   {id:"pulses",emoji:"🥣",color:0xd57b48,cost:235,sell:260,shape:"pouch",n:{ur:"دال مسور",hi:"मसूर दाल",en:"Masoor lentils"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"sunehri-daal",color:"#d77937",accent:"#ffe08a",n:{ur:"سنہری دال",hi:"सुनहरी दाल",en:"Sunehri Daal"}},
-    {id:"mehran-masoor",color:"#a33b35",accent:"#f5cc75",n:{ur:"مہران مسور",hi:"मेहरान मसूर",en:"Mehran Masoor"}},
-    {id:"kisan-daal",color:"#3b7b4d",accent:"#f1d876",n:{ur:"کسان دال",hi:"किसान दाल",en:"Kisan Daal"}}
+    {id:"alfatah-masoor",color:"#d77937",accent:"#ffe08a",n:{ur:"الفَتح دال مسور",hi:"अल-फतह दाल मसूर",en:"Al-Fatah Daal Masoor"}},
+    {id:"naheed-masoor",color:"#a33b35",accent:"#f5cc75",n:{ur:"ناہید مسور اسپیشل",hi:"नाहीद मसूर स्पेशल",en:"Naheed Masoor Special"}},
+    {id:"farm-field",color:"#3b7b4d",accent:"#f1d876",n:{ur:"فارم فیلڈ مسور",hi:"फार्म फील्ड मसूर",en:"Farm Field Masoor"}}
   ]},
   {id:"milk",emoji:"🥛",color:0xeaf4f7,cost:200,sell:220,shape:"carton",n:{ur:"دودھ",hi:"दूध",en:"Milk"},unit:{ur:"1 لیٹر پیک",hi:"1 लीटर पैक",en:"1 litre carton"},brands:[
-    {id:"sehat-milk",color:"#3a8dcc",accent:"#f7f3dd",n:{ur:"صحت ملک",hi:"सेहत मिल्क",en:"Sehat Milk"}},
-    {id:"punjab-fresh",color:"#2c8a62",accent:"#f4d770",n:{ur:"پنجاب فریش",hi:"पंजाब फ्रेश",en:"Punjab Fresh"}},
-    {id:"doodh-ghar",color:"#7c56a2",accent:"#f4e6ff",n:{ur:"دودھ گھر",hi:"दूध घर",en:"Doodh Ghar"}}
+    {id:"olpers",color:"#d83935",accent:"#f7f3dd",n:{ur:"اولپرز فل کریم ملک",hi:"ओल्पर्स फुल क्रीम मिल्क",en:"Olpers Full Cream Milk"}},
+    {id:"milkpak",color:"#2c8a62",accent:"#f4d770",n:{ur:"نیسلے ملک پیک",hi:"नेस्ले मिल्कपैक",en:"Nestle Milkpak"}},
+    {id:"haleeb",color:"#2874a6",accent:"#f4e6ff",n:{ur:"حلیب فل کریم ملک",hi:"हलीब फुल क्रीम मिल्क",en:"Haleeb Full Cream Milk"}}
   ]},
   {id:"salt",emoji:"🧂",color:0xf5f3ec,cost:55,sell:65,shape:"packet",n:{ur:"نمک",hi:"नमक",en:"Salt"},unit:{ur:"800 گرام پیک",hi:"800 ग्राम पैक",en:"800 g pack"},brands:[
-    {id:"pak-namak",color:"#3277a8",accent:"#f7f7f2",n:{ur:"پاک نمک",hi:"पाक नमक",en:"Pak Namak"}},
-    {id:"mountain-salt",color:"#c25c62",accent:"#ffe0d2",n:{ur:"ماؤنٹین سالٹ",hi:"माउंटेन साल्ट",en:"Mountain Salt"}},
-    {id:"sehat-salt",color:"#21836c",accent:"#f1db6e",n:{ur:"صحت نمک",hi:"सेहत नमक",en:"Sehat Salt"}}
+    {id:"shan-salt",color:"#3277a8",accent:"#f7f7f2",n:{ur:"شان آیوڈائزڈ نمک",hi:"शान आयोडाइज़्ड नमक",en:"Shan Iodized Salt"}},
+    {id:"national-salt",color:"#c25c62",accent:"#ffe0d2",n:{ur:"نیشنل آیوڈائزڈ نمک",hi:"नेशनल आयोडाइज़्ड नमक",en:"National Iodized Salt"}},
+    {id:"hamdard-salt",color:"#21836c",accent:"#f1db6e",n:{ur:"ہمدرد ہمالیائی پنک سالٹ",hi:"हमदर्द हिमालयन पिंक सॉल्ट",en:"Hamdard Himalayan Pink Salt"}}
   ]},
   {id:"biscuit",emoji:"🍪",color:0xd4683a,cost:88,sell:110,shape:"packet",n:{ur:"بسکٹ",hi:"बिस्कुट",en:"Biscuits"},unit:{ur:"100 گرام پیک",hi:"100 ग्राम पैक",en:"100 g pack"},brands:[
-    {id:"crispy",color:"#c63c2f",accent:"#f7d05b",n:{ur:"کرسپی بائٹ",hi:"क्रिस्पी बाइट",en:"Crispy Bite"}},
-    {id:"family",color:"#744626",accent:"#f5c64b",n:{ur:"فیملی بسکٹ",hi:"फैमिली बिस्कुट",en:"Family Biscuit"}},
-    {id:"fun",color:"#315ea8",accent:"#f4bd3b",n:{ur:"فن بسکٹ",hi:"फन बिस्कुट",en:"Fun Biscuit"}}
+    {id:"sooper",color:"#c63c2f",accent:"#f7d05b",n:{ur:"پیک فرینز سوپر",hi:"पीक फ्रीन्स सूपर",en:"Peek Freans Sooper"}},
+    {id:"lu-candi",color:"#744626",accent:"#f5c64b",n:{ur:"ایل یو کینڈی",hi:"एल यू कैंडी",en:"LU Candi"}},
+    {id:"bisconni-flare",color:"#315ea8",accent:"#f4bd3b",n:{ur:"بسکونی فلیئر",hi:"बिस्कोनी फ्लेयर",en:"Bisconni Flare"}}
   ]},
   {id:"toffee",emoji:"🍬",color:0xe84b78,cost:205,sell:240,shape:"pouch",n:{ur:"ٹافی",hi:"टॉफ़ी",en:"Toffee"},unit:{ur:"50 عدد پاؤچ",hi:"50 नग पाउच",en:"50-piece pouch"},brands:[
-    {id:"masti",color:"#db3d75",accent:"#ffd55c",n:{ur:"مستی ٹافی",hi:"मस्ती टॉफ़ी",en:"Masti Toffee"}},
-    {id:"milky",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"ملکی ڈراپ",hi:"मिल्की ड्रॉप",en:"Milky Drop"}},
-    {id:"fruit-pop",color:"#5aa947",accent:"#f4753e",n:{ur:"فروٹ پاپ",hi:"फ्रूट पॉप",en:"Fruit Pop"}}
+    {id:"mitchells",color:"#db3d75",accent:"#ffd55c",n:{ur:"مچلز ملک ٹافی",hi:"मिचेल्स मिल्क टॉफी",en:"Mitchells Milk Toffee"}},
+    {id:"candyland",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"کینڈی لینڈ ایکلیئر",hi:"कैंडी लैंड एक्लेयर",en:"Candyland Eclair"}},
+    {id:"deemah",color:"#5aa947",accent:"#f4753e",n:{ur:"دیماہ ملک ٹافی",hi:"दीमाह मिल्क टॉफी",en:"Deemah Milk Toffee"}}
   ]}
 ];
 
@@ -85,6 +85,7 @@ export const eventForDay=day=>EVENTS[(Math.max(1,day)-1)%EVENTS.length];
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const roundFive=value=>Math.max(5,Math.round(value/5)*5);
 const emptyCargo=()=>Object.fromEntries(PRODUCTS.map(item=>[item.id,0]));
+const emptyDelivery=()=>({active:false,arrived:false,unloading:false,cargo:emptyCargo(),progress:0,duration:10,unloadProgress:0,unloadDuration:8,labourers:0,labourCost:0});
 export function syncCash(state){state.cash=Math.max(0,Number(state.salesFund||0))+Math.max(0,Number(state.operatingBudget||0));return state.cash}
 export function cameraRelativeVector(yaw,inputX,inputForward){
   return {
@@ -101,7 +102,7 @@ export function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:7,
+    version:8,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -112,7 +113,18 @@ export function createState(saved,legacy){
     day:Number(source?.day??old.day??1),
     totalSales:Number(source?.totalSales??old.sales??0),
     shelfStock:{},warehouse:{},truckCargo:{},
-    delivery:{active:Boolean(source?.delivery?.active),cargo:{},progress:Math.max(0,Number(source?.delivery?.progress??0)),duration:Math.max(6,Number(source?.delivery?.duration??10))},
+    delivery:{
+      active:Boolean(source?.delivery?.active),
+      arrived:Boolean(source?.delivery?.arrived),
+      unloading:Boolean(source?.delivery?.unloading),
+      cargo:{},
+      progress:Math.max(0,Number(source?.delivery?.progress??0)),
+      duration:Math.max(6,Number(source?.delivery?.duration??10)),
+      unloadProgress:Math.max(0,Number(source?.delivery?.unloadProgress??0)),
+      unloadDuration:Math.max(4,Number(source?.delivery?.unloadDuration??8)),
+      labourers:clamp(Math.floor(Number(source?.delivery?.labourers??0)),0,2),
+      labourCost:Math.max(0,Number(source?.delivery?.labourCost??0))
+    },
     upgrades:{capacity:0,checkout:0,decor:0},
     staff:{cashier:0,restocker:0},
     businesses:{vending:false,fruitStand:false,foodCart:false},
@@ -149,6 +161,8 @@ export function createState(saved,legacy){
   state.staff.cashier=clamp(Number(source?.staff?.cashier??0),0,2);
   state.staff.restocker=clamp(Number(source?.staff?.restocker??0),0,2);
   for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
+  if(state.delivery.active){state.delivery.arrived=false;state.delivery.unloading=false}
+  if(state.delivery.unloading)state.delivery.arrived=true;
   if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
   syncCash(state);
@@ -221,13 +235,13 @@ export function cargoCount(cargo){return PRODUCTS.reduce((sum,item)=>sum+Math.ma
 export function deliveryFee(state){return 300+Math.min(500,(state.day-1)*20)}
 
 export function dispatchTruck(state){
-  if(state.delivery.active)return {ok:false,reason:"deliveryRunning"};
+  if(state.delivery.active||state.delivery.arrived||state.delivery.unloading)return {ok:false,reason:state.delivery.unloading?"unloadingRunning":"deliveryRunning"};
   const count=cargoCount(state.truckCargo);
   if(!count)return {ok:false,reason:"truckEmpty"};
   const fee=deliveryFee(state);
   if(state.operatingBudget<fee)return {ok:false,reason:"notEnoughBudget",fee};
   state.operatingBudget-=fee;
-  state.delivery={active:true,cargo:copy(state.truckCargo),progress:0,duration:10};
+  state.delivery={...emptyDelivery(),active:true,cargo:copy(state.truckCargo)};
   state.truckCargo=emptyCargo();
   syncCash(state);
   return {ok:true,fee,count,duration:state.delivery.duration};
@@ -237,10 +251,39 @@ export function advanceDelivery(state,delta){
   if(!state.delivery.active)return null;
   state.delivery.progress=Math.min(state.delivery.duration,state.delivery.progress+Math.max(0,Number(delta)||0));
   if(state.delivery.progress<state.delivery.duration)return {arrived:false,ratio:state.delivery.progress/state.delivery.duration};
-  const cargo=copy(state.delivery.cargo);
+  state.delivery.active=false;
+  state.delivery.arrived=true;
+  state.delivery.progress=state.delivery.duration;
+  return {arrived:true,cargo:copy(state.delivery.cargo),count:cargoCount(state.delivery.cargo)};
+}
+
+export function labourWage(count){return Math.max(1,Math.min(2,Math.floor(Number(count)||1)))===2?650:350}
+
+export function startUnloading(state,count=1){
+  if(state.delivery.active)return {ok:false,reason:"truckNotArrived"};
+  if(state.delivery.unloading)return {ok:false,reason:"unloadingRunning"};
+  if(!state.delivery.arrived||!cargoCount(state.delivery.cargo))return {ok:false,reason:"truckNotArrived"};
+  const labourers=Math.max(1,Math.min(2,Math.floor(Number(count)||1)));
+  const cost=labourWage(labourers);
+  if(state.operatingBudget<cost)return {ok:false,reason:"notEnoughBudget",cost};
+  state.operatingBudget-=cost;
+  state.delivery.unloading=true;
+  state.delivery.labourers=labourers;
+  state.delivery.labourCost=cost;
+  state.delivery.unloadProgress=0;
+  state.delivery.unloadDuration=labourers===2?5:9;
+  syncCash(state);
+  return {ok:true,cost,labourers,duration:state.delivery.unloadDuration,count:cargoCount(state.delivery.cargo)};
+}
+
+export function advanceUnloading(state,delta){
+  if(!state.delivery.unloading)return null;
+  state.delivery.unloadProgress=Math.min(state.delivery.unloadDuration,state.delivery.unloadProgress+Math.max(0,Number(delta)||0));
+  if(state.delivery.unloadProgress<state.delivery.unloadDuration)return {complete:false,ratio:state.delivery.unloadProgress/state.delivery.unloadDuration};
+  const cargo=copy(state.delivery.cargo),labourers=state.delivery.labourers,cost=state.delivery.labourCost;
   for(const item of PRODUCTS)state.warehouse[item.id]=(state.warehouse[item.id]||0)+(cargo[item.id]||0);
-  state.delivery={active:false,cargo:emptyCargo(),progress:0,duration:10};
-  return {arrived:true,cargo,count:cargoCount(cargo)};
+  state.delivery=emptyDelivery();
+  return {complete:true,cargo,count:cargoCount(cargo),labourers,cost};
 }
 
 export function takeCrate(state,id){

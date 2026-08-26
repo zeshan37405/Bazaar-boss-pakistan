@@ -60,8 +60,14 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(bundle.includes("2026-08-20"));
   assert.ok(bundle.includes("shopping-basket"));
   assert.ok(bundle.includes("queueWait"));
-  assert.ok(bundle.includes("Latif Ghee"));
+  assert.ok(bundle.includes("Latif Banaspati Ghee"));
   assert.ok(bundle.includes("dispatchTruck"));
+  assert.ok(bundle.includes("startUnloading"));
+  assert.ok(game.includes('t("pleaseGiveWay")'));
+  assert.equal(dictionary().en.pleaseGiveWay,"Please give way");
+  assert.ok(game.includes("function positionBlocked"));
+  assert.ok(game.includes("function updateOwnerCheckout"));
+  assert.ok(html.includes('id="truckBtn"'));
   assert.ok(bundle.includes("salesFund"));
   assert.ok(bundle.includes("restockerTransfer"));
   assert.ok(bundle.includes("priceAcceptanceChance"));

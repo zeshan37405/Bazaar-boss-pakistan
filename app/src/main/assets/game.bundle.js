@@ -19,54 +19,54 @@ const __BAZAAR_SIM__=(()=>{const PRICE_REFERENCE={
 
 const PRODUCTS=[
   {id:"flour",emoji:"🌾",color:0xd7b77a,cost:1215,sell:1325,shape:"bag",n:{ur:"آٹا",hi:"आटा",en:"Flour"},unit:{ur:"10 کلو تھیلا",hi:"10 किलो बैग",en:"10 kg bag"},brands:[
-    {id:"sunehri",color:"#c88d28",accent:"#773f16",n:{ur:"سنہری آٹا",hi:"सुनहरी आटा",en:"Sunehri Atta"}},
-    {id:"kisan",color:"#3b8d51",accent:"#e9bd47",n:{ur:"کسان چکی",hi:"किसान चक्की",en:"Kisan Chakki"}},
-    {id:"punjab",color:"#b13d32",accent:"#f7d67a",n:{ur:"پنجاب گولڈ",hi:"पंजाब गोल्ड",en:"Punjab Gold"}}
+    {id:"sunridge",color:"#f0a624",accent:"#7e321d",n:{ur:"سن رج سپر وائٹ آٹا",hi:"सनरिज सुपर व्हाइट आटा",en:"Sunridge Super White Atta"}},
+    {id:"sunny",color:"#e8d24a",accent:"#26734a",n:{ur:"سنی وائٹ آٹا",hi:"सनी व्हाइट आटा",en:"Sunny White Atta"}},
+    {id:"daali",color:"#b63c32",accent:"#f6d269",n:{ur:"دالی ہول ویٹ آٹا",hi:"डाली होल व्हीट आटा",en:"Daali Whole Wheat Atta"}}
   ]},
   {id:"rice",emoji:"🍚",color:0xf4efe3,cost:198,sell:220,shape:"bag",n:{ur:"باسمتی چاول",hi:"बासमती चावल",en:"Basmati rice"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"mehran",color:"#326f9f",accent:"#f2ce57",n:{ur:"مہران باسمتی",hi:"मेहरान बासमती",en:"Mehran Basmati"}},
-    {id:"sella",color:"#6a3c8f",accent:"#f0d36c",n:{ur:"سیلا کنگ",hi:"सेला किंग",en:"Sella King"}},
-    {id:"pakaroma",color:"#267554",accent:"#e9d8a6",n:{ur:"پاک اروما",hi:"पाक अरोमा",en:"Pak Aroma"}}
+    {id:"guard-supreme",color:"#2c7454",accent:"#f2ce57",n:{ur:"گارڈ سپریم باسمتی",hi:"गार्ड सुप्रीम बासमती",en:"Guard Supreme Basmati"}},
+    {id:"falak-extreme",color:"#7a3c91",accent:"#f0d36c",n:{ur:"فلک ایکسٹریم باسمتی",hi:"फलक एक्सट्रीम बासमती",en:"Falak Extreme Basmati"}},
+    {id:"falak-select",color:"#28699d",accent:"#e9d8a6",n:{ur:"فلک سلیکٹ سپر کرنل",hi:"फलक सिलेक्ट सुपर कर्नल",en:"Falak Select Super Kernel"}}
   ]},
   {id:"ghee",emoji:"🫙",color:0xf4c542,cost:575,sell:615,shape:"tin",n:{ur:"گھی",hi:"घी",en:"Ghee"},unit:{ur:"1 کلو پاؤچ",hi:"1 किलो पाउच",en:"1 kg pouch"},brands:[
-    {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف گھی",hi:"लतीफ़ घी",en:"Latif Ghee"}},
-    {id:"handi",color:"#176b56",accent:"#f2c44b",n:{ur:"ہانڈی گھی",hi:"हांडी घी",en:"Handi Ghee"}},
-    {id:"sunehri-banaspati",color:"#e4a526",accent:"#7b321d",n:{ur:"سنہری بناسپتی",hi:"सुनहरी वनस्पति",en:"Sunehri Banaspati"}}
+    {id:"latif",color:"#d43e2f",accent:"#ffe074",n:{ur:"لطیف بناسپتی گھی",hi:"लतीफ़ वनस्पति घी",en:"Latif Banaspati Ghee"}},
+    {id:"dalda-ghee",color:"#176b56",accent:"#f2c44b",n:{ur:"ڈالڈا بناسپتی گھی",hi:"डालडा वनस्पति घी",en:"Dalda Banaspati Ghee"}},
+    {id:"sufi-ghee",color:"#e4a526",accent:"#7b321d",n:{ur:"صوفی بناسپتی گھی",hi:"सूफी वनस्पति घी",en:"Sufi Banaspati Ghee"}}
   ]},
   {id:"oil",emoji:"🧴",color:0xe7a831,cost:580,sell:615,shape:"bottle",n:{ur:"کوکنگ آئل",hi:"कुकिंग ऑयल",en:"Cooking oil"},unit:{ur:"1 لیٹر بوتل",hi:"1 लीटर बोतल",en:"1 litre bottle"},brands:[
-    {id:"sultan",color:"#df8e1c",accent:"#263b70",n:{ur:"سلطان آئل",hi:"सुल्तान ऑयल",en:"Sultan Oil"}},
-    {id:"canola-gold",color:"#f0b927",accent:"#287848",n:{ur:"کینولا گولڈ",hi:"कैनोला गोल्ड",en:"Canola Gold"}},
-    {id:"pakwan",color:"#bf3c2f",accent:"#ffd662",n:{ur:"پکوان آئل",hi:"पकवान ऑयल",en:"Pakwan Oil"}}
+    {id:"mezan-oil",color:"#df8e1c",accent:"#263b70",n:{ur:"میزان کوکنگ آئل",hi:"मेज़ान कुकिंग ऑयल",en:"Mezan Cooking Oil"}},
+    {id:"dalda-oil",color:"#2f8752",accent:"#f0cf58",n:{ur:"ڈالڈا کوکنگ آئل",hi:"डालडा कुकिंग ऑयल",en:"Dalda Cooking Oil"}},
+    {id:"sufi-oil",color:"#bf3c2f",accent:"#ffd662",n:{ur:"صوفی کینولا آئل",hi:"सूफी कैनोला ऑयल",en:"Sufi Canola Oil"}}
   ]},
   {id:"sugar",emoji:"🧂",color:0xf3e7d1,cost:135,sell:150,shape:"bag",n:{ur:"چینی",hi:"चीनी",en:"Sugar"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"shakar-gold",color:"#d69b32",accent:"#7a3f1d",n:{ur:"شکر گولڈ",hi:"शक्कर गोल्ड",en:"Shakar Gold"}},
-    {id:"meethas",color:"#df5f72",accent:"#fff2d6",n:{ur:"مٹھاس",hi:"मिठास",en:"Meethas"}},
-    {id:"punjab-sugar",color:"#2f8355",accent:"#f1cf66",n:{ur:"پنجاب شوگر",hi:"पंजाब शुगर",en:"Punjab Sugar"}}
+    {id:"local-desi",color:"#d69b32",accent:"#7a3f1d",n:{ur:"لوکل دیسی شوگر",hi:"लोकल देसी शुगर",en:"Local Desi Sugar"}},
+    {id:"naheed-fine",color:"#df5f72",accent:"#fff2d6",n:{ur:"ناہید فائن شوگر",hi:"नाहीद फाइन शुगर",en:"Naheed Fine Sugar"}},
+    {id:"sugarie",color:"#2f8355",accent:"#f1cf66",n:{ur:"شوگری کین شوگر",hi:"शुगरी केन शुगर",en:"Sugarie Cane Sugar"}}
   ]},
   {id:"pulses",emoji:"🥣",color:0xd57b48,cost:235,sell:260,shape:"pouch",n:{ur:"دال مسور",hi:"मसूर दाल",en:"Masoor lentils"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
-    {id:"sunehri-daal",color:"#d77937",accent:"#ffe08a",n:{ur:"سنہری دال",hi:"सुनहरी दाल",en:"Sunehri Daal"}},
-    {id:"mehran-masoor",color:"#a33b35",accent:"#f5cc75",n:{ur:"مہران مسور",hi:"मेहरान मसूर",en:"Mehran Masoor"}},
-    {id:"kisan-daal",color:"#3b7b4d",accent:"#f1d876",n:{ur:"کسان دال",hi:"किसान दाल",en:"Kisan Daal"}}
+    {id:"alfatah-masoor",color:"#d77937",accent:"#ffe08a",n:{ur:"الفَتح دال مسور",hi:"अल-फतह दाल मसूर",en:"Al-Fatah Daal Masoor"}},
+    {id:"naheed-masoor",color:"#a33b35",accent:"#f5cc75",n:{ur:"ناہید مسور اسپیشل",hi:"नाहीद मसूर स्पेशल",en:"Naheed Masoor Special"}},
+    {id:"farm-field",color:"#3b7b4d",accent:"#f1d876",n:{ur:"فارم فیلڈ مسور",hi:"फार्म फील्ड मसूर",en:"Farm Field Masoor"}}
   ]},
   {id:"milk",emoji:"🥛",color:0xeaf4f7,cost:200,sell:220,shape:"carton",n:{ur:"دودھ",hi:"दूध",en:"Milk"},unit:{ur:"1 لیٹر پیک",hi:"1 लीटर पैक",en:"1 litre carton"},brands:[
-    {id:"sehat-milk",color:"#3a8dcc",accent:"#f7f3dd",n:{ur:"صحت ملک",hi:"सेहत मिल्क",en:"Sehat Milk"}},
-    {id:"punjab-fresh",color:"#2c8a62",accent:"#f4d770",n:{ur:"پنجاب فریش",hi:"पंजाब फ्रेश",en:"Punjab Fresh"}},
-    {id:"doodh-ghar",color:"#7c56a2",accent:"#f4e6ff",n:{ur:"دودھ گھر",hi:"दूध घर",en:"Doodh Ghar"}}
+    {id:"olpers",color:"#d83935",accent:"#f7f3dd",n:{ur:"اولپرز فل کریم ملک",hi:"ओल्पर्स फुल क्रीम मिल्क",en:"Olpers Full Cream Milk"}},
+    {id:"milkpak",color:"#2c8a62",accent:"#f4d770",n:{ur:"نیسلے ملک پیک",hi:"नेस्ले मिल्कपैक",en:"Nestle Milkpak"}},
+    {id:"haleeb",color:"#2874a6",accent:"#f4e6ff",n:{ur:"حلیب فل کریم ملک",hi:"हलीब फुल क्रीम मिल्क",en:"Haleeb Full Cream Milk"}}
   ]},
   {id:"salt",emoji:"🧂",color:0xf5f3ec,cost:55,sell:65,shape:"packet",n:{ur:"نمک",hi:"नमक",en:"Salt"},unit:{ur:"800 گرام پیک",hi:"800 ग्राम पैक",en:"800 g pack"},brands:[
-    {id:"pak-namak",color:"#3277a8",accent:"#f7f7f2",n:{ur:"پاک نمک",hi:"पाक नमक",en:"Pak Namak"}},
-    {id:"mountain-salt",color:"#c25c62",accent:"#ffe0d2",n:{ur:"ماؤنٹین سالٹ",hi:"माउंटेन साल्ट",en:"Mountain Salt"}},
-    {id:"sehat-salt",color:"#21836c",accent:"#f1db6e",n:{ur:"صحت نمک",hi:"सेहत नमक",en:"Sehat Salt"}}
+    {id:"shan-salt",color:"#3277a8",accent:"#f7f7f2",n:{ur:"شان آیوڈائزڈ نمک",hi:"शान आयोडाइज़्ड नमक",en:"Shan Iodized Salt"}},
+    {id:"national-salt",color:"#c25c62",accent:"#ffe0d2",n:{ur:"نیشنل آیوڈائزڈ نمک",hi:"नेशनल आयोडाइज़्ड नमक",en:"National Iodized Salt"}},
+    {id:"hamdard-salt",color:"#21836c",accent:"#f1db6e",n:{ur:"ہمدرد ہمالیائی پنک سالٹ",hi:"हमदर्द हिमालयन पिंक सॉल्ट",en:"Hamdard Himalayan Pink Salt"}}
   ]},
   {id:"biscuit",emoji:"🍪",color:0xd4683a,cost:88,sell:110,shape:"packet",n:{ur:"بسکٹ",hi:"बिस्कुट",en:"Biscuits"},unit:{ur:"100 گرام پیک",hi:"100 ग्राम पैक",en:"100 g pack"},brands:[
-    {id:"crispy",color:"#c63c2f",accent:"#f7d05b",n:{ur:"کرسپی بائٹ",hi:"क्रिस्पी बाइट",en:"Crispy Bite"}},
-    {id:"family",color:"#744626",accent:"#f5c64b",n:{ur:"فیملی بسکٹ",hi:"फैमिली बिस्कुट",en:"Family Biscuit"}},
-    {id:"fun",color:"#315ea8",accent:"#f4bd3b",n:{ur:"فن بسکٹ",hi:"फन बिस्कुट",en:"Fun Biscuit"}}
+    {id:"sooper",color:"#c63c2f",accent:"#f7d05b",n:{ur:"پیک فرینز سوپر",hi:"पीक फ्रीन्स सूपर",en:"Peek Freans Sooper"}},
+    {id:"lu-candi",color:"#744626",accent:"#f5c64b",n:{ur:"ایل یو کینڈی",hi:"एल यू कैंडी",en:"LU Candi"}},
+    {id:"bisconni-flare",color:"#315ea8",accent:"#f4bd3b",n:{ur:"بسکونی فلیئر",hi:"बिस्कोनी फ्लेयर",en:"Bisconni Flare"}}
   ]},
   {id:"toffee",emoji:"🍬",color:0xe84b78,cost:205,sell:240,shape:"pouch",n:{ur:"ٹافی",hi:"टॉफ़ी",en:"Toffee"},unit:{ur:"50 عدد پاؤچ",hi:"50 नग पाउच",en:"50-piece pouch"},brands:[
-    {id:"masti",color:"#db3d75",accent:"#ffd55c",n:{ur:"مستی ٹافی",hi:"मस्ती टॉफ़ी",en:"Masti Toffee"}},
-    {id:"milky",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"ملکی ڈراپ",hi:"मिल्की ड्रॉप",en:"Milky Drop"}},
-    {id:"fruit-pop",color:"#5aa947",accent:"#f4753e",n:{ur:"فروٹ پاپ",hi:"फ्रूट पॉप",en:"Fruit Pop"}}
+    {id:"mitchells",color:"#db3d75",accent:"#ffd55c",n:{ur:"مچلز ملک ٹافی",hi:"मिचेल्स मिल्क टॉफी",en:"Mitchells Milk Toffee"}},
+    {id:"candyland",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"کینڈی لینڈ ایکلیئر",hi:"कैंडी लैंड एक्लेयर",en:"Candyland Eclair"}},
+    {id:"deemah",color:"#5aa947",accent:"#f4753e",n:{ur:"دیماہ ملک ٹافی",hi:"दीमाह मिल्क टॉफी",en:"Deemah Milk Toffee"}}
   ]}
 ];
 
@@ -99,6 +99,7 @@ const eventForDay=day=>EVENTS[(Math.max(1,day)-1)%EVENTS.length];
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const roundFive=value=>Math.max(5,Math.round(value/5)*5);
 const emptyCargo=()=>Object.fromEntries(PRODUCTS.map(item=>[item.id,0]));
+const emptyDelivery=()=>({active:false,arrived:false,unloading:false,cargo:emptyCargo(),progress:0,duration:10,unloadProgress:0,unloadDuration:8,labourers:0,labourCost:0});
 function syncCash(state){state.cash=Math.max(0,Number(state.salesFund||0))+Math.max(0,Number(state.operatingBudget||0));return state.cash}
 function cameraRelativeVector(yaw,inputX,inputForward){
   return {
@@ -115,7 +116,7 @@ function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:7,
+    version:8,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -126,7 +127,18 @@ function createState(saved,legacy){
     day:Number(source?.day??old.day??1),
     totalSales:Number(source?.totalSales??old.sales??0),
     shelfStock:{},warehouse:{},truckCargo:{},
-    delivery:{active:Boolean(source?.delivery?.active),cargo:{},progress:Math.max(0,Number(source?.delivery?.progress??0)),duration:Math.max(6,Number(source?.delivery?.duration??10))},
+    delivery:{
+      active:Boolean(source?.delivery?.active),
+      arrived:Boolean(source?.delivery?.arrived),
+      unloading:Boolean(source?.delivery?.unloading),
+      cargo:{},
+      progress:Math.max(0,Number(source?.delivery?.progress??0)),
+      duration:Math.max(6,Number(source?.delivery?.duration??10)),
+      unloadProgress:Math.max(0,Number(source?.delivery?.unloadProgress??0)),
+      unloadDuration:Math.max(4,Number(source?.delivery?.unloadDuration??8)),
+      labourers:clamp(Math.floor(Number(source?.delivery?.labourers??0)),0,2),
+      labourCost:Math.max(0,Number(source?.delivery?.labourCost??0))
+    },
     upgrades:{capacity:0,checkout:0,decor:0},
     staff:{cashier:0,restocker:0},
     businesses:{vending:false,fruitStand:false,foodCart:false},
@@ -163,6 +175,8 @@ function createState(saved,legacy){
   state.staff.cashier=clamp(Number(source?.staff?.cashier??0),0,2);
   state.staff.restocker=clamp(Number(source?.staff?.restocker??0),0,2);
   for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
+  if(state.delivery.active){state.delivery.arrived=false;state.delivery.unloading=false}
+  if(state.delivery.unloading)state.delivery.arrived=true;
   if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
   syncCash(state);
@@ -235,13 +249,13 @@ function cargoCount(cargo){return PRODUCTS.reduce((sum,item)=>sum+Math.max(0,Num
 function deliveryFee(state){return 300+Math.min(500,(state.day-1)*20)}
 
 function dispatchTruck(state){
-  if(state.delivery.active)return {ok:false,reason:"deliveryRunning"};
+  if(state.delivery.active||state.delivery.arrived||state.delivery.unloading)return {ok:false,reason:state.delivery.unloading?"unloadingRunning":"deliveryRunning"};
   const count=cargoCount(state.truckCargo);
   if(!count)return {ok:false,reason:"truckEmpty"};
   const fee=deliveryFee(state);
   if(state.operatingBudget<fee)return {ok:false,reason:"notEnoughBudget",fee};
   state.operatingBudget-=fee;
-  state.delivery={active:true,cargo:copy(state.truckCargo),progress:0,duration:10};
+  state.delivery={...emptyDelivery(),active:true,cargo:copy(state.truckCargo)};
   state.truckCargo=emptyCargo();
   syncCash(state);
   return {ok:true,fee,count,duration:state.delivery.duration};
@@ -251,10 +265,39 @@ function advanceDelivery(state,delta){
   if(!state.delivery.active)return null;
   state.delivery.progress=Math.min(state.delivery.duration,state.delivery.progress+Math.max(0,Number(delta)||0));
   if(state.delivery.progress<state.delivery.duration)return {arrived:false,ratio:state.delivery.progress/state.delivery.duration};
-  const cargo=copy(state.delivery.cargo);
+  state.delivery.active=false;
+  state.delivery.arrived=true;
+  state.delivery.progress=state.delivery.duration;
+  return {arrived:true,cargo:copy(state.delivery.cargo),count:cargoCount(state.delivery.cargo)};
+}
+
+function labourWage(count){return Math.max(1,Math.min(2,Math.floor(Number(count)||1)))===2?650:350}
+
+function startUnloading(state,count=1){
+  if(state.delivery.active)return {ok:false,reason:"truckNotArrived"};
+  if(state.delivery.unloading)return {ok:false,reason:"unloadingRunning"};
+  if(!state.delivery.arrived||!cargoCount(state.delivery.cargo))return {ok:false,reason:"truckNotArrived"};
+  const labourers=Math.max(1,Math.min(2,Math.floor(Number(count)||1)));
+  const cost=labourWage(labourers);
+  if(state.operatingBudget<cost)return {ok:false,reason:"notEnoughBudget",cost};
+  state.operatingBudget-=cost;
+  state.delivery.unloading=true;
+  state.delivery.labourers=labourers;
+  state.delivery.labourCost=cost;
+  state.delivery.unloadProgress=0;
+  state.delivery.unloadDuration=labourers===2?5:9;
+  syncCash(state);
+  return {ok:true,cost,labourers,duration:state.delivery.unloadDuration,count:cargoCount(state.delivery.cargo)};
+}
+
+function advanceUnloading(state,delta){
+  if(!state.delivery.unloading)return null;
+  state.delivery.unloadProgress=Math.min(state.delivery.unloadDuration,state.delivery.unloadProgress+Math.max(0,Number(delta)||0));
+  if(state.delivery.unloadProgress<state.delivery.unloadDuration)return {complete:false,ratio:state.delivery.unloadProgress/state.delivery.unloadDuration};
+  const cargo=copy(state.delivery.cargo),labourers=state.delivery.labourers,cost=state.delivery.labourCost;
   for(const item of PRODUCTS)state.warehouse[item.id]=(state.warehouse[item.id]||0)+(cargo[item.id]||0);
-  state.delivery={active:false,cargo:emptyCargo(),progress:0,duration:10};
-  return {arrived:true,cargo,count:cargoCount(cargo)};
+  state.delivery=emptyDelivery();
+  return {complete:true,cargo,count:cargoCount(cargo),labourers,cost};
 }
 
 function takeCrate(state,id){
@@ -458,10 +501,10 @@ function buyUpgrade(state,key){
   return {ok:true,cost,level:state.upgrades[key]};
 }
 
-return {PRICE_REFERENCE,PRODUCTS,EVENTS,DIFFICULTY,DEFAULT_STOCK,BUSINESSES,copy,productById,brandById,eventForDay,syncCash,cameraRelativeVector,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,marketTrend,buyWarehouse,BARGAIN_OFFERS,bargainPurchase,cargoCount,deliveryFee,dispatchTruck,advanceDelivery,takeCrate,restockShelf,xpForNextLevel,awardStoreXp,createOrder,takeShelfItems,completeSale,missSale,recordQueue,dailyTarget,serveTarget,customerWait,spawnDelay,checkoutDuration,staffCheckoutDuration,cashierHireCost,cashierWage,restockerHireCost,restockerWage,totalStaffWage,hireCashier,hireRestocker,restockerTransfer,adjustCleanliness,businessDailyIncome,buyBusiness,dailyExpense,maybeFinishDay,startNextDay,upgradeCost,buyUpgrade};})();
+return {PRICE_REFERENCE,PRODUCTS,EVENTS,DIFFICULTY,DEFAULT_STOCK,BUSINESSES,copy,productById,brandById,eventForDay,syncCash,cameraRelativeVector,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,marketTrend,buyWarehouse,BARGAIN_OFFERS,bargainPurchase,cargoCount,deliveryFee,dispatchTruck,advanceDelivery,labourWage,startUnloading,advanceUnloading,takeCrate,restockShelf,xpForNextLevel,awardStoreXp,createOrder,takeShelfItems,completeSale,missSale,recordQueue,dailyTarget,serveTarget,customerWait,spawnDelay,checkoutDuration,staffCheckoutDuration,cashierHireCost,cashierWage,restockerHireCost,restockerWage,totalStaffWage,hireCashier,hireRestocker,restockerTransfer,adjustCleanliness,businessDailyIncome,buyBusiness,dailyExpense,maybeFinishDay,startNextDay,upgradeCost,buyUpgrade};})();
 const {
   PRODUCTS,PRICE_REFERENCE,BUSINESSES,copy,productById,brandById,eventForDay,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,marketTrend,
-  bargainPurchase,cargoCount,deliveryFee,dispatchTruck,advanceDelivery,cameraRelativeVector,takeCrate,restockShelf,createOrder,takeShelfItems,completeSale,missSale,
+  bargainPurchase,cargoCount,deliveryFee,dispatchTruck,advanceDelivery,labourWage,startUnloading,advanceUnloading,cameraRelativeVector,takeCrate,restockShelf,createOrder,takeShelfItems,completeSale,missSale,
   dailyTarget,serveTarget,spawnDelay,checkoutDuration,staffCheckoutDuration,startNextDay,xpForNextLevel,
   upgradeCost,buyUpgrade,recordQueue,cashierHireCost,cashierWage,hireCashier,restockerHireCost,restockerWage,hireRestocker,restockerTransfer,
   adjustCleanliness,buyBusiness,businessDailyIncome
@@ -487,10 +530,10 @@ const SKINS=[0x6f432c,0x8d5524,0xb87952,0xd39a73,0xedb98d,0xf1c7a5];
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
-let scene,camera,renderer,player,playerShadow,marketMarker,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,mandiSignHolder,deliveryTruck,truckCargoGroup,serviceArea;
+let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea;
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
-let scan=null,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0;
+let scan=null,ownerCheckoutSession=null,ownerCheckoutDelay=0,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0,labelRefreshClock=0,nextPersonId=1,giveWayToastAt=0;
 const shelves=new Map();
 const packageTextureCache=new Map();
 const surfaceTextureCache=new Map();
@@ -501,6 +544,8 @@ const checkoutQueue=[];
 const worldLabels=[];
 const movingDecor=[];
 const trashItems=[];
+const labourerMeshes=[];
+const labourerLabels=[];
 const keys={};
 const joystick={x:0,y:0,id:null};
 
@@ -654,7 +699,7 @@ function buildWorld(){
   renderer.toneMappingExposure=1.08;
   renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  renderer.domElement.setAttribute("aria-label","3D supermarket");
+  renderer.domElement.setAttribute("aria-label","Bazaar Boss supermarket");
   $("game").prepend(renderer.domElement);
 
   scene.add(new THREE.HemisphereLight(0xeafaff,0x8d724d,2.25));
@@ -717,7 +762,7 @@ function buildWalls(){
   context.fillStyle="#176b56";context.fillRect(0,0,512,150);
   context.strokeStyle="#f5bd3c";context.lineWidth=14;context.strokeRect(7,7,498,136);
   context.fillStyle="#fff8df";context.textAlign="center";context.font="900 54px Arial";context.fillText("BAZAAR BOSS",256,73);
-  context.fillStyle="#f5bd3c";context.font="700 25px Arial";context.fillText("PAKISTAN • SUPERMARKET 3D",256,115);
+  context.fillStyle="#f5bd3c";context.font="700 25px Arial";context.fillText("PAKISTAN • SUPERMARKET",256,115);
   const texture=new THREE.CanvasTexture(signCanvas);texture.colorSpace=THREE.SRGBColorSpace;
   const sign=new THREE.Mesh(new THREE.PlaneGeometry(7,2.05),new THREE.MeshBasicMaterial({map:texture}));
   sign.position.set(0,3.35,-10.8);scene.add(sign);
@@ -903,8 +948,8 @@ function buildMarketArea(){
   blockers.push({minX:-8.25,maxX:-3.7,minZ:22.05,maxZ:24.25});
   zones.push({kind:"market",x:-3.45,z:21.55,icon:"🤝"});
   addWorldLabel("interact",()=>new THREE.Vector3(-5.9,4.05,23.15),()=>`🤝 ${t("supplyLabel")}`);
-  const vendor=createHumanoid(0x73502f,SKINS[2],false,{style:"vendor",kind:2});vendor.position.set(-5.9,0,21.75);vendor.rotation.y=0;scene.add(vendor);
-  addWorldLabel("interact",()=>vendor.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>`🧔 ${t("vendorLabel")}`);
+  marketVendor=createHumanoid(0x73502f,SKINS[2],false,{style:"vendor",kind:2});marketVendor.position.set(-5.9,0,21.75);marketVendor.rotation.y=0;scene.add(marketVendor);
+  addWorldLabel("interact",()=>marketVendor.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>`🧔 ${t("vendorLabel")}`);
 
   const rack=new THREE.Group();
   box(rack,[1.25,2.5,3],[0,1.25,0],0x765039);
@@ -942,15 +987,17 @@ function buildDeliveryTruck(){
     cylinder(truck,.14,.235,[x,.43,z],0xb9b1a2,14).rotation.z=Math.PI/2;
   }
   truckCargoGroup=new THREE.Group();truckCargoGroup.position.set(0,1.52,.45);truck.add(truckCargoGroup);
+  truckDriver=createHumanoid(0x425a70,SKINS[2],false,{style:"driver",kind:2});
+  truckDriver.scale.setScalar(.43);truckDriver.position.set(.38,.62,-1.3);truckDriver.rotation.y=Math.PI;setSeatedPose(truckDriver,true);truck.add(truckDriver);
   truck.position.set(4.35,0,23.4);scene.add(truck);deliveryTruck=truck;
-  addWorldLabel("interact",()=>deliveryTruck.position.clone().add(new THREE.Vector3(0,3.1,0)),()=>`🚚 ${t("truckLabel")} • ${localNumber(cargoCount(state.delivery.active?state.delivery.cargo:state.truckCargo))}`);
+  addWorldLabel("interact",()=>deliveryTruck.position.clone().add(new THREE.Vector3(0,3.1,0)),()=>`🚚 ${t("truckLabel")} • ${t("truckDriverLabel")} • ${localNumber(cargoCount(truckDeliveryCargo()))}`);
   refreshTruckCargo();
 }
 
 function refreshTruckCargo(){
   if(!truckCargoGroup)return;
   while(truckCargoGroup.children.length)truckCargoGroup.remove(truckCargoGroup.children[0]);
-  const cargo=state.delivery.active?state.delivery.cargo:state.truckCargo;
+  const cargo=truckDeliveryCargo();
   let index=0;
   for(const item of PRODUCTS){
     const visible=Math.min(3,cargo[item.id]||0);
@@ -959,6 +1006,10 @@ function refreshTruckCargo(){
       crate.rotation.y=(index%2)*.08;
     }
   }
+}
+
+function truckDeliveryCargo(){
+  return state.delivery.active||state.delivery.arrived||state.delivery.unloading?state.delivery.cargo:state.truckCargo;
 }
 
 function updateDeliveryTruck(delta){
@@ -972,12 +1023,57 @@ function updateDeliveryTruck(delta){
     $("deliveryFill").style.width=`${ratio*100}%`;
     $("deliveryText").textContent=t("deliveryStatus",{seconds:localNumber(Math.max(0,Math.ceil((1-ratio)*state.delivery.duration))) });
     if(result?.arrived){
-      truckArrivalHold=3.4;refreshTruckCargo();toast(t("deliveryArrived"),2600);tone("up");save();updateHUD();updateWorldLabelText();
+      refreshTruckCargo();toast(t("deliveryArrived"),3000);tone("up");save();updateHUD();updateWorldLabelText();
       if(currentPanel==="stockroom")renderStockroom();
+      if(currentPanel==="transport")renderTransport();
     }
+  }else if(state.delivery.unloading){
+    deliveryTruck.position.set(4.35,0,storeZ);
+    ensureLabourerModels();updateLabourerModels(delta);
+    const result=advanceUnloading(state,delta);
+    if(result?.complete){
+      truckArrivalHold=2.5;clearLabourerModels();refreshTruckCargo();toast(t("unloadingComplete"),2800);tone("up");save();updateHUD();updateWorldLabelText();
+      if(currentPanel==="stockroom")renderStockroom();
+      if(currentPanel==="transport")renderTransport();
+    }
+  }else if(state.delivery.arrived){
+    deliveryTruck.position.set(4.35,0,storeZ);
   }else if(truckArrivalHold>0){
     truckArrivalHold-=delta;deliveryTruck.position.set(4.35,0,storeZ);
   }else deliveryTruck.position.set(4.35,0,marketZ);
+}
+
+function clearLabourerModels(){
+  for(const mesh of labourerMeshes)scene.remove(mesh);
+  labourerMeshes.length=0;
+  for(const label of labourerLabels){const index=worldLabels.indexOf(label);if(index>=0)worldLabels.splice(index,1);label.element.remove()}
+  labourerLabels.length=0;
+}
+
+function ensureLabourerModels(){
+  const needed=state.delivery.unloading?state.delivery.labourers:0;
+  if(labourerMeshes.length===needed)return;
+  clearLabourerModels();
+  for(let index=0;index<needed;index++){
+    const mesh=createHumanoid(index?0x316fa0:0xc66a32,SKINS[(index+1)%SKINS.length],false,{style:"labourer",kind:index+1});
+    mesh.scale.setScalar(.94);mesh.userData.labourerIndex=index;mesh.userData.labourPathIndex=0;
+    const crate=new THREE.Group();crate.name="labour-crate";box(crate,[.72,.52,.62],[0,0,0],0x9b6339);box(crate,[.5,.28,.64],[0,.08,0],PRODUCTS[(state.day+index)%PRODUCTS.length].color);crate.position.set(0,1.22,.55);mesh.add(crate);
+    scene.add(mesh);labourerMeshes.push(mesh);
+    labourerLabels.push(addWorldLabel("customer",()=>mesh.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>mesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("dailyLabourer")} ${localNumber(index+1)}`));
+  }
+}
+
+function updateLabourerModels(delta){
+  if(!state.delivery.unloading)return;
+  for(const mesh of labourerMeshes){
+    const index=mesh.userData.labourerIndex||0,offset=index?.38:-.38;
+    const route=[new THREE.Vector3(4.35+offset,0,13.2),new THREE.Vector3(4.35+offset,0,11.65),new THREE.Vector3(1.15+offset,0,11.15),new THREE.Vector3(offset,0,8.6),new THREE.Vector3(offset,0,-7.55),new THREE.Vector3(-3.18,0,-8.25+offset)];
+    const pathIndex=mesh.userData.labourPathIndex||0,target=route[pathIndex];
+    if(!target){animateHumanoid(mesh,false,0);continue}
+    if(pathIndex===0&&mesh.position.lengthSq()===0)mesh.position.copy(target);
+    const speed=state.delivery.labourers===2?4.6:3.05;
+    if(moveToward({mesh,speed},target,delta*speed))mesh.userData.labourPathIndex=pathIndex+1;
+  }
 }
 
 function buildCheckout(){
@@ -1074,7 +1170,7 @@ function refreshRestockerCharacter(){
   if(!state.staff.restocker)return;
   restockerMesh=createHumanoid(0xb46c35,SKINS[1],false,{style:"restocker",kind:1});
   restockerMesh.position.set(-3.1,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
-  restockerLabel=addWorldLabel("interact",()=>restockerMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`📦 ${t("restocker")} • ${restockerJob?t("staffWorking"):t("ready")}`);
+  restockerLabel=addWorldLabel("interact",()=>restockerMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>restockerMesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("restocker")} • ${restockerJob?t("staffWorking"):t("ready")}`);
 }
 
 function updateRestocker(delta){
@@ -1140,7 +1236,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   const shadow=fakeShadow(group,isPlayer ? .52 : .44);
   const style=appearance.style||"customer";
   const kind=appearance.kind??Math.floor(Math.random()*4);
-  const staffStyle=style==="cashier"||style==="restocker";
+  const staffStyle=["cashier","restocker","labourer","driver"].includes(style);
   const trousers=staffStyle?0x1d2f44:isPlayer?0xf1e4c9:[0x273d55,0x493a36,0x2d5147,0x4b4260][kind];
   const hairColor=[0x211a17,0x3d2b23,0x17191a,0x553929][kind];
 
@@ -1204,7 +1300,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   }
 
   group.traverse(child=>{if(child.isMesh){child.castShadow=true;child.receiveShadow=true}});
-  group.userData={leftLeg,rightLeg,leftArm,rightArm,body,shoulders,hem,head,shadow,bodyBaseY:1.59,shoulderBaseY:1.98,hemBaseY:1,moving:false,phase:Math.random()*6,style,seated:false};
+  group.userData={leftLeg,rightLeg,leftArm,rightArm,body,shoulders,hem,head,shadow,bodyBaseY:1.59,shoulderBaseY:1.98,hemBaseY:1,moving:false,phase:Math.random()*6,style,seated:false,personId:nextPersonId++,collisionRadius:.43,giveWayUntil:0};
   return group;
 }
 
@@ -1232,14 +1328,15 @@ function makeCustomer(){
   const kind=Math.floor(Math.random()*4);
   const mesh=createHumanoid(COLORS[Math.floor(Math.random()*COLORS.length)],SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind});
   mesh.scale.setScalar(rand(.88,1.04));mesh.position.set(rand(-.35,.35),0,13.5);scene.add(mesh);
-  const shelf=PRODUCT_SHELVES[order.product];
+  const shelf=PRODUCT_SHELVES[order.product],shoppingOffset=rand(-.58,.58);
   const accessX=shelf.side<0?-7.75:7.75;
-  const customer={mesh,order,phase:"enter",path:[new THREE.Vector3(0,0,10),new THREE.Vector3(0,0,shelf.z),new THREE.Vector3(accessX,0,shelf.z)],pathIndex:0,speed:rand(1.5,1.9),timer:0,waited:0,label:null};
+  const customer={mesh,order,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.5,1.9),timer:0,waited:0,blockedTime:0,label:null};
   customer.label=addWorldLabel("customer",()=>customer.mesh.position.clone().add(new THREE.Vector3(0,2.75,0)),()=>customerLabelText(customer));
   customers.push(customer);
 }
 
 function customerLabelText(customer){
+  if(customer.mesh.userData.giveWayUntil>worldTime)return `🙏 ${t("pleaseGiveWay")}`;
   if(customer.phase==="queue")return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})} • ${t("queueWait",{seconds:localNumber(Math.floor(customer.waited))})}`;
   if(customer.phase==="scanning")return `🧾 ${t("scanning")}`;
   return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})}`;
@@ -1276,11 +1373,31 @@ function moveToward(customer,target,distance){
   const current=customer.mesh.position;
   const dx=target.x-current.x,dz=target.z-current.z;
   const length=Math.hypot(dx,dz);
-  if(length<.08){current.x=target.x;current.z=target.z;animateHumanoid(customer.mesh,false,0);return true}
-  const step=Math.min(length,distance);current.x+=dx/length*step;current.z+=dz/length*step;
-  customer.mesh.rotation.y=Math.atan2(dx,dz);
-  animateHumanoid(customer.mesh,true,worldTime*6+customer.mesh.userData.phase);
-  return length<=distance+.08;
+  if(length<.08){animateHumanoid(customer.mesh,false,0);return true}
+  const step=Math.min(length,distance),fx=dx/length,fz=dz/length,side=customer.mesh.userData.personId%2?1:-1;
+  const attempts=[
+    [current.x+fx*step,current.z+fz*step],
+    [current.x+fx*step*.35-fz*step*1.35*side,current.z+fz*step*.35+fx*step*1.35*side],
+    [current.x+fx*step*.25+fz*step*1.15*side,current.z+fz*step*.25-fx*step*1.15*side]
+  ];
+  let moved=false,blocker=null;
+  for(const [x,z] of attempts){
+    const blockedResult=positionBlocked(customer.mesh,x,z);
+    if(!blockedResult){current.x=x;current.z=z;moved=true;break}
+    blocker=blocker||blockedResult.person;
+  }
+  if(moved){
+    customer.mesh.userData.blockedTime=Math.max(0,(customer.mesh.userData.blockedTime||0)-distance*2);
+    customer.mesh.rotation.y=Math.atan2(dx,dz);animateHumanoid(customer.mesh,true,worldTime*6+customer.mesh.userData.phase);
+  }else{
+    customer.mesh.userData.blockedTime=(customer.mesh.userData.blockedTime||0)+distance/Math.max(.4,customer.speed||1.55);animateHumanoid(customer.mesh,false,0);
+    if(customer.mesh.userData.blockedTime>.35){
+      customer.mesh.userData.giveWayUntil=worldTime+1.5;
+      if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
+      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
+    }
+  }
+  return moved&&length<=distance+.08;
 }
 
 function customerPathFinished(customer){
@@ -1363,7 +1480,7 @@ function removeCustomer(customer){
 }
 
 function clearCustomers(){
-  if(scan&&!scan.auto)leaveOwnerSeat(scan);
+  if(ownerCheckoutSession)leaveOwnerSeat(ownerCheckoutSession);
   scan=null;$("scanBox").classList.add("hidden");
   for(const customer of [...customers])removeCustomer(customer);
   checkoutQueue.length=0;
@@ -1423,8 +1540,9 @@ function startScanning(auto=false){
   checkoutQueue.shift();customer.phase="scanning";animateHumanoid(customer.mesh,false,0);
   scan={customer,elapsed:0,duration:auto?staffCheckoutDuration(state):checkoutDuration(state),auto};
   if(!auto){
-    scan.returnPosition=player.position.clone();scan.returnRotation=player.rotation.y;
-    scan.seatFrom=player.position.clone();scan.seatElapsed=0;scan.seatDuration=.72;
+    if(!ownerCheckoutSession){
+      ownerCheckoutSession={returnPosition:player.position.clone(),returnRotation:player.rotation.y,seatFrom:player.position.clone(),seatElapsed:0,seatDuration:.72};
+    }
   }
   $("scanText").textContent=auto?t("autoScanning"):t("scanning");
   $("scanFill").style.width="0%";$("scanBox").classList.remove("hidden");
@@ -1432,7 +1550,7 @@ function startScanning(auto=false){
 }
 
 function updateAutomaticCheckout(delta){
-  if(!state.staff.cashier||state.dayComplete)return;
+  if(!state.staff.cashier||state.dayComplete||ownerCheckoutSession)return;
   if(scan){cashierCooldown=.65;return}
   cashierCooldown-=delta;
   if(cashierCooldown<=0&&checkoutQueue.length){startScanning(true);cashierCooldown=.65}
@@ -1441,10 +1559,10 @@ function updateAutomaticCheckout(delta){
 function updateScan(delta){
   if(!scan)return;
   if(!scan.auto&&!player.userData.seated){
-    scan.seatElapsed+=delta;
-    const ratio=Math.min(1,scan.seatElapsed/scan.seatDuration),smooth=ratio*ratio*(3-2*ratio);
-    player.position.lerpVectors(scan.seatFrom,new THREE.Vector3(4.18,-.17,10.29),smooth);
-    player.rotation.y=THREE.MathUtils.lerp(scan.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
+    ownerCheckoutSession.seatElapsed+=delta;
+    const ratio=Math.min(1,ownerCheckoutSession.seatElapsed/ownerCheckoutSession.seatDuration),smooth=ratio*ratio*(3-2*ratio);
+    player.position.lerpVectors(ownerCheckoutSession.seatFrom,new THREE.Vector3(4.18,-.17,10.29),smooth);
+    player.rotation.y=THREE.MathUtils.lerp(ownerCheckoutSession.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
     if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=false}
     return;
   }
@@ -1452,24 +1570,31 @@ function updateScan(delta){
   scan.elapsed+=delta;
   const ratio=Math.min(1,scan.elapsed/scan.duration);$("scanFill").style.width=`${ratio*100}%`;
   if(ratio<1)return;
-  const activeScan=scan,customer=scan.customer,automatic=scan.auto;
-  if(!automatic)leaveOwnerSeat(activeScan);
+  const customer=scan.customer,automatic=scan.auto;
   scan=null;$("scanBox").classList.add("hidden");
   const beforeLevel=state.storeLevel,result=completeSale(state,customer.order);
   toast(t("saleDone",{price:money(customer.order.price).replace("₨","")}));tone("coin");
   if(state.storeLevel>beforeLevel)setTimeout(()=>toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300),500);
   if(Math.random()<.24)spawnTrash();
   if(state.tutorialStep===5){state.tutorialStep=6;toast(t("tutorialDone"),2300)}
-  if(automatic)cashierCooldown=.65;
+  if(automatic)cashierCooldown=.65;else ownerCheckoutDelay=.42;
   sendCustomerOut(customer);finishDayIfNeeded(result);save();updateHUD();updateWorldLabelText();
 }
 
-function leaveOwnerSeat(activeScan){
-  if(!player||!activeScan)return;
+function updateOwnerCheckout(delta){
+  if(!ownerCheckoutSession||scan||state.dayComplete)return;
+  ownerCheckoutDelay=Math.max(0,ownerCheckoutDelay-delta);
+  if(ownerCheckoutDelay<=0&&checkoutQueue.length)startScanning(false);
+}
+
+function leaveOwnerSeat(session=ownerCheckoutSession){
+  if(!player||!session)return;
   setSeatedPose(player,false);
-  if(activeScan.returnPosition)player.position.copy(activeScan.returnPosition);
-  if(Number.isFinite(activeScan.returnRotation))player.rotation.y=activeScan.returnRotation;
+  if(session.returnPosition)player.position.copy(session.returnPosition);
+  if(Number.isFinite(session.returnRotation))player.rotation.y=session.returnRotation;
+  ownerCheckoutSession=null;ownerCheckoutDelay=0;
   updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=true;
+  updateInteractions();
 }
 
 function finishDayIfNeeded(result){
@@ -1509,8 +1634,24 @@ function blocked(x,z){
   return blockers.some(rect=>x+radius>rect.minX&&x-radius<rect.maxX&&z+radius>rect.minZ&&z-radius<rect.maxZ);
 }
 
+function activePeople(){
+  const people=[player,marketVendor,restockerMesh,...customers.map(customer=>customer.mesh),...labourerMeshes];
+  return people.filter(mesh=>mesh&&mesh.visible!==false&&!mesh.userData.seated);
+}
+
+function positionBlocked(mesh,x,z){
+  if(blocked(x,z))return {world:true,person:null};
+  const radius=(mesh.userData.collisionRadius||.42)*(mesh.scale.x||1);
+  for(const other of activePeople()){
+    if(other===mesh)continue;
+    const otherRadius=(other.userData.collisionRadius||.42)*(other.scale.x||1);
+    if((x-other.position.x)**2+(z-other.position.z)**2<(radius+otherRadius+.08)**2)return {world:false,person:other};
+  }
+  return null;
+}
+
 function updatePlayer(delta){
-  if(scan&&!scan.auto){if(player.userData.seated)animateCheckoutHands(player);return}
+  if(ownerCheckoutSession){if(player.userData.seated&&scan)animateCheckoutHands(player);return}
   let inputX=joystick.x+(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
   let inputForward=-joystick.y+(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);
   const magnitude=Math.hypot(inputX,inputForward);
@@ -1519,8 +1660,8 @@ function updatePlayer(delta){
     const direction=cameraRelativeVector(cameraYaw,inputX,inputForward);
     const dx=direction.x*delta*3.2,dz=direction.z*delta*3.2;
     const nextX=player.position.x+dx,nextZ=player.position.z+dz;
-    if(!blocked(nextX,player.position.z))player.position.x=nextX;
-    if(!blocked(player.position.x,nextZ))player.position.z=nextZ;
+    if(!positionBlocked(player,nextX,player.position.z))player.position.x=nextX;
+    if(!positionBlocked(player,player.position.x,nextZ))player.position.z=nextZ;
     player.rotation.y=Math.atan2(dx,dz);
     walkTime+=delta*8.2;animateHumanoid(player,true,walkTime);
   }else animateHumanoid(player,false,0);
@@ -1549,13 +1690,17 @@ function updateCarriedCrate(){
 }
 
 function updateInteractions(){
+  const button=$("actionBtn"),icon=$("actionIcon"),label=$("actionText");
+  if(ownerCheckoutSession){
+    const busy=Boolean(scan)||checkoutQueue.length>0;
+    currentZone={kind:"ownerSeat",icon:busy?"🧾":"🚶"};button.classList.remove("disabled");icon.textContent=currentZone.icon;label.textContent=busy?t("finishCurrentQueue"):t("standUp");return;
+  }
   let nearest=null,best=Infinity;
   for(const zone of zones){
     const distance=Math.hypot(player.position.x-zone.x,player.position.z-zone.z);
     if(distance<best){best=distance;nearest=zone}
   }
   currentZone=best<2.15?nearest:null;
-  const button=$("actionBtn"),icon=$("actionIcon"),label=$("actionText");
   button.classList.toggle("disabled",!currentZone);
   if(!currentZone){icon.textContent="👣";label.textContent=t("walkCloser");return}
   icon.textContent=currentZone.icon;
@@ -1569,6 +1714,10 @@ function updateInteractions(){
 
 function interact(){
   if(!started||isPaused(false))return;
+  if(ownerCheckoutSession){
+    if(scan||checkoutQueue.length){toast(t("finishCurrentQueue"),1500);return}
+    leaveOwnerSeat();toast(t("ownerStoodUp"));return;
+  }
   if(!currentZone){toast(t("walkCloser"));return}
   if(currentZone.kind==="market"){
     if(state.tutorialStep===0)state.tutorialStep=1;
@@ -1607,17 +1756,18 @@ function updateHUD(){
   $("tutorialText").textContent=t(tutorialKey);$("tutorial").classList.toggle("hidden",state.tutorialStep>6);
   $("carrying").classList.toggle("hidden",!carrying);
   if(carrying)$("carryingText").textContent=t("carrying",{amount:localNumber(carrying.amount),item:productName(carrying.id)});
-  const cargo=cargoCount(state.truckCargo),deliveryVisible=state.delivery.active||cargo>0;
+  const cargo=cargoCount(state.truckCargo),deliveryVisible=state.delivery.active||state.delivery.arrived||state.delivery.unloading||cargo>0;
   $("deliveryStatus").classList.toggle("hidden",!deliveryVisible);
   if(deliveryVisible){
-    const ratio=state.delivery.active?state.delivery.progress/state.delivery.duration:0;
-    $("deliveryText").textContent=state.delivery.active?t("deliveryStatus",{seconds:localNumber(Math.max(0,Math.ceil(state.delivery.duration-state.delivery.progress)))}):t("waitingDelivery");
+    const ratio=state.delivery.unloading?state.delivery.unloadProgress/state.delivery.unloadDuration:state.delivery.active?state.delivery.progress/state.delivery.duration:0;
+    $("deliveryText").textContent=state.delivery.unloading?t("unloadingStatus",{seconds:localNumber(Math.max(0,Math.ceil(state.delivery.unloadDuration-state.delivery.unloadProgress))),count:localNumber(state.delivery.labourers)}):state.delivery.active?t("deliveryStatus",{seconds:localNumber(Math.max(0,Math.ceil(state.delivery.duration-state.delivery.progress)))}):state.delivery.arrived?t("truckNeedsUnload"):t("waitingDelivery");
     $("deliveryFill").style.width=`${Math.min(100,ratio*100)}%`;
   }
   const low=PRODUCTS.filter(item=>state.shelfStock[item.id]<=2).map(item=>productName(item.id));
   $("lowStock").classList.toggle("hidden",!low.length);
   if(low.length)$("lowStockText").textContent=t("lowStock",{items:low.join("، ")});
   $("staffBtn").classList.toggle("staff-active",Boolean(state.staff.cashier||state.staff.restocker));
+  $("truckBtn")?.classList.toggle("transport-alert",Boolean(cargo||state.delivery.arrived||state.delivery.unloading));
   if(marketMarker)marketMarker.visible=state.tutorialStep<=2;
 }
 
@@ -1628,6 +1778,7 @@ function panelFrame(icon,title,html){$("panelIcon").textContent=icon;$("panelTit
 
 function renderPanel(type){
   if(type==="market")renderMarket();
+  else if(type==="transport")renderTransport();
   else if(type==="stockroom")renderStockroom();
   else if(type==="upgrades")renderUpgrades();
   else if(type==="staff")renderStaff();
@@ -1668,6 +1819,43 @@ function renderManagement(){
   }));
 }
 
+function handleDispatchTruck(closeAfter=false){
+  const result=dispatchTruck(state);
+  if(!result.ok){toast(t(result.reason));tone("miss");return false}
+  if(state.tutorialStep===2)state.tutorialStep=3;
+  refreshTruckCargo();save();updateHUD();updateWorldLabelText();toast(t("truckDrivingStarted",{seconds:localNumber(result.duration)}),2300);tone("up");
+  if(closeAfter)closePanel();else if(currentPanel)renderPanel(currentPanel);
+  return true;
+}
+
+function handleStartUnloading(count){
+  const result=startUnloading(state,count);
+  if(!result.ok){toast(t(result.reason));tone("miss");return false}
+  ensureLabourerModels();save();updateHUD();updateWorldLabelText();toast(t("labourersPaid",{count:localNumber(result.labourers),cost:localNumber(result.cost)}),2600);tone("up");closePanel();return true;
+}
+
+function renderTransport(){
+  const waiting=cargoCount(state.truckCargo),onTruck=cargoCount(state.delivery.cargo),fee=deliveryFee(state);
+  let status=t("truckEmptyStatus"),action="";
+  if(state.delivery.unloading){
+    const seconds=Math.max(0,Math.ceil(state.delivery.unloadDuration-state.delivery.unloadProgress));
+    status=t("unloadingStatus",{seconds:localNumber(seconds),count:localNumber(state.delivery.labourers)});
+  }else if(state.delivery.active){
+    status=t("deliveryStatus",{seconds:localNumber(Math.max(0,Math.ceil(state.delivery.duration-state.delivery.progress)))});
+  }else if(state.delivery.arrived){
+    status=t("truckNeedsUnload");
+    action=`<div class="labour-actions"><button id="oneLabourerBtn" class="card-btn green" ${state.operatingBudget<labourWage(1)?"disabled":""}>👷 ${t("hireOneLabourer")}<br>${money(labourWage(1))}</button><button id="twoLabourersBtn" class="card-btn green" ${state.operatingBudget<labourWage(2)?"disabled":""}>👷👷 ${t("hireTwoLabourers")}<br>${money(labourWage(2))}</button></div>`;
+  }else if(waiting){
+    status=t("truckAtMarket",{count:localNumber(waiting)});
+    action=`<button id="transportDispatchBtn" class="transport-primary" ${state.operatingBudget<fee?"disabled":""}>🚚 ${t("driveTruck")}<small>${t("deliveryFee",{fee:localNumber(fee)})}</small></button>`;
+  }
+  const count=state.delivery.active||state.delivery.arrived||state.delivery.unloading?onTruck:waiting;
+  panelFrame("🚚",t("transport"),`<div class="transport-card"><div class="transport-road"><span>🏬</span><i>······</i><span>🚚</span><i>······</i><span>🏪</span></div><strong>${status}</strong><small>${t("truckCargo",{count:localNumber(count)})} • ${t("truckDriverLabel")}</small></div><p class="panel-note">${t("transportHint")}</p>${action}`);
+  $("transportDispatchBtn")?.addEventListener("click",()=>handleDispatchTruck(false));
+  $("oneLabourerBtn")?.addEventListener("click",()=>handleStartUnloading(1));
+  $("twoLabourersBtn")?.addEventListener("click",()=>handleStartUnloading(2));
+}
+
 function renderMarket(){
   const cards=PRODUCTS.map(item=>{
     const price=marketPrice(state,item.id),trend=marketTrend(state,item.id);
@@ -1676,8 +1864,8 @@ function renderMarket(){
     return `<article class="product-card market-card"><div class="product-art">${item.emoji}</div><div class="card-copy"><strong>${productName(item.id)}</strong><small class="brand-list">${t("brandNames",{brands})}</small><small>${t("packageUnit",{unit:productUnit(item.id)})}</small><small>${t("unitPrice",{price:localNumber(price)})} • ${t("sellingPrice",{price:localNumber(retailPrice(state,item.id))})}</small><small>${t("truckStock",{count:localNumber(state.truckCargo[item.id])})} • ${t("warehouseStock",{count:localNumber(state.warehouse[item.id])})}</small><i class="trend ${trend}">${t(trend)}</i></div><div class="bargain-actions"><button data-buy="${item.id}" data-offer="direct" ${state.salesFund<direct?"disabled":""}>${t("directOffer")}<br>${money(direct)}</button><button data-buy="${item.id}" data-offer="fair" ${state.salesFund<fair?"disabled":""}>${t("fairOffer")}<br>${money(fair)}</button><button data-buy="${item.id}" data-offer="bold" ${state.salesFund<bold?"disabled":""}>${t("boldOffer")}<br>${money(bold)}</button></div></article>`;
   }).join("");
   const cargo=cargoCount(state.truckCargo),fee=deliveryFee(state);
-  const dispatchDisabled=!cargo||state.delivery.active||state.operatingBudget<fee;
-  const truckSummary=`<div class="panel-note cargo-summary"><span>🚚 ${t("truckCargo",{count:localNumber(cargo)})}<br><small>${t("deliveryFee",{fee:localNumber(fee)})}</small></span><button id="dispatchTruckBtn" class="card-btn green" ${dispatchDisabled?"disabled":""}>${state.delivery.active?t("deliveryRunning"):t("dispatchTruck")}</button></div>`;
+  const dispatchDisabled=!cargo||state.delivery.active||state.delivery.arrived||state.delivery.unloading||state.operatingBudget<fee;
+  const truckSummary=`<div class="panel-note cargo-summary"><span>🚚 ${t("truckCargo",{count:localNumber(cargo)})}<br><small>${t("deliveryFee",{fee:localNumber(fee)})}</small></span><button id="dispatchTruckBtn" class="card-btn green" ${dispatchDisabled?"disabled":""}>${state.delivery.active?t("deliveryRunning"):t("driveTruck")}</button></div>`;
   panelFrame("🤝",t("market"),`<p class="panel-note">${t("marketHint")}</p>${truckSummary}<p class="panel-note price-note">📊 ${t("priceReference",{date:PRICE_REFERENCE.asOf})}<br>🔄 ${t("priceChangesDaily")}</p><div class="card-list">${cards}</div>`);
   $("panelBody").querySelectorAll("[data-buy]").forEach(button=>button.addEventListener("click",()=>{
     const id=button.dataset.buy;const result=bargainPurchase(state,id,3,button.dataset.offer);
@@ -1686,12 +1874,7 @@ function renderMarket(){
     toast(t("dealAccepted",{amount:localNumber(result.amount)}));tone("coin");refreshTruckCargo();save();updateHUD();updateWorldLabelText();renderMarket();
   }));
   const dispatchButton=$("dispatchTruckBtn");
-  dispatchButton?.addEventListener("click",()=>{
-    const result=dispatchTruck(state);
-    if(!result.ok){toast(t(result.reason));tone("miss");return}
-    if(state.tutorialStep===2)state.tutorialStep=3;
-    refreshTruckCargo();save();updateHUD();updateWorldLabelText();toast(t("deliveryStatus",{seconds:localNumber(result.duration)}),2100);tone("up");closePanel();
-  });
+  dispatchButton?.addEventListener("click",()=>handleDispatchTruck(true));
 }
 
 function renderStaff(){
@@ -1720,7 +1903,7 @@ function renderStaff(){
 function renderStockroom(){
   const available=PRODUCTS.filter(item=>state.warehouse[item.id]>0);
   let cards=available.map(item=>`<article class="product-card"><div class="product-art">${item.emoji}</div><div class="card-copy"><strong>${productName(item.id)}</strong><small>${t("warehouseStock",{count:localNumber(state.warehouse[item.id])})}</small></div><button class="card-btn green" data-pick="${item.id}" ${carrying?"disabled":""}>${t("pick")}</button></article>`).join("");
-  if(!cards)cards=`<p class="panel-note">${state.delivery.active?t("deliveryRunning"):cargoCount(state.truckCargo)?t("waitingDelivery"):t("warehouseEmpty")}</p>`;
+  if(!cards)cards=`<p class="panel-note">${state.delivery.unloading?t("unloadingRunning"):state.delivery.arrived?t("truckNeedsUnload"):state.delivery.active?t("deliveryRunning"):cargoCount(state.truckCargo)?t("waitingDelivery"):t("warehouseEmpty")}</p>`;
   const carryNote=carrying?`<p class="panel-note">${t("carrying",{amount:localNumber(carrying.amount),item:productName(carrying.id)})}</p>`:"";
   panelFrame("📦",t("stockroom"),`${carryNote}<p class="panel-note">${t("stockroomHint")}</p><div class="card-list">${cards}</div>`);
   $("panelBody").querySelectorAll("[data-pick]").forEach(button=>button.addEventListener("click",()=>{
@@ -1761,7 +1944,7 @@ function renderSettings(){
   $("panelBody").querySelectorAll("[data-sound]").forEach(button=>button.addEventListener("click",()=>{state.sound=button.dataset.sound==="on";save();renderSettings();if(state.sound)tone("up")}));
   $("resetBtn").addEventListener("click",()=>{
     if(!confirm(t("resetConfirm")))return;
-    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
+    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();clearLabourerModels();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
   });
 }
 
@@ -1785,6 +1968,7 @@ function setupControls(){
       save();updateHUD();openPanel("market");
     }else{toast(t("walkCloser"));marketMarker.visible=true}
   });
+  $("truckBtn").addEventListener("click",()=>openPanel("transport"));
   $("upgradesBtn").addEventListener("click",()=>openPanel("upgrades"));
   $("managementBtn").addEventListener("click",()=>openPanel("management"));
   $("staffBtn").addEventListener("click",()=>openPanel("staff"));
@@ -1851,7 +2035,8 @@ function animate(time){
   if(started&&!isPaused(false)){
     updateDeliveryTruck(delta);updatePlayer(delta);updateSpawning(delta);
     for(const customer of [...customers])updateCustomer(customer,delta);
-    updateAutomaticCheckout(delta);updateScan(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
+    updateAutomaticCheckout(delta);updateScan(delta);updateOwnerCheckout(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
+    labelRefreshClock+=delta;if(labelRefreshClock>=.3){labelRefreshClock=0;updateWorldLabelText()}
     autosaveClock+=delta;if(autosaveClock>=5){autosaveClock=0;save()}
   }
   updateCamera(delta);updateLabels();renderer.render(scene,camera);

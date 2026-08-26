@@ -4,7 +4,7 @@ import fs from "node:fs";
 import vm from "node:vm";
 import {
   PRODUCTS,PRICE_REFERENCE,BUSINESSES,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,buyWarehouse,bargainPurchase,cargoCount,
-  dispatchTruck,advanceDelivery,deliveryFee,syncCash,cameraRelativeVector,takeCrate,restockShelf,
+  dispatchTruck,advanceDelivery,deliveryFee,labourWage,startUnloading,advanceUnloading,syncCash,cameraRelativeVector,takeCrate,restockShelf,
   createOrder,takeShelfItems,completeSale,missSale,dailyTarget,serveTarget,
   customerWait,checkoutDuration,staffCheckoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay,
   cashierHireCost,cashierWage,hireCashier,restockerHireCost,restockerWage,hireRestocker,restockerTransfer,buyBusiness,businessDailyIncome,adjustCleanliness,recordQueue
@@ -13,7 +13,7 @@ import {
 test("new and migrated games keep all ten fully stocked grocery categories",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,7);
+  assert.equal(fresh.version,8);
   assert.equal(fresh.salesFund,9000);
   assert.equal(fresh.operatingBudget,3000);
   assert.equal(fresh.cameraDistance,18);
@@ -49,6 +49,13 @@ test("market purchase, truck delivery, crate pickup and shelf restock form one s
   assert.equal(cargoCount(state.truckCargo),0);
   assert.equal(advanceDelivery(state,4).arrived,false);
   assert.equal(advanceDelivery(state,6).arrived,true);
+  assert.equal(state.delivery.arrived,true);
+  assert.equal(state.warehouse.flour,0);
+  const budgetBeforeLabour=state.operatingBudget;
+  assert.deepEqual(startUnloading(state,2),{ok:true,cost:labourWage(2),labourers:2,duration:5,count:3});
+  assert.equal(state.operatingBudget,budgetBeforeLabour-labourWage(2));
+  assert.equal(advanceUnloading(state,2).complete,false);
+  assert.equal(advanceUnloading(state,3).complete,true);
   assert.equal(state.warehouse.flour,3);
   const crate=takeCrate(state,"flour");
   assert.deepEqual(crate,{ok:true,id:"flour",amount:3});
