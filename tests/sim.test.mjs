@@ -13,7 +13,7 @@ import {
 test("new and migrated games keep all ten fully stocked grocery categories",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,9);
+  assert.equal(fresh.version,10);
   assert.equal(fresh.salesFund,9000);
   assert.equal(fresh.operatingBudget,3000);
   assert.equal(fresh.cameraDistance,18);

@@ -32,6 +32,9 @@ test("Android entry page uses only packaged assets",()=>{
   }
   assert.ok(fs.readFileSync(path.join(assets,"models/quaternius/QUATERNIUS-CC0-NOTICE.txt"),"utf8").includes("CC0"));
   assert.ok(html.includes("img-src 'self' data:"));
+  assert.ok(html.includes("connect-src 'self'"),"same-origin 3D assets must be fetchable in Android WebView");
+  assert.ok(!html.includes("connect-src 'none'"),"CSP must not block GLTFLoader asset requests");
+  assert.ok(fs.existsSync(path.join(assets,"ui/bazaar-startup.webp")),"missing startup game artwork");
 });
 
 test("Android serves packaged assets from a secure same-origin URL",()=>{
@@ -39,6 +42,19 @@ test("Android serves packaged assets from a secure same-origin URL",()=>{
   assert.ok(activity.includes("https://appassets.androidplatform.net/assets/index.html"));
   assert.ok(!activity.includes('loadUrl("file:///android_asset/index.html")'));
   assert.ok(activity.includes("settings.setAllowFileAccess(false)"));
+});
+
+test("Android launcher uses the gaming artwork at every legacy density and as an adaptive icon",()=>{
+  const res=path.join(root,"app/src/main/res");
+  for(const density of ["mdpi","hdpi","xhdpi","xxhdpi","xxxhdpi"]){
+    const icon=path.join(res,`mipmap-${density}`,"ic_launcher.png");
+    assert.ok(fs.existsSync(icon),`missing ${density} launcher icon`);
+    const bytes=fs.readFileSync(icon);
+    assert.equal(bytes.toString("ascii",1,4),"PNG");
+  }
+  assert.ok(fs.existsSync(path.join(res,"drawable-nodpi/ic_launcher_foreground.png")));
+  assert.ok(fs.existsSync(path.join(res,"mipmap-anydpi-v26/ic_launcher.xml")));
+  assert.ok(!fs.existsSync(path.join(res,"drawable/ic_launcher.xml")),"old house vector must be removed");
 });
 
 test("every translated HTML label exists in all languages",()=>{

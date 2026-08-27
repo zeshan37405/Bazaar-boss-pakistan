@@ -1,6 +1,12 @@
-# Bazaar Boss — v9
+# Bazaar Boss — v10
 
 پاکستانی سپرمارکیٹ پر مبنی ایک آف لائن 3D Android گیم۔ دکان سے باہر اگلی گلی کی منڈی میں جائیں، آڑھتی سے بھاؤ تاؤ کریں، مال ٹرک میں لوڈ کروا کر اسٹور روم منگوائیں، شیلف بھریں اور کرسی پر بیٹھ کر گاہکوں کا بل بنائیں۔
+
+## v10 Android startup اور gaming visuals اپڈیٹ
+
+- Android WebView کی CSP درست؛ packaged rigged characters اور animations اب اسی APK سے offline load ہوتے ہیں
+- خالی سبز startup/error صفحے کی جگہ supermarket، trolley اور shop manager والا portrait game artwork
+- گھر نما پرانے launcher icon کی جگہ premium manager، trolley، groceries اور coins والا adaptive gaming icon
 
 ## v9 حقیقی کردار، مکمل اسکرین کنٹرول اور راستہ بدلنے کی اپڈیٹ
 
