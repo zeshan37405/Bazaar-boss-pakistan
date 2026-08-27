@@ -10,8 +10,8 @@ android {
         applicationId = "com.zeeshan.bazaarboss"
         minSdk = 23
         targetSdk = 35
-        versionCode = 10
-        versionName = "10.0.0"
+        versionCode = 12
+        versionName = "12.0.0"
     }
 
     buildTypes {

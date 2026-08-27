@@ -84,12 +84,24 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(game.includes("beginScreenMovement"));
   assert.ok(bundle.includes("queueWait"));
   assert.ok(bundle.includes("Latif Banaspati Ghee"));
+  assert.ok(bundle.includes("Surf Excel Matic"));
+  assert.ok(bundle.includes("Lifebuoy Total 10"));
+  assert.ok(bundle.includes("Sunsilk Black Shine"));
+  assert.ok(bundle.includes("National Biryani Recipe Mix"));
+  assert.ok(bundle.includes("Vim Lemon Dishwash"));
   assert.ok(bundle.includes("dispatchTruck"));
   assert.ok(bundle.includes("startUnloading"));
   assert.ok(game.includes('t("pleaseGiveWay")'));
   assert.equal(dictionary().en.pleaseGiveWay,"Please give way");
   assert.ok(game.includes("function positionBlocked"));
   assert.ok(game.includes("function updateOwnerCheckout"));
+  assert.ok(game.includes("function chooseWorldDetour"));
+  assert.ok(game.includes("function choosePersonDetour"));
+  assert.ok(game.includes('name="package-brand-product-label-front"'));
+  assert.ok(game.includes('name="package-brand-product-label-back"'));
+  assert.ok(game.includes("visible-checkout-cash"));
+  assert.ok(game.includes('carryStyle="shoulder"'));
+  assert.ok(game.includes("function addCharacterHair"));
   assert.ok(html.includes('id="truckBtn"'));
   assert.ok(html.includes('class="joystick dynamic"'));
   assert.ok(bundle.includes("salesFund"));
@@ -124,6 +136,21 @@ test("rigged male and female models share the animation skeleton and required ac
   for(const action of ["Idle_Loop","Walk_Loop","Sprint_Loop","Push_Loop","PickUp_Table","Interact","Sitting_Idle_Loop","Driving_Loop"]){
     assert.ok(actions.has(action),`animation missing ${action}`);
   }
+});
+
+test("every animated character role receives bone-attached 3D clothes",()=>{
+  assert.ok(game.includes("function addCharacterOutfit"));
+  assert.ok(game.includes("addCharacterOutfit(model,{style,primary:clothes,gender,kind})"));
+  for(const role of ["owner","customer","cashier","restocker","labourer","driver","vendor"]){
+    assert.ok(game.includes(`${role}:{`),`missing ${role} outfit`);
+  }
+  for(const garment of ["outfit-kameez","outfit-upper-sleeve","outfit-lower-sleeve","outfit-shalwar-thigh","outfit-shalwar-calf","outfit-shoe","outfit-cashier-apron","outfit-safety-vest","outfit-waistcoat"]){
+    assert.ok(game.includes(garment),`missing ${garment}`);
+  }
+  for(const bone of ["spine_01","spine_03","upperarm_l","upperarm_r","lowerarm_l","lowerarm_r","thigh_l","thigh_r","calf_l","calf_r","foot_l","foot_r"]){
+    assert.ok(game.includes(`getObjectByName(\"${bone}\")`),`clothes are not attached to ${bone}`);
+  }
+  assert.ok(game.includes("isCharacterClothing=true"));
 });
 
 test("the bundled Three.js runtime executes with valid imported aliases",()=>{

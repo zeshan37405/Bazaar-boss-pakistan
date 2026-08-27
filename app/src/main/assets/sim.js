@@ -53,6 +53,31 @@ export const PRODUCTS=[
     {id:"mitchells",color:"#db3d75",accent:"#ffd55c",n:{ur:"مچلز ملک ٹافی",hi:"मिचेल्स मिल्क टॉफी",en:"Mitchells Milk Toffee"}},
     {id:"candyland",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"کینڈی لینڈ ایکلیئر",hi:"कैंडी लैंड एक्लेयर",en:"Candyland Eclair"}},
     {id:"deemah",color:"#5aa947",accent:"#f4753e",n:{ur:"دیماہ ملک ٹافی",hi:"दीमाह मिल्क टॉफी",en:"Deemah Milk Toffee"}}
+  ]},
+  {id:"detergent",emoji:"🧺",color:0x3f8fc4,cost:530,sell:580,shape:"packet",n:{ur:"کپڑے دھونے کا پاؤڈر",hi:"कपड़े धोने का पाउडर",en:"Laundry detergent"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
+    {id:"surf-excel",color:"#168c66",accent:"#f7d348",n:{ur:"سرف ایکسل میٹک",hi:"सर्फ एक्सेल मैटिक",en:"Surf Excel Matic"}},
+    {id:"ariel",color:"#2f9b59",accent:"#ef4637",n:{ur:"ایریل اوریجنل",hi:"एरियल ओरिजिनल",en:"Ariel Original"}},
+    {id:"sunlight-powder",color:"#f0c532",accent:"#2f8f55",n:{ur:"سن لائٹ واشنگ پاؤڈر",hi:"सनलाइट वॉशिंग पाउडर",en:"Sunlight Washing Powder"}}
+  ]},
+  {id:"soap",emoji:"🧼",color:0x59b7a4,cost:145,sell:165,shape:"soap",n:{ur:"نہانے کا صابن",hi:"नहाने का साबुन",en:"Bath soap"},unit:{ur:"100 گرام ٹکیہ",hi:"100 ग्राम साबुन",en:"100 g bar"},brands:[
+    {id:"lifebuoy",color:"#d33f34",accent:"#ffffff",n:{ur:"لائف بوائے ٹوٹل 10",hi:"लाइफबॉय टोटल 10",en:"Lifebuoy Total 10"}},
+    {id:"lux",color:"#d889a8",accent:"#fff0c4",n:{ur:"لکس سافٹ ٹچ",hi:"लक्स सॉफ्ट टच",en:"LUX Soft Touch"}},
+    {id:"safeguard",color:"#eef2ec",accent:"#3d79b7",n:{ur:"سیف گارڈ پیور وائٹ",hi:"सेफगार्ड प्योर व्हाइट",en:"Safeguard Pure White"}}
+  ]},
+  {id:"shampoo",emoji:"🧴",color:0x7657a8,cost:690,sell:750,shape:"bottle",n:{ur:"شیمپو",hi:"शैम्पू",en:"Shampoo"},unit:{ur:"360 ملی لیٹر بوتل",hi:"360 मिली बोतल",en:"360 ml bottle"},brands:[
+    {id:"sunsilk",color:"#201f25",accent:"#e94c88",n:{ur:"سن سلک بلیک شائن",hi:"सनसिल्क ब्लैक शाइन",en:"Sunsilk Black Shine"}},
+    {id:"head-shoulders",color:"#e8f1f7",accent:"#2d78b7",n:{ur:"ہیڈ اینڈ شولڈرز سموتھ اینڈ سلکی",hi:"हेड एंड शोल्डर्स स्मूथ एंड सिल्की",en:"Head & Shoulders Smooth & Silky"}},
+    {id:"pantene",color:"#e9d9a9",accent:"#5c4434",n:{ur:"پینٹین ہیئر فال کنٹرول",hi:"पैंटीन हेयर फॉल कंट्रोल",en:"Pantene Hair Fall Control"}}
+  ]},
+  {id:"spices",emoji:"🌶️",color:0xd95d39,cost:115,sell:135,shape:"packet",n:{ur:"مصالحہ",hi:"मसाला",en:"Recipe spices"},unit:{ur:"50 گرام پیک",hi:"50 ग्राम पैक",en:"50 g pack"},brands:[
+    {id:"national-biryani",color:"#d39b31",accent:"#8b302c",n:{ur:"نیشنل بریانی ریسیپی مکس",hi:"नेशनल बिरयानी रेसिपी मिक्स",en:"National Biryani Recipe Mix"}},
+    {id:"mehran-curry",color:"#b43d32",accent:"#f5cf57",n:{ur:"مہران کری پاؤڈر",hi:"मेहरान करी पाउडर",en:"Mehran Curry Powder"}},
+    {id:"shan-karahi",color:"#327555",accent:"#f4d56c",n:{ur:"شان کڑاہی مصالحہ",hi:"शान कड़ाही मसाला",en:"Shan Karahi Masala"}}
+  ]},
+  {id:"dishwash",emoji:"🍽️",color:0x62ad4a,cost:265,sell:300,shape:"tin",n:{ur:"برتن دھونے کا صابن",hi:"बर्तन धोने का साबुन",en:"Dishwash cleaner"},unit:{ur:"500 گرام پیک",hi:"500 ग्राम पैक",en:"500 g pack"},brands:[
+    {id:"vim-lemon",color:"#2d8f45",accent:"#f3d73c",n:{ur:"وم لیمن ڈش واش",hi:"विम लेमन डिशवॉश",en:"Vim Lemon Dishwash"}},
+    {id:"sunlight-lemon",color:"#f1cf35",accent:"#3a8f45",n:{ur:"سن لائٹ لیمن",hi:"सनलाइट लेमन",en:"Sunlight Lemon"}},
+    {id:"lemon-max",color:"#79ad38",accent:"#f4df42",n:{ur:"لیمن میکس پیسٹ",hi:"लेमन मैक्स पेस्ट",en:"Lemon Max Paste"}}
   ]}
 ];
 
@@ -67,13 +92,13 @@ export const EVENTS=[
 ];
 
 export const DIFFICULTY={
-  easy:{customers:7,serveRatio:.72,expense:.78},
-  normal:{customers:9,serveRatio:.78,expense:1},
-  hard:{customers:11,serveRatio:.82,expense:1.24}
+  easy:{customers:50,serveRatio:.72,expense:.78},
+  normal:{customers:55,serveRatio:.78,expense:1},
+  hard:{customers:60,serveRatio:.82,expense:1.24}
 };
 
-export const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18};
-export const DEFAULT_WAREHOUSE={flour:36,rice:36,ghee:36,oil:36,sugar:36,pulses:36,milk:36,salt:36,biscuit:36,toffee:36};
+export const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18,detergent:18,soap:18,shampoo:18,spices:18,dishwash:18};
+export const DEFAULT_WAREHOUSE={flour:36,rice:36,ghee:36,oil:36,sugar:36,pulses:36,milk:36,salt:36,biscuit:36,toffee:36,detergent:36,soap:36,shampoo:36,spices:36,dishwash:36};
 export const BUSINESSES={
   vending:{cost:9000,level:2,income:650},
   fruitStand:{cost:15000,level:3,income:1050},
@@ -103,7 +128,7 @@ export function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:10,
+    version:12,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -149,9 +174,10 @@ export function createState(saved,legacy){
     cameraDistance:clamp(Number(source?.version>=7?source.cameraDistance:18),8,30)
   };
   for(const item of PRODUCTS){
+    const newForSavedGame=Boolean(source&&!Number.isFinite(Number(source?.shelfStock?.[item.id])));
     const legacyAmount=old.stock&&Number.isFinite(old.stock[item.id])?old.stock[item.id]:DEFAULT_STOCK[item.id];
     state.shelfStock[item.id]=Math.max(0,Number(source?.shelfStock?.[item.id]??legacyAmount));
-    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??(!source&&!Object.keys(old).length?DEFAULT_WAREHOUSE[item.id]:0)));
+    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??(newForSavedGame||!source&&!Object.keys(old).length?DEFAULT_WAREHOUSE[item.id]:0)));
     state.truckCargo[item.id]=Math.max(0,Number(source?.truckCargo?.[item.id]??0));
     state.delivery.cargo[item.id]=Math.max(0,Number(source?.delivery?.cargo?.[item.id]??0));
     state.priceMarkup[item.id]=clamp(Number(source?.priceMarkup?.[item.id]??1),.85,1.3);
@@ -367,7 +393,7 @@ export function recordQueue(state,length){
 
 export function dailyTarget(state){
   const base=DIFFICULTY[state.difficulty];
-  return Math.min(16,base.customers+Math.floor((state.day-1)/3));
+  return Math.min(80,base.customers+Math.floor((state.day-1)/3)*2);
 }
 
 export function serveTarget(state){return Math.ceil(dailyTarget(state)*DIFFICULTY[state.difficulty].serveRatio)}
@@ -377,7 +403,7 @@ export function customerWait(){return Number.POSITIVE_INFINITY}
 
 export function spawnDelay(state){
   const event=eventForDay(state.day);
-  return Math.max(3.1,(6.4-Math.min(state.day-1,7)*.35)*(event.spawn||1));
+  return Math.max(1.65,(2.75-Math.min(state.day-1,7)*.12)*(event.spawn||1));
 }
 
 export function checkoutDuration(state){return Math.max(.85,2.8-state.upgrades.checkout*.5)}

@@ -10,20 +10,22 @@ import {
   cashierHireCost,cashierWage,hireCashier,restockerHireCost,restockerWage,hireRestocker,restockerTransfer,buyBusiness,businessDailyIncome,adjustCleanliness,recordQueue
 } from "../app/src/main/assets/sim.js";
 
-test("new and migrated games keep all ten fully stocked grocery categories",()=>{
+test("new and migrated games keep all fifteen fully stocked grocery categories",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,10);
+  assert.equal(fresh.version,12);
   assert.equal(fresh.salesFund,9000);
   assert.equal(fresh.operatingBudget,3000);
   assert.equal(fresh.cameraDistance,18);
   assert.equal(shelfCapacity(fresh),18);
-  assert.equal(PRODUCTS.length,10);
+  assert.equal(PRODUCTS.length,15);
   assert.deepEqual(Object.keys(fresh.shelfStock),PRODUCTS.map(item=>item.id));
   assert.ok(Object.values(fresh.shelfStock).every(amount=>amount===shelfCapacity(fresh)));
   assert.ok(PRODUCTS.every(item=>fresh.warehouse[item.id]===DEFAULT_WAREHOUSE[item.id]));
   assert.ok(PRODUCTS.every(item=>item.brands.length>=3));
   assert.ok(PRODUCTS.find(item=>item.id==="ghee").brands.some(brand=>brand.id==="latif"));
+  for(const id of ["detergent","soap","shampoo","spices","dishwash"])assert.ok(PRODUCTS.some(item=>item.id===id),`missing ${id}`);
+  assert.ok(PRODUCTS.find(item=>item.id==="detergent").brands.some(brand=>brand.id==="surf-excel"));
   const migrated=createState(null,{lang:"hi",cash:900,stock:{flour:7},upgrades:{shelf:2}});
   assert.equal(migrated.lang,"hi");
   assert.equal(migrated.cash,900);
@@ -35,6 +37,10 @@ test("new and migrated games keep all ten fully stocked grocery categories",()=>
   assert.ok(PRODUCTS.every(item=>upgradedV4.warehouse[item.id]>=DEFAULT_WAREHOUSE[item.id]));
   const resumed=createState({...fresh,carrying:{id:"rice",amount:2}},null);
   assert.deepEqual(resumed.carrying,{id:"rice",amount:2});
+  const upgradedV10=createState({version:10,cash:12000,salesFund:9000,operatingBudget:3000,shelfStock:{flour:18},warehouse:{flour:2}},null);
+  for(const id of ["detergent","soap","shampoo","spices","dishwash"]){
+    assert.equal(upgradedV10.shelfStock[id],18);assert.equal(upgradedV10.warehouse[id],36);
+  }
 });
 
 test("market purchase, truck delivery, crate pickup and shelf restock form one stock loop",()=>{
@@ -107,6 +113,7 @@ test("difficulty, events and upgrades change real gameplay values",()=>{
   const easy=createState(null,null);easy.difficulty="easy";
   const hard=createState(null,null);hard.difficulty="hard";
   assert.ok(dailyTarget(hard)>dailyTarget(easy));
+  assert.ok(dailyTarget(easy)>=50);
   assert.ok(serveTarget(hard)>serveTarget(easy));
   assert.equal(customerWait(hard),Infinity);
   assert.equal(customerWait(easy),Infinity);

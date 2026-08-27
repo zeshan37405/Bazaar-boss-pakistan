@@ -6824,6 +6824,31 @@ const PRODUCTS=[
     {id:"mitchells",color:"#db3d75",accent:"#ffd55c",n:{ur:"مچلز ملک ٹافی",hi:"मिचेल्स मिल्क टॉफी",en:"Mitchells Milk Toffee"}},
     {id:"candyland",color:"#4c8cc5",accent:"#fff2ce",n:{ur:"کینڈی لینڈ ایکلیئر",hi:"कैंडी लैंड एक्लेयर",en:"Candyland Eclair"}},
     {id:"deemah",color:"#5aa947",accent:"#f4753e",n:{ur:"دیماہ ملک ٹافی",hi:"दीमाह मिल्क टॉफी",en:"Deemah Milk Toffee"}}
+  ]},
+  {id:"detergent",emoji:"🧺",color:0x3f8fc4,cost:530,sell:580,shape:"packet",n:{ur:"کپڑے دھونے کا پاؤڈر",hi:"कपड़े धोने का पाउडर",en:"Laundry detergent"},unit:{ur:"1 کلو پیک",hi:"1 किलो पैक",en:"1 kg pack"},brands:[
+    {id:"surf-excel",color:"#168c66",accent:"#f7d348",n:{ur:"سرف ایکسل میٹک",hi:"सर्फ एक्सेल मैटिक",en:"Surf Excel Matic"}},
+    {id:"ariel",color:"#2f9b59",accent:"#ef4637",n:{ur:"ایریل اوریجنل",hi:"एरियल ओरिजिनल",en:"Ariel Original"}},
+    {id:"sunlight-powder",color:"#f0c532",accent:"#2f8f55",n:{ur:"سن لائٹ واشنگ پاؤڈر",hi:"सनलाइट वॉशिंग पाउडर",en:"Sunlight Washing Powder"}}
+  ]},
+  {id:"soap",emoji:"🧼",color:0x59b7a4,cost:145,sell:165,shape:"soap",n:{ur:"نہانے کا صابن",hi:"नहाने का साबुन",en:"Bath soap"},unit:{ur:"100 گرام ٹکیہ",hi:"100 ग्राम साबुन",en:"100 g bar"},brands:[
+    {id:"lifebuoy",color:"#d33f34",accent:"#ffffff",n:{ur:"لائف بوائے ٹوٹل 10",hi:"लाइफबॉय टोटल 10",en:"Lifebuoy Total 10"}},
+    {id:"lux",color:"#d889a8",accent:"#fff0c4",n:{ur:"لکس سافٹ ٹچ",hi:"लक्स सॉफ्ट टच",en:"LUX Soft Touch"}},
+    {id:"safeguard",color:"#eef2ec",accent:"#3d79b7",n:{ur:"سیف گارڈ پیور وائٹ",hi:"सेफगार्ड प्योर व्हाइट",en:"Safeguard Pure White"}}
+  ]},
+  {id:"shampoo",emoji:"🧴",color:0x7657a8,cost:690,sell:750,shape:"bottle",n:{ur:"شیمپو",hi:"शैम्पू",en:"Shampoo"},unit:{ur:"360 ملی لیٹر بوتل",hi:"360 मिली बोतल",en:"360 ml bottle"},brands:[
+    {id:"sunsilk",color:"#201f25",accent:"#e94c88",n:{ur:"سن سلک بلیک شائن",hi:"सनसिल्क ब्लैक शाइन",en:"Sunsilk Black Shine"}},
+    {id:"head-shoulders",color:"#e8f1f7",accent:"#2d78b7",n:{ur:"ہیڈ اینڈ شولڈرز سموتھ اینڈ سلکی",hi:"हेड एंड शोल्डर्स स्मूथ एंड सिल्की",en:"Head & Shoulders Smooth & Silky"}},
+    {id:"pantene",color:"#e9d9a9",accent:"#5c4434",n:{ur:"پینٹین ہیئر فال کنٹرول",hi:"पैंटीन हेयर फॉल कंट्रोल",en:"Pantene Hair Fall Control"}}
+  ]},
+  {id:"spices",emoji:"🌶️",color:0xd95d39,cost:115,sell:135,shape:"packet",n:{ur:"مصالحہ",hi:"मसाला",en:"Recipe spices"},unit:{ur:"50 گرام پیک",hi:"50 ग्राम पैक",en:"50 g pack"},brands:[
+    {id:"national-biryani",color:"#d39b31",accent:"#8b302c",n:{ur:"نیشنل بریانی ریسیپی مکس",hi:"नेशनल बिरयानी रेसिपी मिक्स",en:"National Biryani Recipe Mix"}},
+    {id:"mehran-curry",color:"#b43d32",accent:"#f5cf57",n:{ur:"مہران کری پاؤڈر",hi:"मेहरान करी पाउडर",en:"Mehran Curry Powder"}},
+    {id:"shan-karahi",color:"#327555",accent:"#f4d56c",n:{ur:"شان کڑاہی مصالحہ",hi:"शान कड़ाही मसाला",en:"Shan Karahi Masala"}}
+  ]},
+  {id:"dishwash",emoji:"🍽️",color:0x62ad4a,cost:265,sell:300,shape:"tin",n:{ur:"برتن دھونے کا صابن",hi:"बर्तन धोने का साबुन",en:"Dishwash cleaner"},unit:{ur:"500 گرام پیک",hi:"500 ग्राम पैक",en:"500 g pack"},brands:[
+    {id:"vim-lemon",color:"#2d8f45",accent:"#f3d73c",n:{ur:"وم لیمن ڈش واش",hi:"विम लेमन डिशवॉश",en:"Vim Lemon Dishwash"}},
+    {id:"sunlight-lemon",color:"#f1cf35",accent:"#3a8f45",n:{ur:"سن لائٹ لیمن",hi:"सनलाइट लेमन",en:"Sunlight Lemon"}},
+    {id:"lemon-max",color:"#79ad38",accent:"#f4df42",n:{ur:"لیمن میکس پیسٹ",hi:"लेमन मैक्स पेस्ट",en:"Lemon Max Paste"}}
   ]}
 ];
 
@@ -6838,13 +6863,13 @@ const EVENTS=[
 ];
 
 const DIFFICULTY={
-  easy:{customers:7,serveRatio:.72,expense:.78},
-  normal:{customers:9,serveRatio:.78,expense:1},
-  hard:{customers:11,serveRatio:.82,expense:1.24}
+  easy:{customers:50,serveRatio:.72,expense:.78},
+  normal:{customers:55,serveRatio:.78,expense:1},
+  hard:{customers:60,serveRatio:.82,expense:1.24}
 };
 
-const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18};
-const DEFAULT_WAREHOUSE={flour:36,rice:36,ghee:36,oil:36,sugar:36,pulses:36,milk:36,salt:36,biscuit:36,toffee:36};
+const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18,detergent:18,soap:18,shampoo:18,spices:18,dishwash:18};
+const DEFAULT_WAREHOUSE={flour:36,rice:36,ghee:36,oil:36,sugar:36,pulses:36,milk:36,salt:36,biscuit:36,toffee:36,detergent:36,soap:36,shampoo:36,spices:36,dishwash:36};
 const BUSINESSES={
   vending:{cost:9000,level:2,income:650},
   fruitStand:{cost:15000,level:3,income:1050},
@@ -6874,7 +6899,7 @@ function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:10,
+    version:12,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -6920,9 +6945,10 @@ function createState(saved,legacy){
     cameraDistance:clamp(Number(source?.version>=7?source.cameraDistance:18),8,30)
   };
   for(const item of PRODUCTS){
+    const newForSavedGame=Boolean(source&&!Number.isFinite(Number(source?.shelfStock?.[item.id])));
     const legacyAmount=old.stock&&Number.isFinite(old.stock[item.id])?old.stock[item.id]:DEFAULT_STOCK[item.id];
     state.shelfStock[item.id]=Math.max(0,Number(source?.shelfStock?.[item.id]??legacyAmount));
-    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??(!source&&!Object.keys(old).length?DEFAULT_WAREHOUSE[item.id]:0)));
+    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??(newForSavedGame||!source&&!Object.keys(old).length?DEFAULT_WAREHOUSE[item.id]:0)));
     state.truckCargo[item.id]=Math.max(0,Number(source?.truckCargo?.[item.id]??0));
     state.delivery.cargo[item.id]=Math.max(0,Number(source?.delivery?.cargo?.[item.id]??0));
     state.priceMarkup[item.id]=clamp(Number(source?.priceMarkup?.[item.id]??1),.85,1.3);
@@ -7138,7 +7164,7 @@ function recordQueue(state,length){
 
 function dailyTarget(state){
   const base=DIFFICULTY[state.difficulty];
-  return Math.min(16,base.customers+Math.floor((state.day-1)/3));
+  return Math.min(80,base.customers+Math.floor((state.day-1)/3)*2);
 }
 
 function serveTarget(state){return Math.ceil(dailyTarget(state)*DIFFICULTY[state.difficulty].serveRatio)}
@@ -7148,7 +7174,7 @@ function customerWait(){return Number.POSITIVE_INFINITY}
 
 function spawnDelay(state){
   const event=eventForDay(state.day);
-  return Math.max(3.1,(6.4-Math.min(state.day-1,7)*.35)*(event.spawn||1));
+  return Math.max(1.65,(2.75-Math.min(state.day-1,7)*.12)*(event.spawn||1));
 }
 
 function checkoutDuration(state){return Math.max(.85,2.8-state.upgrades.checkout*.5)}
@@ -7277,9 +7303,13 @@ const LEGACY_KEY="bazaarBossPakistanV1";
 const $=id=>document.getElementById(id);
 const clamp=THREE.MathUtils.clamp;
 const rand=(min,max)=>min+Math.random()*(max-min);
+const STORE_BOUNDS={minX:-15.25,maxX:15.25,minZ:-10.45,maxZ:25.8};
+const CHECKOUT_LAYOUT={counterX:7.8,counterZ:9.2,queueX:4.95,queueHeadZ:7.55,scanX:6.15,scanZ:7.78,ownerSeatX:7.03,cashierSeatX:8.53,seatZ:10.29};
 const PRODUCT_SHELVES={
-  flour:{x:-9.35,z:-7.6,side:-1},rice:{x:-9.35,z:-3.8,side:-1},sugar:{x:-9.35,z:0,side:-1},pulses:{x:-9.35,z:3.8,side:-1},salt:{x:-9.35,z:7.6,side:-1},
-  ghee:{x:9.35,z:-7.6,side:1},oil:{x:9.35,z:-3.8,side:1},milk:{x:9.35,z:0,side:1},biscuit:{x:9.35,z:3.8,side:1},toffee:{x:9.35,z:7.6,side:1}
+  flour:{x:-12.6,z:-7.6,side:-1},rice:{x:-12.6,z:-3.8,side:-1},sugar:{x:-12.6,z:0,side:-1},pulses:{x:-12.6,z:3.8,side:-1},salt:{x:-12.6,z:7.6,side:-1},
+  ghee:{x:12.6,z:-7.6,side:1},oil:{x:12.6,z:-3.8,side:1},milk:{x:12.6,z:0,side:1},biscuit:{x:12.6,z:3.8,side:1},toffee:{x:12.6,z:7.6,side:1},
+  detergent:{x:-3.8,z:-5.4,side:-1},soap:{x:-3.8,z:-1.4,side:-1},shampoo:{x:-3.8,z:2.6,side:-1},
+  spices:{x:3.8,z:-5.4,side:1},dishwash:{x:3.8,z:-1.4,side:1}
 };
 const EVENT_TEXT={
   normal:["eventNormal","eventNormalD"],wedding:["eventWedding","eventWeddingD"],
@@ -7301,7 +7331,7 @@ const CHARACTER_ACTIONS={
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
-let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea;
+let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,counterCashGroup,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea;
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
 let scan=null,ownerCheckoutSession=null,ownerCheckoutDelay=0,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0,labelRefreshClock=0,nextPersonId=1,giveWayToastAt=0;
@@ -7310,6 +7340,8 @@ const animatedCharacters=new Set();
 const shelves=new Map();
 const packageTextureCache=new Map();
 const surfaceTextureCache=new Map();
+const garmentGeometryCache=new Map();
+const garmentMaterialCache=new Map();
 const blockers=[];
 const zones=[];
 const customers=[];
@@ -7381,6 +7413,10 @@ function localNumber(value){
 }
 
 function money(value){return `₨${Math.round(Number(value)||0).toLocaleString("en-PK")}`}
+
+function customerClothingColor(seed){
+  const color=new THREE.Color();color.setHSL((Number(seed)*.61803398875)%1,.42+(seed%3)*.07,.38+(seed%4)*.035);return color.getHex();
+}
 
 function applyLanguage(){
   document.documentElement.lang=state.lang;
@@ -7505,9 +7541,9 @@ function buildWorld(){
   sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
   const fill=new THREE.DirectionalLight(0xaad5ff,.75);fill.position.set(10,7,-8);scene.add(fill);
 
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(24,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[6,6],roughness:.82}));
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[8,6],roughness:.82}));
   floor.rotation.x=-Math.PI/2;floor.position.z=-.1;floor.receiveShadow=true;scene.add(floor);
-  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(14.5,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
+  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(22,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
   aisle.rotation.x=-Math.PI/2;aisle.position.set(0,.018,-.4);scene.add(aisle);
   addFloorTiles();
   buildWalls();
@@ -7532,10 +7568,10 @@ function buildWorld(){
 function addFloorTiles(){
   const lineMaterial=new THREE.LineBasicMaterial({color:0xd1ae78,transparent:true,opacity:.35});
   for(let z=-10;z<=10;z+=2){
-    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-8.8,.025,z),new THREE.Vector3(8.8,.025,z)]);
+    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-14.5,.025,z),new THREE.Vector3(14.5,.025,z)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
-  for(let x=-11;x<=11;x+=2){
+  for(let x=-15;x<=15;x+=2){
     const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,.026,-11),new THREE.Vector3(x,.026,11)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
@@ -7543,17 +7579,17 @@ function addFloorTiles(){
 
 function buildWalls(){
   const wallMat=texturedMaterial("textures/wall-plaster.webp",{repeat:[5,2],roughness:.92});
-  box(scene,[24,3.8,.3],[0,1.9,-11],0,wallMat);
-  box(scene,[.3,3.8,22],[-11.85,1.9,0],0,wallMat);
-  box(scene,[.3,3.8,22],[11.85,1.9,0],0,wallMat);
-  box(scene,[9,3.8,.22],[-7.5,1.9,11],0,wallMat);
-  box(scene,[9,3.8,.22],[7.5,1.9,11],0,wallMat);
-  box(scene,[24,.3,.3],[0,3.75,-11],0x176b56);
-  box(scene,[.35,.28,22],[-11.78,3.72,0],0xd44a3d);
-  box(scene,[.35,.28,22],[11.78,3.72,0],0xd44a3d);
+  box(scene,[32,3.8,.3],[0,1.9,-11],0,wallMat);
+  box(scene,[.3,3.8,22],[-15.85,1.9,0],0,wallMat);
+  box(scene,[.3,3.8,22],[15.85,1.9,0],0,wallMat);
+  box(scene,[13,3.8,.22],[-9.5,1.9,11],0,wallMat);
+  box(scene,[13,3.8,.22],[9.5,1.9,11],0,wallMat);
+  box(scene,[32,.3,.3],[0,3.75,-11],0x176b56);
+  box(scene,[.35,.28,22],[-15.78,3.72,0],0xd44a3d);
+  box(scene,[.35,.28,22],[15.78,3.72,0],0xd44a3d);
   for(let z=-9;z<11;z+=4){
-    box(scene,[.12,2.9,.12],[-11.62,1.48,z],0x176b56);
-    box(scene,[.12,2.9,.12],[11.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[-15.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[15.62,1.48,z],0x176b56);
   }
   const signCanvas=document.createElement("canvas");signCanvas.width=512;signCanvas.height=150;
   const context=signCanvas.getContext("2d");
@@ -7628,6 +7664,8 @@ function refreshServiceBusinesses(){
   updateWorldLabelText();
 }
 
+function shelfAccessX(layout){return layout.x-layout.side*1.6}
+
 function buildShelves(){
   const wood=texturedMaterial("textures/shelf-wood.webp",{repeat:[2,1],roughness:.66,color:0xd9b18c});
   for(const item of PRODUCTS){
@@ -7642,7 +7680,7 @@ function buildShelves(){
     const entry={id:item.id,group,holders:new THREE.Group(),signHolder:new THREE.Group(),layout};
     group.add(entry.holders,entry.signHolder);shelves.set(item.id,entry);
     blockers.push({minX:layout.x-1.05,maxX:layout.x+1.05,minZ:layout.z-1.65,maxZ:layout.z+1.65});
-    zones.push({kind:"shelf",id:item.id,x:layout.side<0?-7.75:7.75,z:layout.z,icon:item.emoji});
+    zones.push({kind:"shelf",id:item.id,x:shelfAccessX(layout),z:layout.z,icon:item.emoji});
     addWorldLabel("shelf",()=>new THREE.Vector3(layout.x-layout.side*.78,3.22,layout.z),()=>`${item.emoji} ${productName(item.id)} • ${money(retailPrice(state,item.id))} • ${t("shelfStock",{stock:localNumber(state.shelfStock[item.id]),cap:localNumber(shelfCapacity(state))})}`);
     refreshShelfVisual(item.id);
   }
@@ -7658,13 +7696,13 @@ function packageLabelTexture(item,brandId){
   context.fillStyle=brand.color;context.fillRect(0,0,512,132);
   context.fillStyle=brand.accent;context.fillRect(0,132,512,16);context.fillRect(0,470,512,42);
   context.textAlign="center";context.textBaseline="middle";context.direction=state.lang==="en"?"ltr":"rtl";
-  context.fillStyle="#ffffff";context.font="900 53px Arial, sans-serif";context.fillText(brandName(item.id,brand.id),256,65,465);
+  context.fillStyle="#ffffff";context.font="900 53px Arial, sans-serif";context.fillText(brand.n.en,256,65,465);
   context.fillStyle=brand.accent;context.beginPath();context.arc(67,194,34,0,Math.PI*2);context.fill();
   context.fillStyle="#ffffff";context.font="900 29px Arial";context.fillText(brandName(item.id,brand.id).trim().slice(0,1),67,195);
   context.fillStyle="#17323a";context.font="900 57px Arial, sans-serif";context.fillText(productName(item.id),256,239,445);
   context.font="60px Arial";context.fillText(item.emoji,256,331);
   context.font="800 32px Arial, sans-serif";context.fillText(productUnit(item.id),256,405,430);
-  context.fillStyle="#4a5759";context.font="700 18px Arial";context.fillText("PAKISTAN • QUALITY PACK",256,451,430);
+  context.fillStyle="#4a5759";context.font="700 18px Arial";context.fillText(`${brandName(item.id,brand.id)} • PAKISTAN`,256,451,430);
   context.fillStyle="#1e2729";for(let x=397;x<474;x+=7)context.fillRect(x,169,(x%3)+2,48);
   const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;packageTextureCache.set(key,texture);return texture;
 }
@@ -7686,6 +7724,9 @@ function createProductPackage(item,brandId=item.brands[0].id){
     box(group,[.36,.52,.19],[0,-.01,0],displayColor);
     const roof=new THREE.Mesh(new THREE.ConeGeometry(.22,.16,4),standard(displayColor));roof.rotation.y=Math.PI/4;roof.position.y=.33;group.add(roof);
     cylinder(group,.035,.13,[.11,.39,0],0xf3f0e5,8);
+  }else if(item.shape==="soap"){
+    box(group,[.42,.25,.17],[0,0,0],displayColor);
+    box(group,[.43,.045,.175],[0,.08,0],brand.accent?new THREE.Color(brand.accent).getHex():0xf5bd3c);
   }else if(item.shape==="packet"){
     box(group,[.38,.45,.16],[0,0,0],displayColor);
     box(group,[.39,.08,.165],[0,.06,0],0xf5bd3c);
@@ -7695,9 +7736,12 @@ function createProductPackage(item,brandId=item.brands[0].id){
       const sweet=new THREE.Mesh(new THREE.SphereGeometry(.045,7,5),standard(x===0?0xf5bd3c:0x63b9d3));sweet.position.set(x,.07,.09);group.add(sweet);
     }
   }
-  const frontZ=(item.shape==="tin"||item.shape==="bottle") ? 0.242 : item.shape==="bag" ? 0.16 : 0.086;
-  const label=new THREE.Mesh(new THREE.PlaneGeometry(.32,.3),new THREE.MeshBasicMaterial({map:packageLabelTexture(item,brand.id),side:THREE.DoubleSide,transparent:true}));
+  const frontZ=(item.shape==="tin"||item.shape==="bottle") ? 0.242 : item.shape==="bag" ? 0.16 : 0.091;
+  const labelMaterial=new THREE.MeshBasicMaterial({map:packageLabelTexture(item,brand.id),side:THREE.DoubleSide,transparent:true});
+  const label=new THREE.Mesh(new THREE.PlaneGeometry(.33,.31),labelMaterial);label.name="package-brand-product-label-front";
   label.position.set(0,-.015,frontZ);group.add(label);
+  const backLabel=label.clone();backLabel.name="package-brand-product-label-back";backLabel.position.z=-frontZ;backLabel.rotation.y=Math.PI;group.add(backLabel);
+  group.userData={product:item.id,brand:brand.id,labelled:true};
   return group;
 }
 
@@ -7850,9 +7894,18 @@ function clearLabourerModels(){
 
 function createStockCrate(item,name="carried-crate"){
   const crate=new THREE.Group();crate.name=name;crate.userData.id=item.id;
+  if(item.id==="flour"){
+    const brand=item.brands[0],sack=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.38,14,10),standard(new THREE.Color(brand.color).getHex())));
+    sack.scale.set(1,1.24,.68);crate.add(sack);cylinder(crate,.065,.15,[0,.47,0],0x8b633c,8);
+    const label=new THREE.Mesh(new THREE.PlaneGeometry(.48,.36),new THREE.MeshBasicMaterial({map:packageLabelTexture(item,brand.id),side:THREE.DoubleSide}));
+    label.position.set(0,0,.265);crate.add(label);
+    crate.userData.carryStyle="shoulder";crate.userData.shoulderOffsetY=.18;crate.userData.shoulderOffsetZ=.1;
+    return crate;
+  }
   box(crate,[.78,.55,.62],[0,0,0],0x9c6338);
   box(crate,[.58,.38,.64],[0,.09,0],item.color);
   const pack=createProductPackage(item,item.brands[0].id);pack.scale.setScalar(.72);pack.position.set(0,.16,.34);crate.add(pack);
+  crate.userData.carryStyle="both";crate.userData.holdOffsetY=-.12;crate.userData.holdOffsetZ=.5;
   return crate;
 }
 
@@ -7863,7 +7916,7 @@ function ensureLabourerModels(){
   for(let index=0;index<needed;index++){
     const mesh=createHumanoid(index?0x316fa0:0xc66a32,SKINS[(index+1)%SKINS.length],false,{style:"labourer",kind:index+1});
     mesh.scale.setScalar(.94);mesh.userData.labourerIndex=index;mesh.userData.labourPathIndex=0;
-    const crate=createStockCrate(PRODUCTS[(state.day+index)%PRODUCTS.length],"labour-crate");crate.scale.setScalar(.9);setHeldObject(mesh,crate,"both");
+    const crate=createStockCrate(PRODUCTS[(state.day+index)%PRODUCTS.length],"labour-crate");crate.scale.setScalar(.9);setHeldObject(mesh,crate,"auto");
     scene.add(mesh);labourerMeshes.push(mesh);
     labourerLabels.push(addWorldLabel("customer",()=>mesh.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>mesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("dailyLabourer")} ${localNumber(index+1)}`));
   }
@@ -7896,18 +7949,35 @@ function buildCheckout(){
   for(let x=-.98;x<=-.5;x+=.12)for(let z=.39;z<=.56;z+=.085)box(counter,[.075,.018,.05],[x,1.606,z],0x39474b,basic(0x39474b));
   box(counter,[.65,.38,.5],[1.2,1.55,.12],0xddd9ce);
   const scannerGlow=box(counter,[.32,.035,.34],[-.08,1.565,0],0x78e5da,basic(0x78e5da));scannerGlow.userData.scanner=true;
+  counterCashGroup=new THREE.Group();counterCashGroup.name="visible-checkout-cash";counter.add(counterCashGroup);
   checkoutSign=new THREE.Group();counter.add(checkoutSign);
-  counter.position.set(4.95,0,9.2);scene.add(counter);
-  buildChair(4.18,10.35,0x176b56);buildChair(5.68,10.35,0x245b88);
-  blockers.push({minX:2.72,maxX:7.25,minZ:8.12,maxZ:10.82});
-  zones.push({kind:"checkout",x:2.25,z:9.0,icon:"🧾"});
-  addWorldLabel("interact",()=>new THREE.Vector3(4.95,2.65,9.2),()=>`🧾 ${t("checkoutLabel")}`);
-  addWorldLabel("customer",()=>new THREE.Vector3(2.35,2.4,7.55),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
-  for(let index=0;index<6;index++){
+  counter.position.set(CHECKOUT_LAYOUT.counterX,0,CHECKOUT_LAYOUT.counterZ);scene.add(counter);
+  buildChair(CHECKOUT_LAYOUT.ownerSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x176b56);buildChair(CHECKOUT_LAYOUT.cashierSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x245b88);
+  blockers.push({kind:"checkout",minX:CHECKOUT_LAYOUT.counterX-2.23,maxX:CHECKOUT_LAYOUT.counterX+2.3,minZ:CHECKOUT_LAYOUT.counterZ-1.08,maxZ:CHECKOUT_LAYOUT.counterZ+1.62});
+  zones.push({kind:"checkout",x:CHECKOUT_LAYOUT.queueX,z:9.0,icon:"🧾"});
+  addWorldLabel("interact",()=>new THREE.Vector3(CHECKOUT_LAYOUT.counterX,2.65,CHECKOUT_LAYOUT.counterZ),()=>`🧾 ${t("checkoutLabel")}`);
+  addWorldLabel("customer",()=>new THREE.Vector3(CHECKOUT_LAYOUT.queueX,2.4,CHECKOUT_LAYOUT.queueHeadZ),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
+  for(let index=0;index<12;index++){
     const marker=new THREE.Mesh(new THREE.RingGeometry(.3,.38,20),new THREE.MeshBasicMaterial({color:index?0xf0b83d:0x2cb78b,transparent:true,opacity:.55,side:THREE.DoubleSide}));
-    marker.rotation.x=-Math.PI/2;marker.position.set(2.25,.035,7.55-index*1.02);scene.add(marker);
+    marker.rotation.x=-Math.PI/2;marker.position.set(CHECKOUT_LAYOUT.queueX,.035,CHECKOUT_LAYOUT.queueHeadZ-index*.92);scene.add(marker);
   }
-  refreshCheckoutSign();
+  refreshCheckoutSign();refreshCounterCash();
+}
+
+function refreshCounterCash(){
+  if(!counterCashGroup)return;
+  while(counterCashGroup.children.length)counterCashGroup.remove(counterCashGroup.children[0]);
+  const noteCount=Math.min(30,Math.max(0,Math.floor(state.servedToday||0)));
+  for(let index=0;index<noteCount;index++){
+    const pile=Math.floor(index/10),layer=index%10;
+    const note=box(counterCashGroup,[.32,.012,.16],[.98+pile*.36,1.585+layer*.014,.38],0x4f9a64,basic(0x4f9a64));
+    note.rotation.y=(index%3-1)*.08;
+    box(note,[.13,.003,.035],[0,.009,0],0xd9efc8,basic(0xd9efc8));
+  }
+  const coins=Math.min(12,Math.floor((state.revenueToday||0)/500));
+  for(let index=0;index<coins;index++){
+    cylinder(counterCashGroup,.055,.012,[.72+(index%4)*.12,1.59+Math.floor(index/4)*.018,.56],0xe5b83d,12);
+  }
 }
 
 function buildManagementDesk(){
@@ -7957,7 +8027,7 @@ function refreshCashierCharacter(){
   removeCashier();
   if(!state.staff.cashier)return;
   cashierMesh=createHumanoid(0x245b88,SKINS[3],false,{style:"cashier"});
-  cashierMesh.position.set(5.68,-.17,10.29);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
+  cashierMesh.position.set(CHECKOUT_LAYOUT.cashierSeatX,-.17,CHECKOUT_LAYOUT.seatZ);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
   cashierLabel=addWorldLabel("interact",()=>cashierMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`👨‍💼 ${t("cashierLabel")} • ${localNumber(state.staff.cashier)}/2`);
 }
 
@@ -7988,8 +8058,8 @@ function updateRestocker(delta){
       .sort((a,b)=>state.shelfStock[a.id]-state.shelfStock[b.id])[0];
     if(!item){restockerCooldown=2.5;animateHumanoid(restockerMesh,false,0);return}
     const layout=PRODUCT_SHELVES[item.id];
-    restockerJob={id:item.id,phase:"toShelf",timer:.9,target:new THREE.Vector3(layout.side<0?-7.75:7.75,0,layout.z)};
-    const crate=createStockCrate(item,"restocker-crate");crate.scale.setScalar(.86);setHeldObject(restockerMesh,crate,"both");
+    restockerJob={id:item.id,phase:"toShelf",timer:.9,target:new THREE.Vector3(shelfAccessX(layout),0,layout.z)};
+    const crate=createStockCrate(item,"restocker-crate");crate.scale.setScalar(.86);setHeldObject(restockerMesh,crate,"auto");
     updateWorldLabelText();
   }
   if(restockerJob.phase==="toShelf"){
@@ -8065,11 +8135,138 @@ function unregisterCharacter(mesh){
   animatedCharacters.delete(mesh);
 }
 
+function shadeGarmentColor(value,lightness=0,saturation=0){
+  const color=new THREE.Color(value),hsl={h:0,s:0,l:0};
+  color.getHSL(hsl);
+  color.setHSL(hsl.h,clamp(hsl.s+saturation,0,1),clamp(hsl.l+lightness,.08,.9));
+  return color.getHex();
+}
+
+function garmentMaterial(color){
+  const key=Number(color).toString(16);
+  if(!garmentMaterialCache.has(key)){
+    const material=new THREE.MeshStandardMaterial({color,roughness:.9,metalness:0,side:THREE.DoubleSide});
+    material.name=`cloth-${key}`;
+    garmentMaterialCache.set(key,material);
+  }
+  return garmentMaterialCache.get(key);
+}
+
+function garmentGeometry(key,factory){
+  if(!garmentGeometryCache.has(key))garmentGeometryCache.set(key,factory());
+  return garmentGeometryCache.get(key);
+}
+
+function attachGarment(bone,name,geometry,material,position=[0,0,0],rotation=[0,0,0]){
+  if(!bone)return null;
+  const mesh=new THREE.Mesh(geometry,material);
+  mesh.name=name;mesh.position.set(position[0],position[1],position[2]);mesh.rotation.set(rotation[0],rotation[1],rotation[2]);
+  mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;bone.add(mesh);
+  return mesh;
+}
+
+function characterOutfitPalette(style,primary,gender,kind){
+  const dark=shadeGarmentColor(primary,-.24,.04),light=shadeGarmentColor(primary,.17,-.04);
+  const outfits={
+    owner:{top:0x1f765f,trousers:0xeadfbd,overlay:0x243f3a,trim:0xe9b63b,long:true,vest:true},
+    customer:{top:primary,trousers:kind%3===0?0xe7dfc8:dark,overlay:gender==="female"?light:kind%4===0?shadeGarmentColor(primary,-.34):null,trim:light,long:true,vest:gender!=="female"&&kind%4===0,scarf:gender==="female"},
+    cashier:{top:0x2f72a4,trousers:0x263746,overlay:0x176b56,trim:0xf2bd3e,long:false,apron:true},
+    restocker:{top:0xb85e32,trousers:0x263b4c,overlay:0xf0ad35,trim:0xffdd73,long:false,safety:true,cap:true},
+    labourer:{top:primary,trousers:0x293945,overlay:0xe6a334,trim:0xffd56a,long:false,safety:true,cap:true},
+    driver:{top:0x365c78,trousers:0x243746,overlay:0x213e56,trim:0xd9b35a,long:false,vest:true,cap:true},
+    vendor:{top:0x765035,trousers:0xe2d3ad,overlay:0x3f352f,trim:0xd6a347,long:true,vest:true,cap:true}
+  };
+  return outfits[style]||outfits.customer;
+}
+
+function addCharacterOutfit(model,{style="customer",primary=0x367ab7,gender="male",kind=0}={}){
+  const palette=characterOutfitPalette(style,primary,gender,kind),female=gender==="female";
+  const bones={
+    spine:model.getObjectByName("spine_01"),chest:model.getObjectByName("spine_03"),head:model.getObjectByName("Head"),
+    upperL:model.getObjectByName("upperarm_l"),upperR:model.getObjectByName("upperarm_r"),
+    lowerL:model.getObjectByName("lowerarm_l"),lowerR:model.getObjectByName("lowerarm_r"),
+    thighL:model.getObjectByName("thigh_l"),thighR:model.getObjectByName("thigh_r"),
+    calfL:model.getObjectByName("calf_l"),calfR:model.getObjectByName("calf_r"),
+    footL:model.getObjectByName("foot_l"),footR:model.getObjectByName("foot_r")
+  };
+  if(Object.values(bones).some(bone=>!bone))throw new Error(`Character outfit skeleton is incomplete: ${style}`);
+
+  const pieces=[],topMaterial=garmentMaterial(palette.top),trouserMaterial=garmentMaterial(palette.trousers);
+  const torsoTop=female?.215:.245,torsoBottom=female?.27:.29,tunicHeight=palette.long?.72:.5,tunicCenter=palette.long?.01:.12;
+  const tunic=garmentGeometry(`tunic-${gender}-${palette.long?"long":"short"}`,()=>new THREE.CylinderGeometry(torsoTop,torsoBottom,tunicHeight,12,2,false));
+  pieces.push(attachGarment(bones.spine,"outfit-kameez",tunic,topMaterial,[0,tunicCenter,0]));
+
+  const upperRadius=female?.078:.09,lowerRadius=female?.068:.078;
+  const upperLength=female?.245:.255,lowerLength=female?.24:.245;
+  const upperSleeve=garmentGeometry(`upper-sleeve-${gender}`,()=>new THREE.CylinderGeometry(upperRadius*.88,upperRadius,upperLength,10,1,false));
+  const lowerSleeve=garmentGeometry(`lower-sleeve-${gender}`,()=>new THREE.CylinderGeometry(lowerRadius*.82,lowerRadius,lowerLength,10,1,false));
+  for(const [side,bone] of [["l",bones.upperL],["r",bones.upperR]])pieces.push(attachGarment(bone,`outfit-upper-sleeve-${side}`,upperSleeve,topMaterial,[0,upperLength/2,0]));
+  for(const [side,bone] of [["l",bones.lowerL],["r",bones.lowerR]])pieces.push(attachGarment(bone,`outfit-lower-sleeve-${side}`,lowerSleeve,topMaterial,[0,lowerLength/2,0]));
+
+  const thighRadius=female?.112:.122,calfRadius=female?.092:.1;
+  const thighLength=female?.41:.43,calfLength=female?.455:.45;
+  const shalwarTop=garmentGeometry(`shalwar-thigh-${gender}`,()=>new THREE.CylinderGeometry(thighRadius*.82,thighRadius,thighLength,10,1,false));
+  const shalwarLower=garmentGeometry(`shalwar-calf-${gender}`,()=>new THREE.CylinderGeometry(calfRadius*.78,calfRadius,calfLength,10,1,false));
+  for(const [side,bone] of [["l",bones.thighL],["r",bones.thighR]])pieces.push(attachGarment(bone,`outfit-shalwar-thigh-${side}`,shalwarTop,trouserMaterial,[0,thighLength/2,0]));
+  for(const [side,bone] of [["l",bones.calfL],["r",bones.calfR]])pieces.push(attachGarment(bone,`outfit-shalwar-calf-${side}`,shalwarLower,trouserMaterial,[0,calfLength/2,0]));
+
+  const shoeMaterial=garmentMaterial(0x25292b),shoe=garmentGeometry(`shoe-${gender}`,()=>new THREE.BoxGeometry(female?.15:.17,.235,.13));
+  pieces.push(attachGarment(bones.footL,"outfit-shoe-l",shoe,shoeMaterial,[0,.105,0]));
+  pieces.push(attachGarment(bones.footR,"outfit-shoe-r",shoe,shoeMaterial,[0,.105,0]));
+
+  if(palette.overlay){
+    const overlayMaterial=garmentMaterial(palette.overlay),overlayHeight=palette.safety?.42:palette.apron?.46:.39;
+    const overlay=garmentGeometry(`outfit-overlay-${gender}-${overlayHeight}`,()=>new THREE.CylinderGeometry(torsoTop+.012,torsoBottom+.018,overlayHeight,12,1,false));
+    pieces.push(attachGarment(bones.spine,palette.safety?"outfit-safety-vest":palette.apron?"outfit-cashier-apron":"outfit-waistcoat",overlay,overlayMaterial,[0,.15,0]));
+  }
+
+  const trimMaterial=garmentMaterial(palette.trim),collar=garmentGeometry(`collar-${gender}`,()=>new THREE.TorusGeometry(female?.105:.12,.025,7,14));
+  pieces.push(attachGarment(bones.chest,"outfit-collar",collar,trimMaterial,[0,.125,0],[Math.PI/2,0,0]));
+  if(palette.scarf){
+    const scarfMaterial=garmentMaterial(palette.overlay||palette.trim);
+    const scarf=garmentGeometry("dupatta-scarf",()=>new THREE.TorusGeometry(.19,.043,8,16));
+    pieces.push(attachGarment(bones.chest,"outfit-dupatta",scarf,scarfMaterial,[0,.11,0],[Math.PI/2,0,0]));
+  }
+  if(palette.cap){
+    const cap=garmentGeometry(`cap-${gender}`,()=>new THREE.SphereGeometry(female?.16:.175,12,7,0,Math.PI*2,0,Math.PI/2));
+    pieces.push(attachGarment(bones.head,"outfit-cap",cap,garmentMaterial(palette.overlay||palette.top),[0,.13,0]));
+  }
+  pieces.filter(Boolean).forEach(piece=>{piece.userData.isCharacterClothing=true;piece.userData.role=style});
+  return {pieces:pieces.filter(Boolean),palette};
+}
+
+function addCharacterHair(model,{gender="male",variant=0,style="customer"}={}){
+  const head=model.getObjectByName("Head");if(!head)return {pieces:[],variant:0};
+  const hairVariant=Math.abs(Math.floor(variant))%6;
+  const colors=[0x171311,0x34241b,0x5a3823,0x211d1a,0x70472d,0x101820];
+  const material=garmentMaterial(colors[(variant*3+1)%colors.length]),pieces=[];
+  const add=(name,geometry,position,rotation=[0,0,0])=>{
+    const piece=attachGarment(head,name,geometry,material,position,rotation);if(piece){piece.userData.isCharacterHair=true;pieces.push(piece)}return piece;
+  };
+  const radius=gender==="female"?.17:.18;
+  add(`hair-cap-${hairVariant}`,garmentGeometry(`hair-cap-${gender}`,()=>new THREE.SphereGeometry(radius,12,7,0,Math.PI*2,0,Math.PI/2)),[0,.13,0]);
+  if(hairVariant===1){
+    add("hair-side-part",garmentGeometry("hair-side-part",()=>new THREE.BoxGeometry(.19,.055,.2)),[.075,.215,-.04],[0,0,-.24]);
+  }else if(hairVariant===2){
+    add("hair-bun",garmentGeometry("hair-bun",()=>new THREE.DodecahedronGeometry(.105,1)),[0,.15,.16]);
+  }else if(hairVariant===3){
+    add("hair-ponytail",garmentGeometry("hair-ponytail",()=>new THREE.CapsuleGeometry(.065,.24,5,8)),[0,.02,.17],[.28,0,0]);
+  }else if(hairVariant===4){
+    const curl=garmentGeometry("hair-curl",()=>new THREE.DodecahedronGeometry(.075,0));
+    for(const [index,position] of [[0,[-.12,.17,.03]],[1,[0,.23,.02]],[2,[.12,.17,.03]],[3,[-.08,.13,.14]],[4,[.08,.13,.14]]])add(`hair-curl-${index}`,curl,position);
+  }else if(hairVariant===5){
+    add("hair-crop",garmentGeometry("hair-crop",()=>new THREE.BoxGeometry(.075,.13,.25)),[0,.24,.01],[0,0,.05]);
+  }
+  if(style==="labourer"||style==="driver"||style==="restocker")for(const piece of pieces)piece.scale.multiplyScalar(.92);
+  return {pieces,variant:hairVariant,color:material.color.getHex()};
+}
+
 function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance={}){
   if(!characterAssets.ready)throw new Error("Rigged character assets are not ready");
   const style=appearance.style||"customer";
   const kind=appearance.kind??Math.floor(Math.random()*4);
   const gender=appearance.gender||(style==="customer"&&kind%2?"female":"male");
+  const personId=nextPersonId++;
   const asset=characterAssets[gender]||characterAssets.male;
   const group=new THREE.Group();
   const shadow=fakeShadow(group,isPlayer?.56:.48);
@@ -8080,26 +8277,30 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   model.traverse(child=>{
     if(child.isMesh){child.castShadow=true;child.receiveShadow=true;child.frustumCulled=false}
   });
+  const outfit=addCharacterOutfit(model,{style,primary:clothes,gender,kind});
+  const hair=addCharacterHair(model,{style,gender,variant:personId+kind*2});
   group.add(model);
   const mixer=new THREE.AnimationMixer(model);
   const bones={
     leftHand:model.getObjectByName("hand_l"),rightHand:model.getObjectByName("hand_r"),
-    leftFoot:model.getObjectByName("foot_l"),rightFoot:model.getObjectByName("foot_r"),head:model.getObjectByName("Head")
+    leftFoot:model.getObjectByName("foot_l"),rightFoot:model.getObjectByName("foot_r"),head:model.getObjectByName("Head"),
+    leftShoulder:model.getObjectByName("upperarm_l"),rightShoulder:model.getObjectByName("upperarm_r"),spine:model.getObjectByName("spine_03")
   };
   group.userData={
-    rigged:true,model,mixer,actions:new Map(),currentAction:null,bones,shadow,style,gender,kind,isPlayer,seated:false,
-    personId:nextPersonId++,collisionRadius:.44,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both"
+    rigged:true,model,mixer,actions:new Map(),currentAction:null,bones,outfit,hair,shadow,style,gender,kind,isPlayer,seated:false,
+    personId,collisionRadius:.44,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both",
+    walkRate:.82+(personId%6)*.065,runRate:.92+(personId%5)*.055,walkSway:.012+(personId%4)*.006,walkPhase:(personId%7)*.9
   };
   animatedCharacters.add(group);
   setCharacterAction(group,CHARACTER_ACTIONS.idle);
   return group;
 }
 
-function setHeldObject(mesh,object,mode="both"){
+function setHeldObject(mesh,object,mode="auto"){
   if(!mesh?.userData)return;
   const old=mesh.userData.heldObject;
   if(old&&old!==object)mesh.remove(old);
-  mesh.userData.heldObject=object||null;mesh.userData.heldMode=mode;
+  mesh.userData.heldObject=object||null;mesh.userData.heldMode=mode==="auto"?(object?.userData?.carryStyle||"both"):mode;
   if(object){mesh.add(object);object.userData.justAttached=true;updateHeldObject(mesh)}
 }
 
@@ -8116,11 +8317,17 @@ function updateHeldObject(mesh){
   const left=bones.leftHand.getWorldPosition(new THREE.Vector3());
   const right=bones.rightHand.getWorldPosition(new THREE.Vector3());
   let point;
-  if(data.heldMode==="left")point=left;
+  if(data.heldMode==="shoulder"&&bones.rightShoulder&&bones.head){
+    const shoulder=bones.rightShoulder.getWorldPosition(new THREE.Vector3()),head=bones.head.getWorldPosition(new THREE.Vector3());
+    point=shoulder.lerp(head,.24);point=mesh.worldToLocal(point);point.y+=(object.userData.shoulderOffsetY??.14);point.z+=(object.userData.shoulderOffsetZ??.08);
+    if(object.userData.justAttached){object.position.copy(point);object.userData.justAttached=false}else object.position.lerp(point,.48);
+    object.rotation.set(-.18,0,-.5);return;
+  }else if(data.heldMode==="left")point=left;
   else if(data.heldMode==="right")point=right;
   else point=left.add(right).multiplyScalar(.5);
   point=mesh.worldToLocal(point);
-  point.y-=data.heldMode==="both"?.04:.12;point.z+=data.heldMode==="both"?.18:.08;
+  point.y+=object.userData.holdOffsetY??(data.heldMode==="both"?-.1:-.12);
+  point.z+=object.userData.holdOffsetZ??(data.heldMode==="both"?.44:.14);
   if(object.userData.justAttached){object.position.copy(point);object.userData.justAttached=false}
   else object.position.lerp(point,.42);
 }
@@ -8154,8 +8361,8 @@ function updateLabels(){
 
 function makeCustomer(){
   const order=createOrder(state);
-  const kind=Math.floor(Math.random()*4);
-  const mesh=createHumanoid(COLORS[Math.floor(Math.random()*COLORS.length)],SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind,gender:kind%2?"female":"male"});
+  const kind=Math.floor(Math.random()*10);
+  const mesh=createHumanoid(customerClothingColor(nextPersonId),SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind,gender:kind%2?"female":"male"});
   mesh.scale.setScalar(rand(.88,1.04));
   let spawn=null;
   for(let attempt=0;attempt<8;attempt++){
@@ -8165,9 +8372,9 @@ function makeCustomer(){
   if(!spawn){unregisterCharacter(mesh);return false}
   mesh.position.set(spawn.x,0,spawn.z);scene.add(mesh);
   const shelf=PRODUCT_SHELVES[order.product],shoppingOffset=rand(-.58,.58);
-  const accessX=shelf.side<0?-7.75:7.75;
+  const accessX=shelfAccessX(shelf);
   const carrier=mesh.userData.personId%3===0?"trolley":"basket";
-  mesh.userData.usingTrolley=carrier==="trolley";if(mesh.userData.usingTrolley)mesh.userData.collisionRadius=.54;
+  mesh.userData.usingTrolley=carrier==="trolley";if(mesh.userData.usingTrolley)mesh.userData.collisionRadius=.62;
   const customer={mesh,order,carrier,hasProduct:false,trolley:null,payload:null,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.85,2.3),timer:0,waited:0,blockedTime:0,label:null};
   mesh.userData.customer=customer;
   setupCustomerCarrier(customer);
@@ -8196,7 +8403,7 @@ function updateCustomer(customer,delta){
   }else if(customer.phase==="queue"){
     const index=checkoutQueue.indexOf(customer);
     if(index<0)return;
-    const target=new THREE.Vector3(2.25,0,7.55-index*1.05);
+    const target=new THREE.Vector3(CHECKOUT_LAYOUT.queueX,0,CHECKOUT_LAYOUT.queueHeadZ-index*.92);
     moveToward(customer,target,delta*1.8,{ignoreQueue:true,suppressGiveWay:true});
     customer.waited+=delta;
     customer.label.element.textContent=customerLabelText(customer);
@@ -8206,10 +8413,48 @@ function updateCustomer(customer,delta){
 function moveCustomer(customer,delta){
   const target=customer.path[customer.pathIndex];
   if(!target){customerPathFinished(customer);return}
-  if(moveToward(customer,target,delta*customer.speed)){
+  if(moveToward(customer,target,delta*customer.speed,{ignoreQueue:customer.phase==="leaving"})){
     customer.pathIndex++;
     if(customer.pathIndex>=customer.path.length)customerPathFinished(customer);
   }
+}
+
+function segmentWorldClear(from,to,radius=.42){
+  const distance=Math.hypot(to.x-from.x,to.z-from.z),steps=Math.max(1,Math.ceil(distance/.28));
+  for(let index=1;index<=steps;index++){
+    const ratio=index/steps;if(worldObstacleAt(THREE.MathUtils.lerp(from.x,to.x,ratio),THREE.MathUtils.lerp(from.z,to.z,ratio),radius))return false;
+  }
+  return true;
+}
+
+function chooseWorldDetour(mesh,target,obstacle){
+  if(!obstacle||obstacle.boundary)return null;
+  const current=mesh.position,radius=(mesh.userData.collisionRadius||.42)*(mesh.scale.x||1),gap=radius+.28;
+  const candidates=[
+    {x:obstacle.minX-gap,z:obstacle.minZ-gap},{x:obstacle.minX-gap,z:obstacle.maxZ+gap},
+    {x:obstacle.maxX+gap,z:obstacle.minZ-gap},{x:obstacle.maxX+gap,z:obstacle.maxZ+gap}
+  ].filter(point=>!worldObstacleAt(point.x,point.z,radius)&&segmentWorldClear(current,point,radius));
+  candidates.sort((a,b)=>{
+    const score=point=>Math.hypot(point.x-current.x,point.z-current.z)+Math.hypot(target.x-point.x,target.z-point.z)+(segmentWorldClear(point,target,radius)?0:1.8);
+    return score(a)-score(b);
+  });
+  return candidates[0]?{...candidates[0],until:worldTime+4.5,staticDetour:true}:null;
+}
+
+function choosePersonDetour(mesh,target,blocker,distance,options={}){
+  const current=mesh.position,data=mesh.userData,dx=target.x-current.x,dz=target.z-current.z,length=Math.max(.001,Math.hypot(dx,dz));
+  const forwardX=dx/length,forwardZ=dz/length,otherRadius=(blocker.userData.collisionRadius||.44)*(blocker.scale.x||1),ownRadius=(data.collisionRadius||.44)*(mesh.scale.x||1);
+  const clearance=ownRadius+otherRadius+.38+Math.min(1.05,(data.blockedTime||0)*.45);
+  for(const angle of [Math.PI/2,-Math.PI/2,.92,-.92,2.08,-2.08]){
+    const directionX=forwardX*Math.cos(angle)+forwardZ*Math.sin(angle),directionZ=forwardZ*Math.cos(angle)-forwardX*Math.sin(angle);
+    const waypoint={x:current.x+directionX*clearance+forwardX*.25,z:current.z+directionZ*clearance+forwardZ*.25,until:worldTime+3.2,personDetour:true};
+    if(worldObstacleAt(waypoint.x,waypoint.z,ownRadius))continue;
+    const moveLength=Math.max(.001,Math.hypot(waypoint.x-current.x,waypoint.z-current.z)),step=Math.min(distance,moveLength);
+    const nextX=current.x+(waypoint.x-current.x)/moveLength*step,nextZ=current.z+(waypoint.z-current.z)/moveLength*step;
+    if(positionBlocked(mesh,nextX,nextZ,{...options,ignorePerson:blocker}))continue;
+    return {waypoint,nextX,nextZ};
+  }
+  return null;
 }
 
 function moveToward(customer,target,distance,options={}){
@@ -8225,25 +8470,23 @@ function moveToward(customer,target,distance,options={}){
   if(moveLength<.001){data.avoidance=null;moveTarget=target;dx=finalDx;dz=finalDz;moveLength=length}
   const step=Math.min(moveLength,distance),fx=dx/moveLength,fz=dz/moveLength;
   const attempts=[[current.x+fx*step,current.z+fz*step]];
-  let moved=false,blocker=null,movedX=0,movedZ=0;
+  let moved=false,blocker=null,worldObstacle=null,movedX=0,movedZ=0;
   for(const [x,z] of attempts){
     const blockedResult=positionBlocked(customer.mesh,x,z,options);
     if(!blockedResult){movedX=x-current.x;movedZ=z-current.z;current.x=x;current.z=z;moved=true;break}
-    blocker=blocker||blockedResult.person;
+    if(blockedResult.world)worldObstacle=worldObstacle||blockedResult.obstacle;
+    else blocker=blocker||blockedResult.person;
   }
   if(!moved&&blocker){
-    const desiredLength=Math.max(.001,Math.hypot(finalDx,finalDz)),forwardX=finalDx/desiredLength,forwardZ=finalDz/desiredLength;
-    const otherRadius=(blocker.userData.collisionRadius||.44)*(blocker.scale.x||1);
-    const ownRadius=(data.collisionRadius||.44)*(customer.mesh.scale.x||1);
-    const clearance=ownRadius+otherRadius+.42;
-    for(const side of [1,-1]){
-      const rightX=forwardZ*side,rightZ=-forwardX*side;
-      const waypoint={x:current.x+rightX*clearance+forwardX*.35,z:current.z+rightZ*clearance+forwardZ*.35,until:worldTime+2.2};
-      if(blocked(waypoint.x,waypoint.z))continue;
-      const lateralX=current.x+rightX*step*1.15,lateralZ=current.z+rightZ*step*1.15;
-      const sideBlock=positionBlocked(customer.mesh,lateralX,lateralZ,{...options,ignorePerson:blocker});
-      if(sideBlock)continue;
-      data.avoidance=waypoint;movedX=lateralX-current.x;movedZ=lateralZ-current.z;current.x=lateralX;current.z=lateralZ;moved=true;break;
+    const detour=choosePersonDetour(customer.mesh,target,blocker,distance,options);
+    if(detour){data.avoidance=detour.waypoint;movedX=detour.nextX-current.x;movedZ=detour.nextZ-current.z;current.x=detour.nextX;current.z=detour.nextZ;moved=true}
+  }
+  if(!moved&&worldObstacle){
+    const waypoint=chooseWorldDetour(customer.mesh,target,worldObstacle);
+    if(waypoint){
+      data.avoidance=waypoint;const routeX=waypoint.x-current.x,routeZ=waypoint.z-current.z,routeLength=Math.max(.001,Math.hypot(routeX,routeZ));
+      const nextX=current.x+routeX/routeLength*Math.min(distance,routeLength),nextZ=current.z+routeZ/routeLength*Math.min(distance,routeLength);
+      if(!positionBlocked(customer.mesh,nextX,nextZ,options)){movedX=nextX-current.x;movedZ=nextZ-current.z;current.x=nextX;current.z=nextZ;moved=true}
     }
   }
   if(!moved&&!blocker){
@@ -8297,8 +8540,8 @@ function finishShopping(customer){
     customer.hasProduct=true;
     attachCustomerBasket(customer);
     const inbound=customers.filter(other=>other!==customer&&other.phase==="toCheckout").length;
-    const tailZ=7.55-(checkoutQueue.length+inbound)*1.05;
-    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,tailZ),new THREE.Vector3(2.05,0,tailZ)],"toCheckout");
+    const tailZ=CHECKOUT_LAYOUT.queueHeadZ-(checkoutQueue.length+inbound)*.92;
+    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,tailZ),new THREE.Vector3(CHECKOUT_LAYOUT.queueX-.18,0,tailZ)],"toCheckout");
     save();updateHUD();updateWorldLabelText();
   }else{
     const result=missSale(state,1);
@@ -8313,6 +8556,7 @@ function createShoppingBasket(){
   for(const x of [-.2,0,.2])box(basket,[.045,.36,.44],[x,0,0],0xf0b23b,basic(0xf0b23b));
   const handle=new THREE.Mesh(new THREE.TorusGeometry(.31,.035,7,18,Math.PI),standard(0x5c3828));handle.rotation.z=Math.PI;handle.position.y=.28;basket.add(handle);
   const payload=new THREE.Group();payload.name="shopping-payload";payload.position.y=.28;basket.add(payload);
+  basket.userData.holdOffsetY=-.29;basket.userData.holdOffsetZ=.28;
   return {carrier:basket,payload};
 }
 
@@ -8342,9 +8586,14 @@ function setupCustomerCarrier(customer){
 
 function syncCustomerTrolley(customer){
   if(!customer?.trolley)return;
-  if(customer.mesh.userData.atCounter){customer.trolley.position.set(1.48,0,7.82);customer.trolley.rotation.y=Math.PI/2;return}
-  const yaw=customer.mesh.rotation.y,forward=.9;
-  customer.trolley.position.set(customer.mesh.position.x+Math.sin(yaw)*forward,0,customer.mesh.position.z+Math.cos(yaw)*forward);
+  if(customer.mesh.userData.atCounter){customer.trolley.position.set(CHECKOUT_LAYOUT.queueX-.72,0,CHECKOUT_LAYOUT.scanZ+.04);customer.trolley.rotation.y=Math.PI/2;return}
+  const yaw=customer.mesh.rotation.y,bones=customer.mesh.userData.bones;
+  customer.mesh.updateMatrixWorld(true);
+  const left=bones?.leftHand?.getWorldPosition(new THREE.Vector3()),right=bones?.rightHand?.getWorldPosition(new THREE.Vector3());
+  if(left&&right){
+    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,1.36,-.52).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    customer.trolley.position.set(hands.x-handleOffset.x,0,hands.z-handleOffset.z);
+  }else customer.trolley.position.set(customer.mesh.position.x+Math.sin(yaw)*.9,0,customer.mesh.position.z+Math.cos(yaw)*.9);
   customer.trolley.rotation.y=yaw;
 }
 
@@ -8356,7 +8605,7 @@ function attachCustomerBasket(customer){
 
 function sendCustomerOut(customer){
   customer.mesh.userData.atCounter=false;customer.mesh.userData.avoidance=null;
-  setCustomerPath(customer,[new THREE.Vector3(1.55,0,7.75),new THREE.Vector3(0,0,8.8),new THREE.Vector3(0,0,13.6)],"leaving");
+  setCustomerPath(customer,[new THREE.Vector3(CHECKOUT_LAYOUT.queueX-1.05,0,7.72),new THREE.Vector3(0,0,8.8),new THREE.Vector3(0,0,13.6)],"leaving");
 }
 
 function spawnTrash(){
@@ -8407,10 +8656,16 @@ function clearCustomers(){
 
 function animateHumanoid(mesh,moving,phase,running=false){
   const data=mesh?.userData;if(!data?.rigged)return;
-  if(data.forcedActionUntil>worldTime){setCharacterAction(mesh,data.forcedAction,1.06);return}
-  if(data.seated){setCharacterAction(mesh,CHARACTER_ACTIONS.sit);return}
+  if(data.forcedActionUntil>worldTime){data.model.rotation.x=0;data.model.rotation.z=0;setCharacterAction(mesh,data.forcedAction,1.06);return}
+  if(data.seated){data.model.rotation.x=0;data.model.rotation.z=0;setCharacterAction(mesh,CHARACTER_ACTIONS.sit);return}
+  if(!moving&&data.usingTrolley&&!data.atCounter){
+    setCharacterAction(mesh,CHARACTER_ACTIONS.push,.015);data.model.rotation.x=0;data.model.rotation.z=0;return;
+  }
   const action=moving?(data.usingTrolley?CHARACTER_ACTIONS.push:running?CHARACTER_ACTIONS.run:CHARACTER_ACTIONS.walk):CHARACTER_ACTIONS.idle;
-  setCharacterAction(mesh,action,running?1.08:1);
+  const rate=running?(data.runRate||1):(data.walkRate||1);
+  setCharacterAction(mesh,action,moving?rate:1);
+  data.model.rotation.z=moving?Math.sin(worldTime*7*rate+(data.walkPhase||0))*(data.walkSway||.015):THREE.MathUtils.lerp(data.model.rotation.z,0,.28);
+  data.model.rotation.x=moving?(running?.055:.015)*(1+(data.personId%3)*.12):THREE.MathUtils.lerp(data.model.rotation.x,0,.28);
 }
 
 function setSeatedPose(mesh,seated){
@@ -8438,7 +8693,7 @@ function updateSpawning(delta){
   if(state.dayComplete)return;
   spawnClock-=delta;
   const allocated=state.handledToday+countPendingCustomers();
-  if(spawnClock<=0&&allocated<dailyTarget(state)){
+  if(spawnClock<=0&&allocated<dailyTarget(state)&&countPendingCustomers()<18){
     const spawned=makeCustomer();spawnClock=spawned?spawnDelay(state)*rand(.78,1.08):.65;updateWorldLabelText();
   }
 }
@@ -8449,7 +8704,7 @@ function startScanning(auto=false){
   if(!customer){if(!auto)toast(t("noCustomer"));return}
   checkoutQueue.shift();customer.phase="scanning";animateHumanoid(customer.mesh,false,0);
   customer.mesh.userData.atCounter=true;customer.mesh.userData.avoidance=null;
-  customer.mesh.position.set(3.3,0,7.78);customer.mesh.rotation.y=0;syncCustomerTrolley(customer);
+  customer.mesh.position.set(CHECKOUT_LAYOUT.scanX,0,CHECKOUT_LAYOUT.scanZ);customer.mesh.rotation.y=0;syncCustomerTrolley(customer);
   scan={customer,elapsed:0,duration:auto?staffCheckoutDuration(state):checkoutDuration(state),auto};
   if(!auto){
     if(!ownerCheckoutSession){
@@ -8474,7 +8729,7 @@ function updateScan(delta){
   if(!scan.auto&&!player.userData.seated){
     ownerCheckoutSession.seatElapsed+=delta;
     const ratio=Math.min(1,ownerCheckoutSession.seatElapsed/ownerCheckoutSession.seatDuration),smooth=ratio*ratio*(3-2*ratio);
-    player.position.lerpVectors(ownerCheckoutSession.seatFrom,new THREE.Vector3(4.18,-.17,10.29),smooth);
+    player.position.lerpVectors(ownerCheckoutSession.seatFrom,new THREE.Vector3(CHECKOUT_LAYOUT.ownerSeatX,-.17,CHECKOUT_LAYOUT.seatZ),smooth);
     player.rotation.y=THREE.MathUtils.lerp(ownerCheckoutSession.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
     if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=false}
     return;
@@ -8491,7 +8746,7 @@ function updateScan(delta){
   if(Math.random()<.24)spawnTrash();
   if(state.tutorialStep===5){state.tutorialStep=6;toast(t("tutorialDone"),2300)}
   if(automatic)cashierCooldown=.65;else ownerCheckoutDelay=.42;
-  sendCustomerOut(customer);finishDayIfNeeded(result);save();updateHUD();updateWorldLabelText();
+  refreshCounterCash();sendCustomerOut(customer);finishDayIfNeeded(result);save();updateHUD();updateWorldLabelText();
 }
 
 function updateOwnerCheckout(delta){
@@ -8538,14 +8793,15 @@ function showDaySummary(){
 
 function nextDay(){
   clearCustomers();startNextDay(state);spawnClock=2.6;save();
-  $("dayModal").classList.add("hidden");refreshAllShelfVisuals();updateHUD();updateWorldLabelText();tone("up");
+  $("dayModal").classList.add("hidden");refreshAllShelfVisuals();refreshCounterCash();updateHUD();updateWorldLabelText();tone("up");
 }
 
-function blocked(x,z){
-  const radius=.42;
-  if(x<-11.25+radius||x>11.25-radius||z<-10.45+radius||z>25.8-radius)return true;
-  return blockers.some(rect=>x+radius>rect.minX&&x-radius<rect.maxX&&z+radius>rect.minZ&&z-radius<rect.maxZ);
+function worldObstacleAt(x,z,radius=.42){
+  if(x<STORE_BOUNDS.minX+radius||x>STORE_BOUNDS.maxX-radius||z<STORE_BOUNDS.minZ+radius||z>STORE_BOUNDS.maxZ-radius)return {kind:"boundary",minX:STORE_BOUNDS.minX,maxX:STORE_BOUNDS.maxX,minZ:STORE_BOUNDS.minZ,maxZ:STORE_BOUNDS.maxZ,boundary:true};
+  return blockers.find(rect=>x+radius>rect.minX&&x-radius<rect.maxX&&z+radius>rect.minZ&&z-radius<rect.maxZ)||null;
 }
+
+function blocked(x,z,radius=.42){return Boolean(worldObstacleAt(x,z,radius))}
 
 function activePeople(){
   const people=[player,marketVendor,restockerMesh,...customers.map(customer=>customer.mesh),...labourerMeshes];
@@ -8553,12 +8809,12 @@ function activePeople(){
 }
 
 function positionBlocked(mesh,x,z,options={}){
-  if(blocked(x,z))return {world:true,person:null};
   const radius=(mesh.userData.collisionRadius||.42)*(mesh.scale.x||1);
+  const obstacle=worldObstacleAt(x,z,radius);if(obstacle)return {world:true,person:null,obstacle};
   for(const other of activePeople()){
     if(other===mesh||other===options.ignorePerson)continue;
     const phase=mesh.userData.customer?.phase,otherPhase=other.userData.customer?.phase;
-    if(options.ignoreQueue&&phase==="queue"&&otherPhase==="queue")continue;
+    if(options.ignoreQueue&&(phase==="queue"||otherPhase==="queue"))continue;
     const otherRadius=(other.userData.collisionRadius||.42)*(other.scale.x||1);
     if((x-other.position.x)**2+(z-other.position.z)**2<(radius+otherRadius+.08)**2)return {world:false,person:other};
   }
@@ -8619,7 +8875,7 @@ function updateCarriedCrate(){
   if(old&&old.userData.id===carrying.id)return;
   if(old)clearHeldObject(player);
   const item=productById(carrying.id),crate=createStockCrate(item,"carried-crate");
-  setHeldObject(player,crate,"both");
+  setHeldObject(player,crate,"auto");
 }
 
 function updateInteractions(){
@@ -8879,7 +9135,7 @@ function renderSettings(){
   $("panelBody").querySelectorAll("[data-sound]").forEach(button=>button.addEventListener("click",()=>{state.sound=button.dataset.sound==="on";save();renderSettings();if(state.sound)tone("up")}));
   $("resetBtn").addEventListener("click",()=>{
     if(!confirm(t("resetConfirm")))return;
-    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();clearLabourerModels();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
+    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();clearLabourerModels();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCounterCash();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
   });
 }
 
