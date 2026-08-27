@@ -29,6 +29,6 @@
     if(retry)retry.addEventListener("click",()=>window.location.reload());
     window.setTimeout(()=>{
       if(!window.__BAZAAR_GAME_READY__)showFailure("STARTUP_TIMEOUT",new Error("3D engine did not become ready"));
-    },15000);
+    },45000);
   },{once:true});
 })();

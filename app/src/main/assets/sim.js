@@ -73,6 +73,7 @@ export const DIFFICULTY={
 };
 
 export const DEFAULT_STOCK={flour:18,rice:18,ghee:18,oil:18,sugar:18,pulses:18,milk:18,salt:18,biscuit:18,toffee:18};
+export const DEFAULT_WAREHOUSE={flour:36,rice:36,ghee:36,oil:36,sugar:36,pulses:36,milk:36,salt:36,biscuit:36,toffee:36};
 export const BUSINESSES={
   vending:{cost:9000,level:2,income:650},
   fruitStand:{cost:15000,level:3,income:1050},
@@ -102,7 +103,7 @@ export function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:8,
+    version:9,
     lang:source?.lang||old.lang||"ur",
     difficulty:source?.difficulty||old.difficulty||"normal",
     sound:source?.sound??old.sound??true,
@@ -150,7 +151,7 @@ export function createState(saved,legacy){
   for(const item of PRODUCTS){
     const legacyAmount=old.stock&&Number.isFinite(old.stock[item.id])?old.stock[item.id]:DEFAULT_STOCK[item.id];
     state.shelfStock[item.id]=Math.max(0,Number(source?.shelfStock?.[item.id]??legacyAmount));
-    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??0));
+    state.warehouse[item.id]=Math.max(0,Number(source?.warehouse?.[item.id]??(!source&&!Object.keys(old).length?DEFAULT_WAREHOUSE[item.id]:0)));
     state.truckCargo[item.id]=Math.max(0,Number(source?.truckCargo?.[item.id]??0));
     state.delivery.cargo[item.id]=Math.max(0,Number(source?.delivery?.cargo?.[item.id]??0));
     state.priceMarkup[item.id]=clamp(Number(source?.priceMarkup?.[item.id]??1),.85,1.3);
@@ -160,6 +161,10 @@ export function createState(saved,legacy){
   state.upgrades.decor=clamp(Number(source?.upgrades?.decor??old.upgrades?.lights??0),0,3);
   state.staff.cashier=clamp(Number(source?.staff?.cashier??0),0,2);
   state.staff.restocker=clamp(Number(source?.staff?.restocker??0),0,2);
+  if(source&&source.version<9){
+    const capacity=shelfCapacity(state);
+    for(const item of PRODUCTS){state.shelfStock[item.id]=Math.max(capacity,state.shelfStock[item.id]);state.warehouse[item.id]=Math.max(DEFAULT_WAREHOUSE[item.id],state.warehouse[item.id])}
+  }
   for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
   if(state.delivery.active){state.delivery.arrived=false;state.delivery.unloading=false}
   if(state.delivery.unloading)state.delivery.arrived=true;
@@ -257,7 +262,7 @@ export function advanceDelivery(state,delta){
   return {arrived:true,cargo:copy(state.delivery.cargo),count:cargoCount(state.delivery.cargo)};
 }
 
-export function labourWage(count){return Math.max(1,Math.min(2,Math.floor(Number(count)||1)))===2?650:350}
+export function labourWage(count){return Math.max(1,Math.min(2,Math.floor(Number(count)||1)))===2?900:500}
 
 export function startUnloading(state,count=1){
   if(state.delivery.active)return {ok:false,reason:"truckNotArrived"};
@@ -378,9 +383,9 @@ export function spawnDelay(state){
 export function checkoutDuration(state){return Math.max(.85,2.8-state.upgrades.checkout*.5)}
 export function staffCheckoutDuration(state){return state.staff.cashier?Math.max(1.45,3.55-state.staff.cashier*.65):Infinity}
 export function cashierHireCost(state){return state.staff.cashier===0?28000:state.staff.cashier===1?18000:0}
-export function cashierWage(state){return [0,1100,1800][state.staff.cashier]||0}
+export function cashierWage(state){return [0,800,1000][state.staff.cashier]||0}
 export function restockerHireCost(state){return state.staff.restocker===0?22000:state.staff.restocker===1?15000:0}
-export function restockerWage(state){return [0,900,1450][state.staff.restocker]||0}
+export function restockerWage(state){return [0,500,900][state.staff.restocker]||0}
 export function totalStaffWage(state){return cashierWage(state)+restockerWage(state)}
 
 export function hireCashier(state){

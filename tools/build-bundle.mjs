@@ -51,6 +51,23 @@ function bundleThree(){
   return `${license}const THREE=(()=>{const {${aliases}}=__THREE_CORE__;${source}\nreturn {${entries}};})();`;
 }
 
+function bundleAddon(file,globalName,dependencies={}){
+  let source=read(`three-addons/${file}`);
+  const imports=[];
+  source=source.replace(/^[ \t]*import\s*\{([\s\S]*?)\}\s*from\s*['"]([^'"]+)['"];?/gm,(_,bindings,module)=>{
+    const entries=specifiers(bindings);
+    const dependency=module==="three"?"THREE":dependencies[module];
+    if(!dependency)throw new Error(`Unsupported ${file} dependency: ${module}`);
+    imports.push(`const {${entries.map(({local,exported})=>local===exported?local:`${local}:${exported}`).join(",")}}=${dependency};`);
+    return "";
+  });
+  const exportMatch=source.match(/export\s*\{([^}]*)\};?\s*$/s);
+  if(!exportMatch)throw new Error(`Could not locate ${file} exports`);
+  const exports=specifiers(exportMatch[1]);
+  source=source.slice(0,exportMatch.index);
+  return `const ${globalName}=(()=>{${imports.join("")}${source}\nreturn {${objectEntries(exports)}};})();`;
+}
+
 function bundleSimulation(){
   let source=read("sim.js");
   const names=[];
@@ -68,6 +85,16 @@ function bundleGame(){
 }
 
 const core=bundleCore();
-const output=`${core.code}\n${bundleThree()}\n${bundleSimulation()}\n${bundleGame()}`.trimEnd()+"\n";
+const bufferUtils=bundleAddon("BufferGeometryUtils.js","__THREE_BUFFER_UTILS__");
+const skeletonUtils=bundleAddon("SkeletonUtils.js","__THREE_SKELETON_UTILS__");
+const gltfLoader=bundleAddon("GLTFLoader.js","__THREE_GLTF_LOADER__",{
+  "three/addons/loaders/GLTFLoader.js":"__THREE_GLTF_LOADER__",
+  "three/addons/utils/BufferGeometryUtils.js":"__THREE_BUFFER_UTILS__",
+  "three/addons/utils/SkeletonUtils.js":"__THREE_SKELETON_UTILS__",
+  "../utils/BufferGeometryUtils.js":"__THREE_BUFFER_UTILS__",
+  "../utils/SkeletonUtils.js":"__THREE_SKELETON_UTILS__"
+});
+const addonGlobals="const GLTFLoader=__THREE_GLTF_LOADER__.GLTFLoader;const cloneSkinnedCharacter=__THREE_SKELETON_UTILS__.clone;";
+const output=`${core.code}\n${bundleThree()}\n${bufferUtils}\n${skeletonUtils}\n${gltfLoader}\n${addonGlobals}\n${bundleSimulation()}\n${bundleGame()}`.trimEnd()+"\n";
 fs.writeFileSync(path.join(assets,"game.bundle.js"),output);
 console.log(`Built game.bundle.js (${Buffer.byteLength(output).toLocaleString("en-US")} bytes)`);

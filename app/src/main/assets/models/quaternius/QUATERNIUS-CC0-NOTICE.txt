@@ -1,0 +1,16 @@
+Quaternius character and animation asset notice
+
+Character meshes and textures:
+  Universal Base Characters by Quaternius
+  https://quaternius.com/packs/universalbasecharacters.html
+
+Animation library:
+  Universal Animation Library by Quaternius
+  https://quaternius.com/packs/universalanimationlibrary.html
+
+The publisher identifies these assets as CC0 and free for personal,
+educational, and commercial projects. CC0 reference:
+  https://creativecommons.org/publicdomain/zero/1.0/
+
+The assets are used here for Bazaar Boss character rendering and skeletal
+animation. Quaternius does not endorse this game.

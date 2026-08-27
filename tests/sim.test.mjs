@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import {
-  PRODUCTS,PRICE_REFERENCE,BUSINESSES,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,buyWarehouse,bargainPurchase,cargoCount,
+  PRODUCTS,DEFAULT_WAREHOUSE,PRICE_REFERENCE,BUSINESSES,createState,shelfCapacity,marketPrice,recommendedRetailPrice,retailPrice,changeRetailMarkup,priceAcceptanceChance,buyWarehouse,bargainPurchase,cargoCount,
   dispatchTruck,advanceDelivery,deliveryFee,labourWage,startUnloading,advanceUnloading,syncCash,cameraRelativeVector,takeCrate,restockShelf,
   createOrder,takeShelfItems,completeSale,missSale,dailyTarget,serveTarget,
   customerWait,checkoutDuration,staffCheckoutDuration,startNextDay,buyUpgrade,upgradeCost,eventForDay,
@@ -13,7 +13,7 @@ import {
 test("new and migrated games keep all ten fully stocked grocery categories",()=>{
   const fresh=createState(null,null);
   assert.equal(fresh.cash,12000);
-  assert.equal(fresh.version,8);
+  assert.equal(fresh.version,9);
   assert.equal(fresh.salesFund,9000);
   assert.equal(fresh.operatingBudget,3000);
   assert.equal(fresh.cameraDistance,18);
@@ -21,6 +21,7 @@ test("new and migrated games keep all ten fully stocked grocery categories",()=>
   assert.equal(PRODUCTS.length,10);
   assert.deepEqual(Object.keys(fresh.shelfStock),PRODUCTS.map(item=>item.id));
   assert.ok(Object.values(fresh.shelfStock).every(amount=>amount===shelfCapacity(fresh)));
+  assert.ok(PRODUCTS.every(item=>fresh.warehouse[item.id]===DEFAULT_WAREHOUSE[item.id]));
   assert.ok(PRODUCTS.every(item=>item.brands.length>=3));
   assert.ok(PRODUCTS.find(item=>item.id==="ghee").brands.some(brand=>brand.id==="latif"));
   const migrated=createState(null,{lang:"hi",cash:900,stock:{flour:7},upgrades:{shelf:2}});
@@ -31,6 +32,7 @@ test("new and migrated games keep all ten fully stocked grocery categories",()=>
   assert.equal(migrated.upgrades.capacity,2);
   const upgradedV4=createState({version:4,cash:12000,cameraDistance:10.8,shelfStock:fresh.shelfStock,warehouse:fresh.warehouse},null);
   assert.equal(upgradedV4.cameraDistance,18);
+  assert.ok(PRODUCTS.every(item=>upgradedV4.warehouse[item.id]>=DEFAULT_WAREHOUSE[item.id]));
   const resumed=createState({...fresh,carrying:{id:"rice",amount:2}},null);
   assert.deepEqual(resumed.carrying,{id:"rice",amount:2});
 });
@@ -38,6 +40,7 @@ test("new and migrated games keep all ten fully stocked grocery categories",()=>
 test("market purchase, truck delivery, crate pickup and shelf restock form one stock loop",()=>{
   const state=createState(null,null);
   state.shelfStock.flour=2;
+  state.warehouse.flour=0;
   const before=state.salesFund;
   const bought=buyWarehouse(state,"flour",3);
   assert.equal(bought.ok,true);
@@ -142,8 +145,8 @@ test("owner pricing changes customer acceptance without breaking the Pakistan be
 test("restocker, cleanliness and side businesses form a management progression",()=>{
   const state=createState(null,null);state.operatingBudget=100000;syncCash(state);
   const cost=restockerHireCost(state);
-  assert.deepEqual(hireRestocker(state),{ok:true,cost,level:1,wage:900});
-  assert.equal(restockerWage(state),900);
+  assert.deepEqual(hireRestocker(state),{ok:true,cost,level:1,wage:500});
+  assert.equal(restockerWage(state),500);
   state.shelfStock.rice=5;state.warehouse.rice=4;
   assert.deepEqual(restockerTransfer(state,"rice"),{ok:true,id:"rice",amount:2});
   assert.equal(state.shelfStock.rice,7);
@@ -157,9 +160,9 @@ test("restocker, cleanliness and side businesses form a management progression",
 test("a hired cashier serves automatically, earns a daily wage and tracks queue records",()=>{
   const state=createState(null,null);state.operatingBudget=100000;syncCash(state);
   const cost=cashierHireCost(state);
-  assert.deepEqual(hireCashier(state),{ok:true,cost,level:1,wage:1100});
+  assert.deepEqual(hireCashier(state),{ok:true,cost,level:1,wage:800});
   assert.equal(state.operatingBudget,100000-cost);
-  assert.equal(cashierWage(state),1100);
+  assert.equal(cashierWage(state),800);
   assert.ok(Number.isFinite(staffCheckoutDuration(state)));
   assert.equal(recordQueue(state,5),5);
   assert.equal(recordQueue(state,2),5);

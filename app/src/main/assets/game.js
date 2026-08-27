@@ -25,6 +25,15 @@ const EVENT_TEXT={
 };
 const COLORS=[0x315f91,0xa84236,0x2d7254,0x9b612e,0x68498b,0x1d7780,0xa33e68,0x4c5158];
 const SKINS=[0x6f432c,0x8d5524,0xb87952,0xd39a73,0xedb98d,0xf1c7a5];
+const CHARACTER_FILES={
+  male:"models/quaternius/Superhero_Male_FullBody.gltf",
+  female:"models/quaternius/Superhero_Female_FullBody.gltf",
+  animations:"models/quaternius/UAL1_Standard.glb"
+};
+const CHARACTER_ACTIONS={
+  idle:"Idle_Loop",walk:"Walk_Loop",run:"Sprint_Loop",push:"Push_Loop",pickup:"PickUp_Table",
+  interact:"Interact",sit:"Sitting_Idle_Loop",checkout:"Sitting_Talking_Loop",drive:"Driving_Loop"
+};
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
@@ -32,6 +41,8 @@ let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierM
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
 let scan=null,ownerCheckoutSession=null,ownerCheckoutDelay=0,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0,labelRefreshClock=0,nextPersonId=1,giveWayToastAt=0;
+const characterAssets={ready:false,male:null,female:null,clips:new Map()};
+const animatedCharacters=new Set();
 const shelves=new Map();
 const packageTextureCache=new Map();
 const surfaceTextureCache=new Map();
@@ -46,6 +57,31 @@ const labourerMeshes=[];
 const labourerLabels=[];
 const keys={};
 const joystick={x:0,y:0,id:null};
+
+function loadGltf(loader,path){
+  return new Promise((resolve,reject)=>loader.load(path,resolve,undefined,reject));
+}
+
+function prepareCharacterAsset(gltf){
+  gltf.scene.updateMatrixWorld(true);
+  const bounds=new THREE.Box3().setFromObject(gltf.scene);
+  const height=Math.max(.01,bounds.max.y-bounds.min.y);
+  return {scene:gltf.scene,scale:2.68/height,minY:bounds.min.y};
+}
+
+async function loadCharacterAssets(){
+  const loader=new GLTFLoader();
+  const [male,female,animationLibrary]=await Promise.all([
+    loadGltf(loader,CHARACTER_FILES.male),loadGltf(loader,CHARACTER_FILES.female),loadGltf(loader,CHARACTER_FILES.animations)
+  ]);
+  characterAssets.male=prepareCharacterAsset(male);
+  characterAssets.female=prepareCharacterAsset(female);
+  characterAssets.clips=new Map(animationLibrary.animations.map(clip=>[clip.name,clip]));
+  for(const name of Object.values(CHARACTER_ACTIONS)){
+    if(!characterAssets.clips.has(name))throw new Error(`Missing character animation: ${name}`);
+  }
+  characterAssets.ready=true;
+}
 
 function loadJson(key){
   try{return JSON.parse(localStorage.getItem(key)||"null")}catch(error){return null}
@@ -486,7 +522,7 @@ function buildDeliveryTruck(){
   }
   truckCargoGroup=new THREE.Group();truckCargoGroup.position.set(0,1.52,.45);truck.add(truckCargoGroup);
   truckDriver=createHumanoid(0x425a70,SKINS[2],false,{style:"driver",kind:2});
-  truckDriver.scale.setScalar(.43);truckDriver.position.set(.38,.62,-1.3);truckDriver.rotation.y=Math.PI;setSeatedPose(truckDriver,true);truck.add(truckDriver);
+  truckDriver.scale.setScalar(.43);truckDriver.position.set(.38,.62,-1.3);truckDriver.rotation.y=Math.PI;setSeatedPose(truckDriver,true);setCharacterAction(truckDriver,CHARACTER_ACTIONS.drive);truck.add(truckDriver);
   truck.position.set(4.35,0,23.4);scene.add(truck);deliveryTruck=truck;
   addWorldLabel("interact",()=>deliveryTruck.position.clone().add(new THREE.Vector3(0,3.1,0)),()=>`🚚 ${t("truckLabel")} • ${t("truckDriverLabel")} • ${localNumber(cargoCount(truckDeliveryCargo()))}`);
   refreshTruckCargo();
@@ -542,10 +578,18 @@ function updateDeliveryTruck(delta){
 }
 
 function clearLabourerModels(){
-  for(const mesh of labourerMeshes)scene.remove(mesh);
+  for(const mesh of labourerMeshes){unregisterCharacter(mesh);scene.remove(mesh)}
   labourerMeshes.length=0;
   for(const label of labourerLabels){const index=worldLabels.indexOf(label);if(index>=0)worldLabels.splice(index,1);label.element.remove()}
   labourerLabels.length=0;
+}
+
+function createStockCrate(item,name="carried-crate"){
+  const crate=new THREE.Group();crate.name=name;crate.userData.id=item.id;
+  box(crate,[.78,.55,.62],[0,0,0],0x9c6338);
+  box(crate,[.58,.38,.64],[0,.09,0],item.color);
+  const pack=createProductPackage(item,item.brands[0].id);pack.scale.setScalar(.72);pack.position.set(0,.16,.34);crate.add(pack);
+  return crate;
 }
 
 function ensureLabourerModels(){
@@ -555,7 +599,7 @@ function ensureLabourerModels(){
   for(let index=0;index<needed;index++){
     const mesh=createHumanoid(index?0x316fa0:0xc66a32,SKINS[(index+1)%SKINS.length],false,{style:"labourer",kind:index+1});
     mesh.scale.setScalar(.94);mesh.userData.labourerIndex=index;mesh.userData.labourPathIndex=0;
-    const crate=new THREE.Group();crate.name="labour-crate";box(crate,[.72,.52,.62],[0,0,0],0x9b6339);box(crate,[.5,.28,.64],[0,.08,0],PRODUCTS[(state.day+index)%PRODUCTS.length].color);crate.position.set(0,1.22,.55);mesh.add(crate);
+    const crate=createStockCrate(PRODUCTS[(state.day+index)%PRODUCTS.length],"labour-crate");crate.scale.setScalar(.9);setHeldObject(mesh,crate,"both");
     scene.add(mesh);labourerMeshes.push(mesh);
     labourerLabels.push(addWorldLabel("customer",()=>mesh.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>mesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("dailyLabourer")} ${localNumber(index+1)}`));
   }
@@ -637,7 +681,7 @@ function refreshCheckoutSign(){
 }
 
 function removeCashier(){
-  if(cashierMesh){scene.remove(cashierMesh);cashierMesh=null}
+  if(cashierMesh){unregisterCharacter(cashierMesh);scene.remove(cashierMesh);cashierMesh=null}
   if(cashierLabel){
     const index=worldLabels.indexOf(cashierLabel);if(index>=0)worldLabels.splice(index,1);
     cashierLabel.element.remove();cashierLabel=null;
@@ -654,7 +698,7 @@ function refreshCashierCharacter(){
 }
 
 function removeRestocker(){
-  if(restockerMesh){scene.remove(restockerMesh);restockerMesh=null}
+  if(restockerMesh){unregisterCharacter(restockerMesh);scene.remove(restockerMesh);restockerMesh=null}
   if(restockerLabel){
     const index=worldLabels.indexOf(restockerLabel);if(index>=0)worldLabels.splice(index,1);
     restockerLabel.element.remove();restockerLabel=null;
@@ -681,6 +725,7 @@ function updateRestocker(delta){
     if(!item){restockerCooldown=2.5;animateHumanoid(restockerMesh,false,0);return}
     const layout=PRODUCT_SHELVES[item.id];
     restockerJob={id:item.id,phase:"toShelf",timer:.9,target:new THREE.Vector3(layout.side<0?-7.75:7.75,0,layout.z)};
+    const crate=createStockCrate(item,"restocker-crate");crate.scale.setScalar(.86);setHeldObject(restockerMesh,crate,"both");
     updateWorldLabelText();
   }
   if(restockerJob.phase==="toShelf"){
@@ -689,10 +734,11 @@ function updateRestocker(delta){
     return;
   }
   if(restockerJob.phase==="stocking"){
-    animateCheckoutHands(restockerMesh);restockerJob.timer-=delta;
+    setCharacterAction(restockerMesh,CHARACTER_ACTIONS.interact,1.08);restockerJob.timer-=delta;
     if(restockerJob.timer>0)return;
     const before=state.storeLevel,result=restockerTransfer(state,restockerJob.id);
     if(result.ok){refreshShelfVisual(restockerJob.id);if(state.storeLevel>before)toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300);save();updateHUD();updateWorldLabelText()}
+    clearHeldObject(restockerMesh);
     restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-3.1,0,-8.15);return;
   }
   if(moveToward({mesh:restockerMesh},restockerJob.target,delta*2.1)){
@@ -729,77 +775,98 @@ function buildDecoration(){
   }
 }
 
+function setCharacterAction(mesh,name,speed=1){
+  const data=mesh?.userData;
+  if(!data?.rigged||!data.mixer)return;
+  const clip=characterAssets.clips.get(name)||characterAssets.clips.get(CHARACTER_ACTIONS.idle);
+  if(!clip)return;
+  let action=data.actions.get(clip.name);
+  if(!action){action=data.mixer.clipAction(clip,data.model);data.actions.set(clip.name,action)}
+  action.setEffectiveTimeScale(speed);
+  if(data.currentAction===action)return;
+  const previous=data.currentAction;
+  data.currentAction=action;
+  action.enabled=true;action.reset();action.setLoop(THREE.LoopRepeat,Infinity);action.fadeIn(.18).play();
+  if(previous)previous.fadeOut(.18);
+}
+
+function forceCharacterAction(mesh,name,duration=.8){
+  if(!mesh?.userData?.rigged)return;
+  mesh.userData.forcedAction=name;mesh.userData.forcedActionUntil=worldTime+duration;setCharacterAction(mesh,name,1.06);
+}
+
+function unregisterCharacter(mesh){
+  if(!mesh)return;
+  mesh.userData?.mixer?.stopAllAction();
+  animatedCharacters.delete(mesh);
+}
+
 function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance={}){
-  const group=new THREE.Group();
-  const shadow=fakeShadow(group,isPlayer ? .52 : .44);
+  if(!characterAssets.ready)throw new Error("Rigged character assets are not ready");
   const style=appearance.style||"customer";
   const kind=appearance.kind??Math.floor(Math.random()*4);
-  const staffStyle=["cashier","restocker","labourer","driver"].includes(style);
-  const trousers=staffStyle?0x1d2f44:isPlayer?0xf1e4c9:[0x273d55,0x493a36,0x2d5147,0x4b4260][kind];
-  const hairColor=[0x211a17,0x3d2b23,0x17191a,0x553929][kind];
-
-  const makeLeg=x=>{
-    const limb=new THREE.Group();limb.position.set(x,1.08,0);group.add(limb);
-    cylinder(limb,.13,.52,[0,-.25,0],trousers,14);
-    cylinder(limb,.115,.5,[0,-.72,.015],trousers,14);
-    const shoe=box(limb,[.27,.14,.44],[0,-1.01,.12],staffStyle?0x161b20:0x342b28);shoe.geometry.translate(0,0,.04);
-    return limb;
+  const gender=appearance.gender||(style==="customer"&&kind%2?"female":"male");
+  const asset=characterAssets[gender]||characterAssets.male;
+  const group=new THREE.Group();
+  const shadow=fakeShadow(group,isPlayer?.56:.48);
+  const model=cloneSkinnedCharacter(asset.scene);
+  model.name=`rigged-${style}-${gender}`;
+  model.scale.setScalar(asset.scale);
+  model.position.y=-asset.minY*asset.scale;
+  model.traverse(child=>{
+    if(child.isMesh){child.castShadow=true;child.receiveShadow=true;child.frustumCulled=false}
+  });
+  group.add(model);
+  const mixer=new THREE.AnimationMixer(model);
+  const bones={
+    leftHand:model.getObjectByName("hand_l"),rightHand:model.getObjectByName("hand_r"),
+    leftFoot:model.getObjectByName("foot_l"),rightFoot:model.getObjectByName("foot_r"),head:model.getObjectByName("Head")
   };
-  const leftLeg=makeLeg(-.21),rightLeg=makeLeg(.21);
-
-  const body=enableShadows(new THREE.Mesh(new THREE.CylinderGeometry(.36,.45,1.1,20),standard(clothes,.78)));
-  body.position.y=1.59;group.add(body);
-  const shoulders=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.48,20,12),standard(clothes,.78)));shoulders.scale.set(1,.36,.72);shoulders.position.y=1.98;group.add(shoulders);
-  const hem=enableShadows(new THREE.Mesh(new THREE.CylinderGeometry(.45,.48,.26,18),standard(clothes,.8)));hem.position.y=1.0;group.add(hem);
-  if(isPlayer){
-    const waistcoat=box(group,[.62,.82,.1],[0,1.59,.4],0x173f39);waistcoat.rotation.x=-.03;
-    box(group,[.035,.68,.02],[0,1.57,.46],0xf5bd3c,basic(0xf5bd3c));
-  }
-  if(staffStyle){
-    box(group,[.62,.22,.06],[0,1.56,.48],0xf3f6f4);
-    box(group,[.2,.13,.025],[.18,1.63,.525],0xf5bd3c,basic(0xf5bd3c));
-  }
-
-  const makeArm=x=>{
-    const limb=new THREE.Group();limb.position.set(x,1.96,0);group.add(limb);
-    cylinder(limb,.115,.46,[0,-.22,0],clothes,14);
-    cylinder(limb,.09,.44,[0,-.63,.015],skin,14);
-    const hand=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.09,14,10),standard(skin,.82)));hand.scale.set(.82,1.12,.72);hand.position.set(0,-.88,.035);limb.add(hand);
-    return limb;
+  group.userData={
+    rigged:true,model,mixer,actions:new Map(),currentAction:null,bones,shadow,style,gender,kind,isPlayer,seated:false,
+    personId:nextPersonId++,collisionRadius:.44,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both"
   };
-  const leftArm=makeArm(-.51),rightArm=makeArm(.51);
-
-  if(style==="customer"&&kind===3){
-    const scarf=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.335,18,12),standard(0x8c5ca7,.8)));scarf.scale.set(1,1.15,.9);scarf.position.y=2.41;group.add(scarf);
-  }
-  const head=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.275,24,18),standard(skin,.84)));head.scale.set(.88,1.08,.92);head.position.y=2.42;group.add(head);
-  if(!(style==="customer"&&kind===3)){
-    const hair=enableShadows(new THREE.Mesh(new THREE.SphereGeometry(.285,22,14,0,Math.PI*2,0,Math.PI*.53),standard(hairColor,.94)));hair.scale.set(.9,1,.94);hair.position.y=2.53;group.add(hair);
-    if(kind===1){
-      const backHair=box(group,[.4,.42,.1],[0,2.37,-.23],hairColor);backHair.rotation.x=.08;
-    }
-  }
-  if(staffStyle){
-    cylinder(group,.255,.09,[0,2.69,0],0x173f66,18);
-    box(group,[.36,.035,.19],[0,2.69,.2],0x173f66);
-  }else if(isPlayer){
-    const cap=enableShadows(new THREE.Mesh(new THREE.CylinderGeometry(.22,.28,.2,20),standard(0xf4eee0)));cap.position.y=2.68;group.add(cap);
-  }
-
-  for(const x of [-.085,.085]){
-    const eye=new THREE.Mesh(new THREE.SphereGeometry(.027,12,8),basic(0xf7f1e8));eye.scale.set(1.15,.7,.55);eye.position.set(x,2.46,.248);group.add(eye);
-    const pupil=new THREE.Mesh(new THREE.SphereGeometry(.014,10,7),basic(0x241d18));pupil.position.set(x,2.46,.267);group.add(pupil);
-    const brow=box(group,[.095,.018,.012],[x,2.52,.264],hairColor,basic(hairColor));brow.rotation.z=x<0?.06:-.06;
-  }
-  const nose=enableShadows(new THREE.Mesh(new THREE.ConeGeometry(.032,.105,10),standard(skin,.84)));nose.rotation.x=Math.PI/2;nose.position.set(0,2.39,.285);group.add(nose);
-  const mouth=box(group,[.095,.014,.012],[0,2.32,.268],0x81433e,basic(0x81433e));mouth.rotation.z=kind%2?.025:-.02;
-  for(const x of [-.266,.266]){
-    const ear=new THREE.Mesh(new THREE.SphereGeometry(.05,10,7),standard(skin));ear.scale.set(.48,1,.55);ear.position.set(x,2.42,0);group.add(ear);
-  }
-
-  group.traverse(child=>{if(child.isMesh){child.castShadow=true;child.receiveShadow=true}});
-  group.userData={leftLeg,rightLeg,leftArm,rightArm,body,shoulders,hem,head,shadow,bodyBaseY:1.59,shoulderBaseY:1.98,hemBaseY:1,moving:false,phase:Math.random()*6,style,seated:false,personId:nextPersonId++,collisionRadius:.43,giveWayUntil:0};
+  animatedCharacters.add(group);
+  setCharacterAction(group,CHARACTER_ACTIONS.idle);
   return group;
+}
+
+function setHeldObject(mesh,object,mode="both"){
+  if(!mesh?.userData)return;
+  const old=mesh.userData.heldObject;
+  if(old&&old!==object)mesh.remove(old);
+  mesh.userData.heldObject=object||null;mesh.userData.heldMode=mode;
+  if(object){mesh.add(object);object.userData.justAttached=true;updateHeldObject(mesh)}
+}
+
+function clearHeldObject(mesh){
+  const object=mesh?.userData?.heldObject;
+  if(object)mesh.remove(object);
+  if(mesh?.userData)mesh.userData.heldObject=null;
+}
+
+function updateHeldObject(mesh){
+  const data=mesh?.userData,object=data?.heldObject,bones=data?.bones;
+  if(!object||!bones?.leftHand||!bones?.rightHand)return;
+  mesh.updateMatrixWorld(true);
+  const left=bones.leftHand.getWorldPosition(new THREE.Vector3());
+  const right=bones.rightHand.getWorldPosition(new THREE.Vector3());
+  let point;
+  if(data.heldMode==="left")point=left;
+  else if(data.heldMode==="right")point=right;
+  else point=left.add(right).multiplyScalar(.5);
+  point=mesh.worldToLocal(point);
+  point.y-=data.heldMode==="both"?.04:.12;point.z+=data.heldMode==="both"?.18:.08;
+  if(object.userData.justAttached){object.position.copy(point);object.userData.justAttached=false}
+  else object.position.lerp(point,.42);
+}
+
+function updateCharacterAnimations(delta){
+  for(const character of animatedCharacters){
+    if(!character.parent)continue;
+    character.userData.mixer.update(delta);
+    updateHeldObject(character);
+  }
 }
 
 function addWorldLabel(cssClass,position,text){
@@ -815,7 +882,7 @@ function updateLabels(){
   const width=innerWidth,height=innerHeight;
   for(const label of worldLabels){
     const point=label.position().clone();point.project(camera);
-    const visible=point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
+    const visible=Boolean(label.element.textContent.trim())&&point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
     label.element.style.opacity=visible?"1":"0";
     if(visible){label.element.style.left=`${(point.x*.5+.5)*width}px`;label.element.style.top=`${(-point.y*.5+.5)*height}px`}
   }
@@ -824,17 +891,30 @@ function updateLabels(){
 function makeCustomer(){
   const order=createOrder(state);
   const kind=Math.floor(Math.random()*4);
-  const mesh=createHumanoid(COLORS[Math.floor(Math.random()*COLORS.length)],SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind});
-  mesh.scale.setScalar(rand(.88,1.04));mesh.position.set(rand(-.35,.35),0,13.5);scene.add(mesh);
+  const mesh=createHumanoid(COLORS[Math.floor(Math.random()*COLORS.length)],SKINS[Math.floor(Math.random()*SKINS.length)],false,{style:"customer",kind,gender:kind%2?"female":"male"});
+  mesh.scale.setScalar(rand(.88,1.04));
+  let spawn=null;
+  for(let attempt=0;attempt<8;attempt++){
+    const candidate={x:rand(-1.25,1.25),z:13.35+Math.floor(attempt/4)*.8};
+    if(!positionBlocked(mesh,candidate.x,candidate.z)){spawn=candidate;break}
+  }
+  if(!spawn){unregisterCharacter(mesh);return false}
+  mesh.position.set(spawn.x,0,spawn.z);scene.add(mesh);
   const shelf=PRODUCT_SHELVES[order.product],shoppingOffset=rand(-.58,.58);
   const accessX=shelf.side<0?-7.75:7.75;
-  const customer={mesh,order,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.5,1.9),timer:0,waited:0,blockedTime:0,label:null};
+  const carrier=mesh.userData.personId%3===0?"trolley":"basket";
+  mesh.userData.usingTrolley=carrier==="trolley";if(mesh.userData.usingTrolley)mesh.userData.collisionRadius=.54;
+  const customer={mesh,order,carrier,hasProduct:false,trolley:null,payload:null,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.85,2.3),timer:0,waited:0,blockedTime:0,label:null};
+  mesh.userData.customer=customer;
+  setupCustomerCarrier(customer);
   customer.label=addWorldLabel("customer",()=>customer.mesh.position.clone().add(new THREE.Vector3(0,2.75,0)),()=>customerLabelText(customer));
   customers.push(customer);
+  return true;
 }
 
 function customerLabelText(customer){
-  if(customer.mesh.userData.giveWayUntil>worldTime)return `🙏 ${t("pleaseGiveWay")}`;
+  if(customer.mesh.userData.giveWayUntil>worldTime&&!['queue','scanning'].includes(customer.phase))return `🙏 ${t("pleaseGiveWay")}`;
+  if(!customer.hasProduct)return "";
   if(customer.phase==="queue")return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})} • ${t("queueWait",{seconds:localNumber(Math.floor(customer.waited))})}`;
   if(customer.phase==="scanning")return `🧾 ${t("scanning")}`;
   return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})}`;
@@ -843,16 +923,17 @@ function customerLabelText(customer){
 function setCustomerPath(customer,points,phase){customer.path=points;customer.pathIndex=0;customer.phase=phase}
 
 function updateCustomer(customer,delta){
+  syncCustomerTrolley(customer);
   if(["enter","toCheckout","leaving"].includes(customer.phase))moveCustomer(customer,delta);
   else if(customer.phase==="shopping"){
-    const reach=Math.sin(worldTime*7)*.12;customer.mesh.userData.leftArm.rotation.x=-1.15+reach;customer.mesh.userData.rightArm.rotation.x=-1.05-reach;
+    setCharacterAction(customer.mesh,CHARACTER_ACTIONS.pickup,1.05);
     customer.timer-=delta;
     if(customer.timer<=0)finishShopping(customer);
   }else if(customer.phase==="queue"){
     const index=checkoutQueue.indexOf(customer);
     if(index<0)return;
     const target=new THREE.Vector3(2.25,0,7.55-index*1.05);
-    moveToward(customer,target,delta*1.55);
+    moveToward(customer,target,delta*1.8,{ignoreQueue:true,suppressGiveWay:true});
     customer.waited+=delta;
     customer.label.element.textContent=customerLabelText(customer);
   }
@@ -867,35 +948,68 @@ function moveCustomer(customer,delta){
   }
 }
 
-function moveToward(customer,target,distance){
+function moveToward(customer,target,distance,options={}){
   const current=customer.mesh.position;
-  const dx=target.x-current.x,dz=target.z-current.z;
-  const length=Math.hypot(dx,dz);
+  const data=customer.mesh.userData;
+  let finalDx=target.x-current.x,finalDz=target.z-current.z;
+  const length=Math.hypot(finalDx,finalDz);
   if(length<.08){animateHumanoid(customer.mesh,false,0);return true}
-  const step=Math.min(length,distance),fx=dx/length,fz=dz/length,side=customer.mesh.userData.personId%2?1:-1;
-  const attempts=[
-    [current.x+fx*step,current.z+fz*step],
-    [current.x+fx*step*.35-fz*step*1.35*side,current.z+fz*step*.35+fx*step*1.35*side],
-    [current.x+fx*step*.25+fz*step*1.15*side,current.z+fz*step*.25-fx*step*1.15*side]
-  ];
-  let moved=false,blocker=null;
+  if(data.avoidance&&worldTime>data.avoidance.until)data.avoidance=null;
+  if(data.avoidance&&Math.hypot(data.avoidance.x-current.x,data.avoidance.z-current.z)<.12)data.avoidance=null;
+  let moveTarget=data.avoidance||target;
+  let dx=moveTarget.x-current.x,dz=moveTarget.z-current.z,moveLength=Math.hypot(dx,dz);
+  if(moveLength<.001){data.avoidance=null;moveTarget=target;dx=finalDx;dz=finalDz;moveLength=length}
+  const step=Math.min(moveLength,distance),fx=dx/moveLength,fz=dz/moveLength;
+  const attempts=[[current.x+fx*step,current.z+fz*step]];
+  let moved=false,blocker=null,movedX=0,movedZ=0;
   for(const [x,z] of attempts){
-    const blockedResult=positionBlocked(customer.mesh,x,z);
-    if(!blockedResult){current.x=x;current.z=z;moved=true;break}
+    const blockedResult=positionBlocked(customer.mesh,x,z,options);
+    if(!blockedResult){movedX=x-current.x;movedZ=z-current.z;current.x=x;current.z=z;moved=true;break}
     blocker=blocker||blockedResult.person;
   }
+  if(!moved&&blocker){
+    const desiredLength=Math.max(.001,Math.hypot(finalDx,finalDz)),forwardX=finalDx/desiredLength,forwardZ=finalDz/desiredLength;
+    const otherRadius=(blocker.userData.collisionRadius||.44)*(blocker.scale.x||1);
+    const ownRadius=(data.collisionRadius||.44)*(customer.mesh.scale.x||1);
+    const clearance=ownRadius+otherRadius+.42;
+    for(const side of [1,-1]){
+      const rightX=forwardZ*side,rightZ=-forwardX*side;
+      const waypoint={x:current.x+rightX*clearance+forwardX*.35,z:current.z+rightZ*clearance+forwardZ*.35,until:worldTime+2.2};
+      if(blocked(waypoint.x,waypoint.z))continue;
+      const lateralX=current.x+rightX*step*1.15,lateralZ=current.z+rightZ*step*1.15;
+      const sideBlock=positionBlocked(customer.mesh,lateralX,lateralZ,{...options,ignorePerson:blocker});
+      if(sideBlock)continue;
+      data.avoidance=waypoint;movedX=lateralX-current.x;movedZ=lateralZ-current.z;current.x=lateralX;current.z=lateralZ;moved=true;break;
+    }
+  }
+  if(!moved&&!blocker){
+    for(const [x,z] of [[current.x+fx*step,current.z],[current.x,current.z+fz*step]]){
+      if(positionBlocked(customer.mesh,x,z,options))continue;
+      movedX=x-current.x;movedZ=z-current.z;current.x=x;current.z=z;moved=true;break;
+    }
+  }
   if(moved){
-    customer.mesh.userData.blockedTime=Math.max(0,(customer.mesh.userData.blockedTime||0)-distance*2);
-    customer.mesh.rotation.y=Math.atan2(dx,dz);animateHumanoid(customer.mesh,true,worldTime*6+customer.mesh.userData.phase);
+    data.blockedTime=Math.max(0,(data.blockedTime||0)-distance*2);
+    customer.mesh.rotation.y=Math.atan2(movedX,movedZ);animateHumanoid(customer.mesh,true,worldTime*6+data.phase,Boolean(customer.running));
+    if(blocker&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
+      data.giveWayUntil=worldTime+1.5;
+      if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
+      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
+    }
   }else{
-    customer.mesh.userData.blockedTime=(customer.mesh.userData.blockedTime||0)+distance/Math.max(.4,customer.speed||1.55);animateHumanoid(customer.mesh,false,0);
-    if(customer.mesh.userData.blockedTime>.35){
-      customer.mesh.userData.giveWayUntil=worldTime+1.5;
+    data.blockedTime=(data.blockedTime||0)+distance/Math.max(.4,customer.speed||1.8);animateHumanoid(customer.mesh,false,0);
+    if(blocker&&data.blockedTime>.22&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
+      data.giveWayUntil=worldTime+1.5;
       if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
       if(customer.label)customer.label.element.textContent=customerLabelText(customer);
     }
   }
-  return moved&&length<=distance+.08;
+  return moved&&!data.avoidance&&length<=distance+.08;
+}
+
+function canAskForWay(mesh,blocker){
+  const phase=mesh.userData.customer?.phase,otherPhase=blocker?.userData?.customer?.phase;
+  return !["queue","scanning"].includes(phase)&&!["queue","scanning"].includes(otherPhase)&&!blocker?.userData?.atCounter;
 }
 
 function customerPathFinished(customer){
@@ -916,8 +1030,11 @@ function finishShopping(customer){
   const okay=takeShelfItems(state,customer.order);
   if(okay){
     refreshShelfVisual(customer.order.product);
+    customer.hasProduct=true;
     attachCustomerBasket(customer);
-    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,7.45),new THREE.Vector3(2.05,0,7.55)],"toCheckout");
+    const inbound=customers.filter(other=>other!==customer&&other.phase==="toCheckout").length;
+    const tailZ=7.55-(checkoutQueue.length+inbound)*1.05;
+    setCustomerPath(customer,[new THREE.Vector3(0,0,customer.mesh.position.z),new THREE.Vector3(0,0,tailZ),new THREE.Vector3(2.05,0,tailZ)],"toCheckout");
     save();updateHUD();updateWorldLabelText();
   }else{
     const result=missSale(state,1);
@@ -926,18 +1043,56 @@ function finishShopping(customer){
   }
 }
 
-function attachCustomerBasket(customer){
-  if(customer.mesh.getObjectByName("shopping-basket"))return;
+function createShoppingBasket(){
   const basket=new THREE.Group();basket.name="shopping-basket";
   box(basket,[.65,.32,.42],[0,0,0],0xd14c3f);
   for(const x of [-.2,0,.2])box(basket,[.045,.36,.44],[x,0,0],0xf0b23b,basic(0xf0b23b));
   const handle=new THREE.Mesh(new THREE.TorusGeometry(.31,.035,7,18,Math.PI),standard(0x5c3828));handle.rotation.z=Math.PI;handle.position.y=.28;basket.add(handle);
-  const item=createProductPackage(productById(customer.order.product),customer.order.brand);item.scale.setScalar(.7);item.position.set(0,.28,0);basket.add(item);
-  basket.position.set(0,1.03,.5);basket.rotation.x=-.08;customer.mesh.add(basket);
+  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.y=.28;basket.add(payload);
+  return {carrier:basket,payload};
+}
+
+function createShoppingTrolley(){
+  const trolley=new THREE.Group();trolley.name="shopping-trolley";
+  const metal=standard(0x9aa7aa,.38),red=standard(0xc63e34,.58);
+  box(trolley,[.92,.08,1.12],[0,.64,.12],0,metal);
+  for(const x of [-.43,.43])for(const z of [-.4,.57])box(trolley,[.055,.72,.055],[x,.72,z],0,metal);
+  for(const y of [.68,.9,1.12])for(const x of [-.44,.44])box(trolley,[.05,.05,1.05],[x,y,.08],0,metal);
+  for(const z of [-.4,.1,.57])box(trolley,[.92,.05,.05],[0,.88,z],0,metal);
+  box(trolley,[1.06,.09,.08],[0,1.36,-.52],0,red);
+  for(const x of [-.4,.4])for(const z of [-.38,.5]){
+    const wheel=cylinder(trolley,.105,.075,[x,.15,z],0x1f2425,14);wheel.rotation.z=Math.PI/2;
+  }
+  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.set(0,.86,.08);trolley.add(payload);
+  fakeShadow(trolley,.68);
+  return {carrier:trolley,payload};
+}
+
+function setupCustomerCarrier(customer){
+  if(customer.carrier==="trolley"){
+    const made=createShoppingTrolley();customer.trolley=made.carrier;customer.payload=made.payload;scene.add(customer.trolley);syncCustomerTrolley(customer);
+  }else{
+    const made=createShoppingBasket();customer.payload=made.payload;setHeldObject(customer.mesh,made.carrier,"both");
+  }
+}
+
+function syncCustomerTrolley(customer){
+  if(!customer?.trolley)return;
+  if(customer.mesh.userData.atCounter){customer.trolley.position.set(1.48,0,7.82);customer.trolley.rotation.y=Math.PI/2;return}
+  const yaw=customer.mesh.rotation.y,forward=.9;
+  customer.trolley.position.set(customer.mesh.position.x+Math.sin(yaw)*forward,0,customer.mesh.position.z+Math.cos(yaw)*forward);
+  customer.trolley.rotation.y=yaw;
+}
+
+function attachCustomerBasket(customer){
+  if(!customer.payload||customer.payload.children.length)return;
+  const item=createProductPackage(productById(customer.order.product),customer.order.brand);
+  item.scale.setScalar(customer.carrier==="trolley"?.92:.7);item.position.set(0,.04,0);customer.payload.add(item);
 }
 
 function sendCustomerOut(customer){
-  setCustomerPath(customer,[new THREE.Vector3(0,0,Math.max(8.8,customer.mesh.position.z)),new THREE.Vector3(0,0,13.6)],"leaving");
+  customer.mesh.userData.atCounter=false;customer.mesh.userData.avoidance=null;
+  setCustomerPath(customer,[new THREE.Vector3(1.55,0,7.75),new THREE.Vector3(0,0,8.8),new THREE.Vector3(0,0,13.6)],"leaving");
 }
 
 function spawnTrash(){
@@ -974,7 +1129,9 @@ function removeCustomer(customer){
   const queueIndex=checkoutQueue.indexOf(customer);if(queueIndex>=0)checkoutQueue.splice(queueIndex,1);
   const index=customers.indexOf(customer);if(index>=0)customers.splice(index,1);
   const labelIndex=worldLabels.indexOf(customer.label);if(labelIndex>=0)worldLabels.splice(labelIndex,1);
-  customer.label.element.remove();scene.remove(customer.mesh);
+  customer.label.element.remove();
+  if(customer.trolley)scene.remove(customer.trolley);
+  unregisterCharacter(customer.mesh);scene.remove(customer.mesh);
 }
 
 function clearCustomers(){
@@ -984,28 +1141,23 @@ function clearCustomers(){
   checkoutQueue.length=0;
 }
 
-function animateHumanoid(mesh,moving,phase){
-  const data=mesh.userData;if(!data?.leftLeg)return;
-  if(data.seated)return;
-  const swing=moving?Math.sin(phase)*.48:0;
-  data.leftLeg.rotation.x=swing;data.rightLeg.rotation.x=-swing;
-  data.leftArm.rotation.x=-swing*.7;data.rightArm.rotation.x=swing*.7;
-  const bounce=moving?Math.abs(Math.sin(phase*2))*.035:0;
-  data.body.position.y=data.bodyBaseY+bounce;data.shoulders.position.y=data.shoulderBaseY+bounce;data.hem.position.y=data.hemBaseY+bounce;
+function animateHumanoid(mesh,moving,phase,running=false){
+  const data=mesh?.userData;if(!data?.rigged)return;
+  if(data.forcedActionUntil>worldTime){setCharacterAction(mesh,data.forcedAction,1.06);return}
+  if(data.seated){setCharacterAction(mesh,CHARACTER_ACTIONS.sit);return}
+  const action=moving?(data.usingTrolley?CHARACTER_ACTIONS.push:running?CHARACTER_ACTIONS.run:CHARACTER_ACTIONS.walk):CHARACTER_ACTIONS.idle;
+  setCharacterAction(mesh,action,running?1.08:1);
 }
 
 function setSeatedPose(mesh,seated){
-  const data=mesh?.userData;if(!data?.leftLeg)return;
+  const data=mesh?.userData;if(!data?.rigged)return;
   data.seated=seated;
-  data.leftLeg.rotation.x=seated?-1.08:0;data.rightLeg.rotation.x=seated?-1.08:0;
-  if(!seated){data.leftArm.rotation.z=0;data.rightArm.rotation.z=0;animateHumanoid(mesh,false,0)}
+  setCharacterAction(mesh,seated?CHARACTER_ACTIONS.sit:CHARACTER_ACTIONS.idle);
 }
 
 function animateCheckoutHands(mesh){
-  const data=mesh?.userData;if(!data?.leftArm)return;
-  const tap=Math.sin(worldTime*12)*.1;
-  data.leftArm.rotation.x=-1.14+tap;data.rightArm.rotation.x=-1.02-tap;
-  data.leftArm.rotation.z=.14;data.rightArm.rotation.z=-.14;
+  if(!mesh?.userData?.rigged)return;
+  setCharacterAction(mesh,CHARACTER_ACTIONS.checkout,1.08);
 }
 
 function animateCashier(delta){
@@ -1013,11 +1165,7 @@ function animateCashier(delta){
   const data=cashierMesh.userData;
   if(scan?.auto){
     animateCheckoutHands(cashierMesh);
-  }else{
-    data.leftArm.rotation.x+=(0-data.leftArm.rotation.x)*Math.min(1,delta*5);
-    data.rightArm.rotation.x+=(0-data.rightArm.rotation.x)*Math.min(1,delta*5);
-    data.leftArm.rotation.z*=Math.max(0,1-delta*5);data.rightArm.rotation.z*=Math.max(0,1-delta*5);
-  }
+  }else setCharacterAction(cashierMesh,CHARACTER_ACTIONS.sit);
 }
 
 function countPendingCustomers(){return customers.filter(customer=>!["leaving"].includes(customer.phase)).length}
@@ -1027,7 +1175,7 @@ function updateSpawning(delta){
   spawnClock-=delta;
   const allocated=state.handledToday+countPendingCustomers();
   if(spawnClock<=0&&allocated<dailyTarget(state)){
-    makeCustomer();spawnClock=spawnDelay(state)*rand(.78,1.08);updateWorldLabelText();
+    const spawned=makeCustomer();spawnClock=spawned?spawnDelay(state)*rand(.78,1.08):.65;updateWorldLabelText();
   }
 }
 
@@ -1036,6 +1184,8 @@ function startScanning(auto=false){
   const customer=checkoutQueue[0];
   if(!customer){if(!auto)toast(t("noCustomer"));return}
   checkoutQueue.shift();customer.phase="scanning";animateHumanoid(customer.mesh,false,0);
+  customer.mesh.userData.atCounter=true;customer.mesh.userData.avoidance=null;
+  customer.mesh.position.set(3.3,0,7.78);customer.mesh.rotation.y=0;syncCustomerTrolley(customer);
   scan={customer,elapsed:0,duration:auto?staffCheckoutDuration(state):checkoutDuration(state),auto};
   if(!auto){
     if(!ownerCheckoutSession){
@@ -1056,6 +1206,7 @@ function updateAutomaticCheckout(delta){
 
 function updateScan(delta){
   if(!scan)return;
+  setCharacterAction(scan.customer.mesh,CHARACTER_ACTIONS.interact,.92);
   if(!scan.auto&&!player.userData.seated){
     ownerCheckoutSession.seatElapsed+=delta;
     const ratio=Math.min(1,ownerCheckoutSession.seatElapsed/ownerCheckoutSession.seatDuration),smooth=ratio*ratio*(3-2*ratio);
@@ -1134,18 +1285,37 @@ function blocked(x,z){
 
 function activePeople(){
   const people=[player,marketVendor,restockerMesh,...customers.map(customer=>customer.mesh),...labourerMeshes];
-  return people.filter(mesh=>mesh&&mesh.visible!==false&&!mesh.userData.seated);
+  return people.filter(mesh=>mesh&&mesh.visible!==false&&!mesh.userData.seated&&!mesh.userData.atCounter);
 }
 
-function positionBlocked(mesh,x,z){
+function positionBlocked(mesh,x,z,options={}){
   if(blocked(x,z))return {world:true,person:null};
   const radius=(mesh.userData.collisionRadius||.42)*(mesh.scale.x||1);
   for(const other of activePeople()){
-    if(other===mesh)continue;
+    if(other===mesh||other===options.ignorePerson)continue;
+    const phase=mesh.userData.customer?.phase,otherPhase=other.userData.customer?.phase;
+    if(options.ignoreQueue&&phase==="queue"&&otherPhase==="queue")continue;
     const otherRadius=(other.userData.collisionRadius||.42)*(other.scale.x||1);
     if((x-other.position.x)**2+(z-other.position.z)**2<(radius+otherRadius+.08)**2)return {world:false,person:other};
   }
   return null;
+}
+
+function resolvePeopleOverlaps(){
+  const people=activePeople();
+  for(let first=0;first<people.length;first++)for(let second=first+1;second<people.length;second++){
+    const a=people[first],b=people[second];
+    const phaseA=a.userData.customer?.phase,phaseB=b.userData.customer?.phase;
+    if(phaseA==="queue"&&phaseB==="queue")continue;
+    let dx=a.position.x-b.position.x,dz=a.position.z-b.position.z,distance=Math.hypot(dx,dz);
+    const minimum=(a.userData.collisionRadius||.42)*(a.scale.x||1)+(b.userData.collisionRadius||.42)*(b.scale.x||1)+.04;
+    if(distance>=minimum||minimum-distance<.025)continue;
+    if(distance<.001){dx=a.userData.personId%2?1:-1;dz=0;distance=1}
+    const push=Math.min(.09,(minimum-distance)*.52),nx=dx/distance,nz=dz/distance;
+    const aX=a.position.x+nx*push,aZ=a.position.z+nz*push,bX=b.position.x-nx*push,bZ=b.position.z-nz*push;
+    if(!blocked(aX,aZ)){a.position.x=aX;a.position.z=aZ}
+    if(!blocked(bX,bZ)){b.position.x=bX;b.position.z=bZ}
+  }
 }
 
 function updatePlayer(delta){
@@ -1154,14 +1324,17 @@ function updatePlayer(delta){
   let inputForward=-joystick.y+(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);
   const magnitude=Math.hypot(inputX,inputForward);
   if(magnitude>.05){
-    inputX/=Math.max(1,magnitude);inputForward/=Math.max(1,magnitude);
+    const strength=Math.min(1,magnitude);
+    inputX/=magnitude;inputForward/=magnitude;
     const direction=cameraRelativeVector(cameraYaw,inputX,inputForward);
-    const dx=direction.x*delta*3.2,dz=direction.z*delta*3.2;
+    const running=strength>=.78;
+    const speed=running?4.7+(strength-.78)/.22*1.8:1.25+strength*3.55;
+    const dx=direction.x*delta*speed,dz=direction.z*delta*speed;
     const nextX=player.position.x+dx,nextZ=player.position.z+dz;
     if(!positionBlocked(player,nextX,player.position.z))player.position.x=nextX;
     if(!positionBlocked(player,player.position.x,nextZ))player.position.z=nextZ;
     player.rotation.y=Math.atan2(dx,dz);
-    walkTime+=delta*8.2;animateHumanoid(player,true,walkTime);
+    walkTime+=delta*(running?11.5:7.6);animateHumanoid(player,true,walkTime,running);
   }else animateHumanoid(player,false,0);
   updateCarriedCrate();
 }
@@ -1178,13 +1351,11 @@ function updateCamera(delta){
 function updateCarriedCrate(){
   if(!player)return;
   const old=player.getObjectByName("carried-crate");
-  if(!carrying){if(old)player.remove(old);return}
+  if(!carrying){if(old)clearHeldObject(player);return}
   if(old&&old.userData.id===carrying.id)return;
-  if(old)player.remove(old);
-  const item=productById(carrying.id);const crate=new THREE.Group();crate.name="carried-crate";crate.userData.id=carrying.id;
-  box(crate,[.78,.55,.62],[0,0,0],0x9c6338);
-  box(crate,[.58,.38,.64],[0,.09,0],item.color);
-  crate.position.set(0,1.18,.55);player.add(crate);
+  if(old)clearHeldObject(player);
+  const item=productById(carrying.id),crate=createStockCrate(item,"carried-crate");
+  setHeldObject(player,crate,"both");
 }
 
 function updateInteractions(){
@@ -1237,6 +1408,7 @@ function restockAtShelf(id){
   if(state.storeLevel>beforeLevel)setTimeout(()=>toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300),500);
   if(result.empty)carrying=null;
   if(state.tutorialStep===4)state.tutorialStep=5;
+  forceCharacterAction(player,CHARACTER_ACTIONS.interact,1);
   refreshShelfVisual(id);save();updateHUD();updateWorldLabelText();updateCarriedCrate();
 }
 
@@ -1410,6 +1582,7 @@ function renderStockroom(){
     if(!result.ok){toast(t(result.reason));return}
     carrying={id:result.id,amount:result.amount};
     if(state.tutorialStep===3)state.tutorialStep=4;
+    forceCharacterAction(player,CHARACTER_ACTIONS.pickup,.85);
     toast(t("picked",{amount:localNumber(result.amount),item:productName(result.id)}));tone("up");save();updateHUD();updateCarriedCrate();closePanel();
   }));
 }
@@ -1475,51 +1648,60 @@ function setupControls(){
   $("modalShade").addEventListener("click",event=>{if(event.target===$("modalShade"))closePanel()});
   $("nextDayBtn").addEventListener("click",nextDay);
 
-  const base=$("joystick"),nub=$("joystickNub");
-  const moveJoystick=event=>{
-    if(event.pointerId!==joystick.id)return;
-    const rect=base.getBoundingClientRect(),centerX=rect.left+rect.width/2,centerY=rect.top+rect.height/2,max=rect.width*.34;
-    let dx=event.clientX-centerX,dy=event.clientY-centerY;const length=Math.hypot(dx,dy);
-    if(length>max){dx=dx/length*max;dy=dy/length*max}
-    joystick.x=dx/max;joystick.y=dy/max;nub.style.transform=`translate(${dx}px,${dy}px)`;
+  const base=$("joystick"),nub=$("joystickNub"),touchPointers=new Map();
+  let mouseDrag=null,pinchDistance=0;
+  const beginScreenMovement=event=>{
+    joystick.id=event.pointerId;joystick.originX=event.clientX;joystick.originY=event.clientY;joystick.x=0;joystick.y=0;
+    base.style.left=`${event.clientX-58}px`;base.style.top=`${event.clientY-58}px`;base.classList.add("active");nub.style.transform="translate(0,0)";
   };
-  base.addEventListener("pointerdown",event=>{joystick.id=event.pointerId;base.setPointerCapture(event.pointerId);moveJoystick(event);event.preventDefault()});
-  base.addEventListener("pointermove",moveJoystick);
-  const releaseJoystick=event=>{if(event.pointerId!==joystick.id)return;joystick.id=null;joystick.x=0;joystick.y=0;nub.style.transform="translate(0,0)"};
-  base.addEventListener("pointerup",releaseJoystick);base.addEventListener("pointercancel",releaseJoystick);
-
-  let drag=null,pinchDistance=0;
-  const cameraPointers=new Map();
+  const moveScreenMovement=event=>{
+    if(event.pointerId!==joystick.id)return;
+    const max=72;let dx=event.clientX-joystick.originX,dy=event.clientY-joystick.originY;const length=Math.hypot(dx,dy);
+    if(length>max){dx=dx/length*max;dy=dy/length*max}
+    joystick.x=dx/max;joystick.y=dy/max;nub.style.transform=`translate(${dx*.46}px,${dy*.46}px)`;
+  };
+  const endScreenMovement=id=>{
+    if(id!==joystick.id)return;
+    joystick.id=null;joystick.x=0;joystick.y=0;base.classList.remove("active");nub.style.transform="translate(0,0)";
+  };
   renderer.domElement.addEventListener("pointerdown",event=>{
     if(!started||isPaused(false))return;
-    cameraPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
     renderer.domElement.setPointerCapture(event.pointerId);
-    if(cameraPointers.size===1)drag={id:event.pointerId,x:event.clientX,y:event.clientY};
-    if(cameraPointers.size===2){const points=[...cameraPointers.values()];pinchDistance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);drag=null}
+    if(event.pointerType==="touch"||event.pointerType==="pen"){
+      touchPointers.set(event.pointerId,{x:event.clientX,y:event.clientY,lastX:event.clientX,lastY:event.clientY});
+      if(joystick.id===null)beginScreenMovement(event);
+      if(touchPointers.size===2){const points=[...touchPointers.values()];pinchDistance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}
+    }else mouseDrag={id:event.pointerId,x:event.clientX,y:event.clientY};
+    event.preventDefault();
   });
   renderer.domElement.addEventListener("pointermove",event=>{
-    if(!cameraPointers.has(event.pointerId))return;
-    cameraPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
-    if(cameraPointers.size>=2){
-      const points=[...cameraPointers.values()],distance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);
-      state.cameraDistance=clamp(state.cameraDistance-(distance-pinchDistance)*.034,8,30);pinchDistance=distance;event.preventDefault();return;
+    if(touchPointers.has(event.pointerId)){
+      const point=touchPointers.get(event.pointerId),dx=event.clientX-point.lastX,dy=event.clientY-point.lastY;
+      point.x=event.clientX;point.y=event.clientY;point.lastX=event.clientX;point.lastY=event.clientY;
+      moveScreenMovement(event);
+      if(event.pointerId!==joystick.id){cameraYaw-=dx*.01;cameraPitch=clamp(cameraPitch+dy*.003,.12,.72)}
+      if(touchPointers.size>=2){
+        const points=[...touchPointers.values()],distance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);
+        state.cameraDistance=clamp(state.cameraDistance-(distance-pinchDistance)*.034,8,30);pinchDistance=distance;
+      }
+      event.preventDefault();return;
     }
-    if(!drag||drag.id!==event.pointerId)return;
-    const dx=event.clientX-drag.x,dy=event.clientY-drag.y;drag.x=event.clientX;drag.y=event.clientY;
+    if(!mouseDrag||mouseDrag.id!==event.pointerId)return;
+    const dx=event.clientX-mouseDrag.x,dy=event.clientY-mouseDrag.y;mouseDrag.x=event.clientX;mouseDrag.y=event.clientY;
     cameraYaw-=dx*.009;cameraPitch=clamp(cameraPitch+dy*.003,.12,.72);event.preventDefault();
   });
-  const endDrag=event=>{
-    cameraPointers.delete(event.pointerId);
-    if(cameraPointers.size===1){const [id,point]=cameraPointers.entries().next().value;drag={id,x:point.x,y:point.y}}
-    else drag=null;
+  const endPointer=event=>{
+    touchPointers.delete(event.pointerId);endScreenMovement(event.pointerId);
+    if(mouseDrag?.id===event.pointerId)mouseDrag=null;
+    if(touchPointers.size<2)pinchDistance=0;
     save();
   };
-  renderer.domElement.addEventListener("pointerup",endDrag);renderer.domElement.addEventListener("pointercancel",endDrag);
+  renderer.domElement.addEventListener("pointerup",endPointer);renderer.domElement.addEventListener("pointercancel",endPointer);
   renderer.domElement.addEventListener("wheel",event=>{state.cameraDistance=clamp(state.cameraDistance+Math.sign(event.deltaY)*1.1,8,30);save();event.preventDefault()},{passive:false});
   addEventListener("keydown",event=>{keys[event.code]=true;if(event.code==="KeyE"||event.code==="Space"){event.preventDefault();interact()}if(event.code==="Escape")closePanel()});
   addEventListener("keyup",event=>{keys[event.code]=false});
   addEventListener("resize",onResize);
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){joystick.x=0;joystick.y=0}});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){endScreenMovement(joystick.id);touchPointers.clear()}});
   addEventListener("pagehide",save);
 }
 
@@ -1534,21 +1716,25 @@ function animate(time){
     updateDeliveryTruck(delta);updatePlayer(delta);updateSpawning(delta);
     for(const customer of [...customers])updateCustomer(customer,delta);
     updateAutomaticCheckout(delta);updateScan(delta);updateOwnerCheckout(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
+    resolvePeopleOverlaps();for(const customer of customers)syncCustomerTrolley(customer);
     labelRefreshClock+=delta;if(labelRefreshClock>=.3){labelRefreshClock=0;updateWorldLabelText()}
     autosaveClock+=delta;if(autosaveClock>=5){autosaveClock=0;save()}
   }
+  updateCharacterAnimations(delta);
   updateCamera(delta);updateLabels();renderer.render(scene,camera);
 }
 
-function initialize(){
+async function initialize(){
   try{
+    const loadingText=$("loading")?.querySelector("strong");if(loadingText)loadingText.textContent=t("loadingCharacters");
+    await loadCharacterAssets();
     buildWorld();setupControls();applyLanguage();updateHUD();updateInteractions();updateCarriedCrate();
     window.__BAZAAR_GAME_READY__=true;
     $("loading").classList.add("hidden");
     requestAnimationFrame(animate);
   }catch(error){
     console.error(error);
-    if(window.__BAZAAR_BOOT_FAIL__)window.__BAZAAR_BOOT_FAIL__("WORLD_INIT",error);
+    if(window.__BAZAAR_BOOT_FAIL__)window.__BAZAAR_BOOT_FAIL__(characterAssets.ready?"WORLD_INIT":"CHARACTER_ASSETS",error);
     else{$("loading").classList.add("hidden");$("startOverlay").classList.add("hidden");$("webglError").classList.remove("hidden")}
   }
 }

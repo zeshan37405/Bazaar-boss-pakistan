@@ -30,6 +30,7 @@ test("Android entry page uses only packaged assets",()=>{
   for(const texture of ["floor-terrazzo.webp","wall-plaster.webp","shelf-wood.webp","road-asphalt.webp"]){
     assert.ok(fs.existsSync(path.join(assets,"textures",texture)),`missing texture ${texture}`);
   }
+  assert.ok(fs.readFileSync(path.join(assets,"models/quaternius/QUATERNIUS-CC0-NOTICE.txt"),"utf8").includes("CC0"));
   assert.ok(html.includes("img-src 'self' data:"));
 });
 
@@ -59,6 +60,12 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(bundle.includes("Copyright 2010-2026 Three.js Authors"));
   assert.ok(bundle.includes("2026-08-20"));
   assert.ok(bundle.includes("shopping-basket"));
+  assert.ok(bundle.includes("shopping-trolley"));
+  assert.ok(bundle.includes("cloneSkinnedCharacter"));
+  assert.ok(bundle.includes("Superhero_Male_FullBody.gltf"));
+  assert.ok(game.includes("function loadCharacterAssets"));
+  assert.ok(game.includes("function resolvePeopleOverlaps"));
+  assert.ok(game.includes("beginScreenMovement"));
   assert.ok(bundle.includes("queueWait"));
   assert.ok(bundle.includes("Latif Banaspati Ghee"));
   assert.ok(bundle.includes("dispatchTruck"));
@@ -68,12 +75,39 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(game.includes("function positionBlocked"));
   assert.ok(game.includes("function updateOwnerCheckout"));
   assert.ok(html.includes('id="truckBtn"'));
+  assert.ok(html.includes('class="joystick dynamic"'));
   assert.ok(bundle.includes("salesFund"));
   assert.ok(bundle.includes("restockerTransfer"));
   assert.ok(bundle.includes("priceAcceptanceChance"));
   assert.ok(!/^\s*import\s/m.test(bundle));
   assert.ok(!/^\s*export\s/m.test(bundle));
   assert.ok(fs.readFileSync(path.join(assets,"THREE-LICENSE.txt"),"utf8").includes("MIT License"));
+});
+
+test("rigged male and female models share the animation skeleton and required actions",()=>{
+  const modelDir=path.join(assets,"models","quaternius");
+  const male=JSON.parse(fs.readFileSync(path.join(modelDir,"Superhero_Male_FullBody.gltf"),"utf8"));
+  const female=JSON.parse(fs.readFileSync(path.join(modelDir,"Superhero_Female_FullBody.gltf"),"utf8"));
+  const animationBuffer=fs.readFileSync(path.join(modelDir,"UAL1_Standard.glb"));
+  let offset=12,animationJson=null;
+  while(offset<animationBuffer.length){
+    const length=animationBuffer.readUInt32LE(offset),type=animationBuffer.toString("ascii",offset+4,offset+8);
+    if(type.startsWith("JSON"))animationJson=JSON.parse(animationBuffer.toString("utf8",offset+8,offset+8+length).replace(/\0+$/,""));
+    offset+=8+length;
+  }
+  assert.ok(animationJson,"missing animation JSON chunk");
+  const requiredBones=["root","pelvis","spine_01","Head","hand_l","hand_r","foot_l","foot_r"];
+  for(const model of [male,female]){
+    const names=new Set(model.nodes.map(node=>node.name));
+    for(const bone of requiredBones)assert.ok(names.has(bone),`model missing ${bone}`);
+    assert.equal(model.skins.length,1);
+    for(const image of model.images||[])assert.ok(fs.existsSync(path.join(modelDir,image.uri)),`missing model texture ${image.uri}`);
+    for(const buffer of model.buffers||[])assert.ok(fs.existsSync(path.join(modelDir,buffer.uri)),`missing model buffer ${buffer.uri}`);
+  }
+  const actions=new Set(animationJson.animations.map(animation=>animation.name));
+  for(const action of ["Idle_Loop","Walk_Loop","Sprint_Loop","Push_Loop","PickUp_Table","Interact","Sitting_Idle_Loop","Driving_Loop"]){
+    assert.ok(actions.has(action),`animation missing ${action}`);
+  }
 });
 
 test("the bundled Three.js runtime executes with valid imported aliases",()=>{
