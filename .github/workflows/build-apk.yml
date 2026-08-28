@@ -1,0 +1,56 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: ["main", "agent/android-game"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build installable APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Test game rules and packaged assets
+        run: |
+          node tools/build-bundle.mjs
+          node --check app/src/main/assets/boot.js
+          node --check app/src/main/assets/game.js
+          node --check app/src/main/assets/sim.js
+          node --check app/src/main/assets/game.bundle.js
+          node --test tests/*.test.mjs
+          git diff --exit-code -- app/src/main/assets/game.bundle.js
+
+      - name: Build debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Prepare installer
+        run: cp app/build/outputs/apk/debug/app-debug.apk Bazaar-Boss-Pakistan.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bazaar-Boss-Pakistan-APK
+          path: Bazaar-Boss-Pakistan.apk
+          if-no-files-found: error
+          retention-days: 30

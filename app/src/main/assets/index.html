@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#163d35">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: blob:; media-src 'none'; connect-src 'self' data: blob:">
+  <title>Bazaar Boss</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="boot.js" defer></script>
+  <script src="translations.js" defer></script>
+  <script src="game.bundle.js" defer></script>
+</head>
+<body>
+  <main id="game" aria-label="Bazaar Boss game">
+    <div id="loading" class="loading"><span class="loader">BB</span><strong data-t="loading">دکان تیار ہو رہی ہے…</strong></div>
+    <div id="webglError" class="fatal hidden">
+      <span>⚠️</span>
+      <strong data-t="startupError">گیم مکمل طور پر شروع نہیں ہو سکی۔</strong>
+      <small id="fatalDetail"></small>
+      <button id="retryBtn" class="retry-btn" type="button" data-t="retry">دوبارہ کوشش کریں</button>
+    </div>
+
+    <section id="startOverlay" class="start-overlay">
+      <div class="start-card">
+        <div class="start-logo-3d" aria-label="Bazaar Boss 3D">
+          <span>BAZAAR</span><b>BOSS</b><small>3D SUPERMARKET</small>
+        </div>
+        <p class="selection-title" data-t="language">زبان</p>
+        <div class="language-picks" aria-label="Language">
+          <button type="button" data-start-lang="ur">اردو</button>
+          <button type="button" data-start-lang="hi">हिन्दी</button>
+          <button type="button" data-start-lang="en">English</button>
+        </div>
+        <p class="selection-title" data-t="gameMode">کھیل کی قسم</p>
+        <div class="mode-picks" aria-label="Difficulty">
+          <button type="button" data-start-difficulty="easy"><span>🌱</span><b data-t="easy">آسان</b><small data-t="easyModeDesc">سیکھنے اور آرام سے دکان بڑھانے کے لیے</small></button>
+          <button type="button" data-start-difficulty="hard"><span>🔥</span><b data-t="hard">مشکل</b><small data-t="hardModeDesc">تیز رش، بڑے اخراجات اور سخت ہدف</small></button>
+        </div>
+        <button id="startBtn" class="primary" type="button" data-t="start">کھیل شروع کریں</button>
+      </div>
+    </section>
+
+    <section id="hud" class="hud hidden" aria-live="polite">
+      <div class="topbar">
+        <div class="brand-chip"><span class="mini-logo" aria-hidden="true"><i>B</i><i>B</i></span><p><b>BAZAAR BOSS</b><small id="storeName" data-t="storeName">ذیشان سپرمارکیٹ</small></p></div>
+        <div class="stat sales-stat"><small data-t="salesFund">سیلز فنڈ</small><b id="salesFund">₨0</b></div>
+        <div class="stat budget-stat"><small data-t="operatingBudget">کاروباری بجٹ</small><b id="operatingBudget">₨0</b></div>
+        <div class="stat"><small data-t="reputation">ساکھ</small><b id="rep">0%</b></div>
+        <button id="settingsBtn" class="round-btn" type="button" data-ta="settings">⚙️</button>
+      </div>
+      <div class="status-row">
+        <div id="eventPill" class="event-pill"><span id="eventEmoji">☀️</span><p><b id="eventTitle"></b><small id="eventDesc"></small></p></div>
+        <div class="queue-chip"><small data-t="queueLabel">قطار</small><b id="queueCount">0</b></div>
+        <div class="level-chip"><small data-t="storeLevel">درجہ</small><b id="storeLevel">1</b></div>
+        <div class="clean-chip"><small data-t="cleanliness">صفائی</small><b id="cleanliness">100%</b></div>
+        <div class="day-chip"><small data-t="day">دن</small><b id="dayNo">1</b></div>
+      </div>
+      <div class="mission-card">
+        <span>🎯</span>
+        <div><small data-t="mission">آج کا ہدف</small><b id="missionText"></b><i><em id="missionFill"></em></i></div>
+      </div>
+      <div id="tutorial" class="tutorial"><span>💡</span><b id="tutorialText"></b></div>
+      <div id="carrying" class="carrying hidden"><span>📦</span><b id="carryingText"></b></div>
+      <div id="deliveryStatus" class="delivery-status hidden"><span>🚚</span><b id="deliveryText"></b><i><em id="deliveryFill"></em></i></div>
+      <div id="lowStock" class="low-stock hidden"><span>⚠️</span><b id="lowStockText"></b></div>
+    </section>
+
+    <div id="worldLabels" class="world-labels" aria-hidden="true"></div>
+    <div id="scanBox" class="scan-box hidden"><b id="scanText" data-t="scanning">سامان اسکین ہو رہا ہے…</b><i><em id="scanFill"></em></i></div>
+
+    <section id="controls" class="controls hidden">
+      <div id="joystick" class="joystick dynamic" aria-hidden="true"><i id="joystickNub"></i></div>
+      <div class="quick-actions">
+        <button id="marketBtn" class="mini-btn" type="button"><span>🧺</span><b data-t="market">ہول سیل منڈی</b></button>
+        <button id="truckBtn" class="mini-btn" type="button"><span>🚚</span><b data-t="transport">ٹرک اور مزدور</b></button>
+        <button id="managementBtn" class="mini-btn" type="button"><span>💻</span><b data-t="management">مینجمنٹ</b></button>
+        <button id="staffBtn" class="mini-btn" type="button"><span>👨‍💼</span><b data-t="staff">عملہ</b></button>
+        <button id="upgradesBtn" class="mini-btn" type="button"><span>⬆️</span><b data-t="upgrades">دکان اپ گریڈ</b></button>
+      </div>
+      <button id="actionBtn" class="action-btn" type="button"><span id="actionIcon">✋</span><b id="actionText" data-t="action">کام کریں</b></button>
+      <p class="camera-tip" data-t="cameraHint">کیمرہ گھمانے کے لیے اسکرین پھیریں</p>
+    </section>
+
+    <div id="modalShade" class="modal-shade hidden">
+      <section id="panel" class="panel" role="dialog" aria-modal="true">
+        <header><div><span id="panelIcon">🏪</span><h2 id="panelTitle"></h2></div><button id="panelClose" type="button" data-ta="close">✕</button></header>
+        <div id="panelBody" class="panel-body"></div>
+      </section>
+    </div>
+
+    <div id="dayModal" class="modal-shade hidden">
+      <section class="day-card" role="dialog" aria-modal="true">
+        <span id="dayResultIcon" class="trophy">🏆</span>
+        <h2 id="dayTitle"></h2>
+        <p id="dayResult"></p>
+        <div class="summary-grid">
+          <div><small data-t="servedSummary">خوش گاہک</small><b id="sumServed"></b></div>
+          <div><small data-t="missedSummary">واپس گئے</small><b id="sumMissed"></b></div>
+          <div><small data-t="revenueSummary">فروخت</small><b id="sumRevenue"></b></div>
+          <div><small data-t="expenseSummary">دکان خرچ</small><b id="sumExpense"></b></div>
+          <div><small data-t="wageSummary">عملے کی تنخواہ</small><b id="sumWage"></b></div>
+          <div><small data-t="serviceIncomeSummary">باہر کے کاروبار کی آمدنی</small><b id="sumServiceIncome"></b></div>
+          <div><small data-t="queueRecord">سب سے لمبی قطار</small><b id="sumQueue"></b></div>
+          <div><small data-t="salesFund">سیلز فنڈ</small><b id="sumSalesFund"></b></div>
+          <div><small data-t="operatingBudget">کاروباری بجٹ</small><b id="sumBudget"></b></div>
+        </div>
+        <p id="expenseWarning" class="warning hidden" data-t="expenseShort">خرچ پورا نہ ہونے سے ساکھ کم ہوئی</p>
+        <button id="nextDayBtn" class="primary" type="button" data-t="nextDay">اگلا دن شروع کریں</button>
+      </section>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </main>
+</body>
+</html>

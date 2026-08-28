@@ -1,0 +1,11 @@
+{
+  "name": "bazaar-boss-pakistan",
+  "private": true,
+  "type": "module",
+  "version": "13.0.0",
+  "scripts": {
+    "bundle": "node tools/build-bundle.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run bundle && node --check app/src/main/assets/boot.js && node --check app/src/main/assets/game.js && node --check app/src/main/assets/sim.js && node --check app/src/main/assets/game.bundle.js && npm test"
+  }
+}

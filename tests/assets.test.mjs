@@ -1,0 +1,190 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+import {fileURLToPath} from "node:url";
+
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
+const assets=path.join(root,"app/src/main/assets");
+const html=fs.readFileSync(path.join(assets,"index.html"),"utf8");
+const game=fs.readFileSync(path.join(assets,"game.js"),"utf8");
+const bundle=fs.readFileSync(path.join(assets,"game.bundle.js"),"utf8");
+const activity=fs.readFileSync(path.join(root,"app/src/main/java/com/zeeshan/bazaarboss/MainActivity.java"),"utf8");
+
+function dictionary(){
+  const context={window:{}};vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(assets,"translations.js"),"utf8"),context);
+  return context.window.BAZAAR_TEXT;
+}
+
+test("Android entry page uses only packaged assets",()=>{
+  const refs=[...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(match=>match[1]);
+  assert.ok(refs.includes("boot.js"));
+  assert.ok(refs.includes("game.bundle.js"));
+  assert.ok(!html.includes('type="module"'));
+  for(const ref of refs){
+    assert.ok(!/^https?:/.test(ref),`external asset ${ref}`);
+    assert.ok(fs.existsSync(path.join(assets,ref)),`missing asset ${ref}`);
+  }
+  for(const texture of ["floor-terrazzo.webp","wall-plaster.webp","shelf-wood.webp","road-asphalt.webp"]){
+    assert.ok(fs.existsSync(path.join(assets,"textures",texture)),`missing texture ${texture}`);
+  }
+  assert.ok(fs.readFileSync(path.join(assets,"models/quaternius/QUATERNIUS-CC0-NOTICE.txt"),"utf8").includes("CC0"));
+  assert.ok(html.includes("img-src 'self' data:"));
+  assert.ok(html.includes("connect-src 'self'"),"same-origin 3D assets must be fetchable in Android WebView");
+  assert.ok(!html.includes("connect-src 'none'"),"CSP must not block GLTFLoader asset requests");
+  assert.ok(fs.existsSync(path.join(assets,"ui/bazaar-startup.webp")),"missing startup game artwork");
+});
+
+test("Android serves packaged assets from a secure same-origin URL",()=>{
+  assert.ok(activity.includes("WebViewAssetLoader"));
+  assert.ok(activity.includes("https://appassets.androidplatform.net/assets/index.html"));
+  assert.ok(!activity.includes('loadUrl("file:///android_asset/index.html")'));
+  assert.ok(activity.includes("settings.setAllowFileAccess(false)"));
+});
+
+test("Android launcher uses the gaming artwork at every legacy density and as an adaptive icon",()=>{
+  const res=path.join(root,"app/src/main/res");
+  for(const density of ["mdpi","hdpi","xhdpi","xxhdpi","xxxhdpi"]){
+    const icon=path.join(res,`mipmap-${density}`,"ic_launcher.png");
+    assert.ok(fs.existsSync(icon),`missing ${density} launcher icon`);
+    const bytes=fs.readFileSync(icon);
+    assert.equal(bytes.toString("ascii",1,4),"PNG");
+  }
+  assert.ok(fs.existsSync(path.join(res,"drawable-nodpi/ic_launcher_foreground.png")));
+  assert.ok(fs.existsSync(path.join(res,"mipmap-anydpi-v26/ic_launcher.xml")));
+  assert.ok(!fs.existsSync(path.join(res,"drawable/ic_launcher.xml")),"old house vector must be removed");
+});
+
+test("every translated HTML label exists in all languages",()=>{
+  const text=dictionary();
+  const keys=[...html.matchAll(/data-t(?:a)?="([^"]+)"/g)].map(match=>match[1]);
+  for(const language of ["ur","hi","en"]){
+    for(const key of keys)assert.ok(text[language][key],`${language} missing ${key}`);
+  }
+});
+
+test("literal translation calls in game logic have dictionary entries",()=>{
+  const text=dictionary();
+  const keys=[...game.matchAll(/\bt\("([A-Za-z0-9]+)"/g)].map(match=>match[1]);
+  for(const key of new Set(keys))assert.ok(text.ur[key],`missing translation ${key}`);
+});
+
+test("shipped game is a self-contained classic bundle with the Three.js license",()=>{
+  assert.ok(bundle.length>400000);
+  assert.ok(bundle.includes("Copyright 2010-2026 Three.js Authors"));
+  assert.ok(bundle.includes("2026-08-20"));
+  assert.ok(bundle.includes("shopping-basket"));
+  assert.ok(bundle.includes("shopping-trolley"));
+  assert.ok(bundle.includes("cloneSkinnedCharacter"));
+  assert.ok(bundle.includes("Superhero_Male_FullBody.gltf"));
+  assert.ok(game.includes("function loadCharacterAssets"));
+  assert.ok(game.includes("function resolvePeopleOverlaps"));
+  assert.ok(game.includes("beginScreenMovement"));
+  assert.ok(bundle.includes("scanDetails"));
+  assert.ok(bundle.includes("Latif Banaspati Ghee"));
+  assert.ok(bundle.includes("Surf Excel Matic"));
+  assert.ok(bundle.includes("Lifebuoy Total 10"));
+  assert.ok(bundle.includes("Sunsilk Black Shine"));
+  assert.ok(bundle.includes("National Biryani Recipe Mix"));
+  assert.ok(bundle.includes("Vim Lemon Dishwash"));
+  assert.ok(bundle.includes("dispatchTruck"));
+  assert.ok(bundle.includes("startUnloading"));
+  assert.ok(game.includes('t("pleaseGiveWay")'));
+  assert.equal(dictionary().en.pleaseGiveWay,"Please give way");
+  assert.ok(game.includes("function positionBlocked"));
+  assert.ok(game.includes("function updateOwnerCheckout"));
+  assert.ok(game.includes("function chooseWorldDetour"));
+  assert.ok(game.includes("function choosePersonDetour"));
+  assert.ok(game.includes('name="package-brand-product-label-front"'));
+  assert.ok(game.includes('name="package-brand-product-label-back"'));
+  assert.ok(game.includes("visible-checkout-cash"));
+  assert.ok(game.includes('carryStyle="shoulder"'));
+  assert.ok(game.includes("function addCharacterHair"));
+  assert.ok(game.includes("targetHeight/height"),"characters must be scaled to human height instead of oversized superhero height");
+  assert.ok(game.includes("category-gallery-${item.id}"),"every product needs its own physical category gallery");
+  assert.ok(game.includes("function buildRestockTrolley"));
+  assert.ok(game.includes("restock-trolley-payload"));
+  assert.ok(game.includes('t("scanDetails"'),"checkout must reveal the scanned item and price");
+  assert.ok(!game.includes('addWorldLabel("customer"'),"people must not have floating labels over their heads");
+  assert.ok(!game.includes('addWorldLabel("shelf"'),"category signs must be physical 3D signs, not screen-covering tags");
+  assert.ok(html.includes('id="truckBtn"'));
+  assert.ok(html.includes('class="joystick dynamic"'));
+  assert.ok(bundle.includes("salesFund"));
+  assert.ok(bundle.includes("restockerTransfer"));
+  assert.ok(bundle.includes("priceAcceptanceChance"));
+  assert.ok(!/^\s*import\s/m.test(bundle));
+  assert.ok(!/^\s*export\s/m.test(bundle));
+  assert.ok(fs.readFileSync(path.join(assets,"THREE-LICENSE.txt"),"utf8").includes("MIT License"));
+});
+
+test("startup and settings keep only the requested choices",()=>{
+  assert.ok(html.includes('class="start-logo-3d"'));
+  assert.ok(html.includes('data-start-difficulty="easy"'));
+  assert.ok(html.includes('data-start-difficulty="hard"'));
+  assert.ok(!html.includes('class="intro-list"'));
+  assert.ok(!html.includes("<span>ب</span>"));
+  const settings=game.slice(game.indexOf("function renderSettings()"),game.indexOf("function isPaused"));
+  assert.ok(settings.includes('data-lang="ur"'));
+  assert.ok(!settings.includes("data-difficulty"));
+  assert.ok(!settings.includes("data-sound"));
+  assert.ok(!settings.includes("resetBtn"));
+});
+
+test("rigged male and female models share the animation skeleton and required actions",()=>{
+  const modelDir=path.join(assets,"models","quaternius");
+  const male=JSON.parse(fs.readFileSync(path.join(modelDir,"Superhero_Male_FullBody.gltf"),"utf8"));
+  const female=JSON.parse(fs.readFileSync(path.join(modelDir,"Superhero_Female_FullBody.gltf"),"utf8"));
+  const animationBuffer=fs.readFileSync(path.join(modelDir,"UAL1_Standard.glb"));
+  let offset=12,animationJson=null;
+  while(offset<animationBuffer.length){
+    const length=animationBuffer.readUInt32LE(offset),type=animationBuffer.toString("ascii",offset+4,offset+8);
+    if(type.startsWith("JSON"))animationJson=JSON.parse(animationBuffer.toString("utf8",offset+8,offset+8+length).replace(/\0+$/,""));
+    offset+=8+length;
+  }
+  assert.ok(animationJson,"missing animation JSON chunk");
+  const requiredBones=["root","pelvis","spine_01","Head","hand_l","hand_r","foot_l","foot_r"];
+  for(const model of [male,female]){
+    const names=new Set(model.nodes.map(node=>node.name));
+    for(const bone of requiredBones)assert.ok(names.has(bone),`model missing ${bone}`);
+    assert.equal(model.skins.length,1);
+    for(const image of model.images||[])assert.ok(fs.existsSync(path.join(modelDir,image.uri)),`missing model texture ${image.uri}`);
+    for(const buffer of model.buffers||[])assert.ok(fs.existsSync(path.join(modelDir,buffer.uri)),`missing model buffer ${buffer.uri}`);
+  }
+  const actions=new Set(animationJson.animations.map(animation=>animation.name));
+  for(const action of ["Idle_Loop","Walk_Loop","Sprint_Loop","Push_Loop","PickUp_Table","Interact","Sitting_Idle_Loop","Driving_Loop"]){
+    assert.ok(actions.has(action),`animation missing ${action}`);
+  }
+});
+
+test("every animated character role receives bone-attached 3D clothes",()=>{
+  assert.ok(game.includes("function addCharacterOutfit"));
+  assert.ok(game.includes("addCharacterOutfit(model,{style,primary:clothes,gender,kind})"));
+  for(const role of ["owner","customer","cashier","restocker","labourer","driver","vendor"]){
+    assert.ok(game.includes(`${role}:{`),`missing ${role} outfit`);
+  }
+  for(const garment of ["outfit-kameez","outfit-upper-sleeve","outfit-lower-sleeve","outfit-shalwar-thigh","outfit-shalwar-calf","outfit-shoe","outfit-cashier-apron","outfit-safety-vest","outfit-waistcoat"]){
+    assert.ok(game.includes(garment),`missing ${garment}`);
+  }
+  for(const bone of ["spine_01","spine_03","upperarm_l","upperarm_r","lowerarm_l","lowerarm_r","thigh_l","thigh_r","calf_l","calf_r","foot_l","foot_r"]){
+    assert.ok(game.includes(`getObjectByName(\"${bone}\")`),`clothes are not attached to ${bone}`);
+  }
+  assert.ok(game.includes("isCharacterClothing=true"));
+});
+
+test("the bundled Three.js runtime executes with valid imported aliases",()=>{
+  const boundary=bundle.indexOf("const __BAZAAR_SIM__");
+  assert.ok(boundary>0,"missing simulation bundle boundary");
+  const context={
+    console:{log(){},warn(){},error(){}},
+    document:{createElementNS(){return {style:{},addEventListener(){},removeEventListener(){},getContext(){return null}}}},
+    CustomEvent:class CustomEvent{}
+  };
+  context.window=context;context.self=context;
+  vm.createContext(context);
+  vm.runInContext(`${bundle.slice(0,boundary)}\nglobalThis.__THREE_TEST__=THREE;`,context,{timeout:5000});
+  assert.equal(typeof context.__THREE_TEST__.Scene,"function");
+  assert.equal(typeof context.__THREE_TEST__.WebGLRenderer,"function");
+  assert.equal(typeof context.__THREE_TEST__.BoxGeometry,"function");
+});
