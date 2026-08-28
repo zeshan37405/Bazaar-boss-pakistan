@@ -82,7 +82,7 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(game.includes("function loadCharacterAssets"));
   assert.ok(game.includes("function resolvePeopleOverlaps"));
   assert.ok(game.includes("beginScreenMovement"));
-  assert.ok(bundle.includes("queueWait"));
+  assert.ok(bundle.includes("scanDetails"));
   assert.ok(bundle.includes("Latif Banaspati Ghee"));
   assert.ok(bundle.includes("Surf Excel Matic"));
   assert.ok(bundle.includes("Lifebuoy Total 10"));
@@ -102,6 +102,13 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(game.includes("visible-checkout-cash"));
   assert.ok(game.includes('carryStyle="shoulder"'));
   assert.ok(game.includes("function addCharacterHair"));
+  assert.ok(game.includes("targetHeight/height"),"characters must be scaled to human height instead of oversized superhero height");
+  assert.ok(game.includes("category-gallery-${item.id}"),"every product needs its own physical category gallery");
+  assert.ok(game.includes("function buildRestockTrolley"));
+  assert.ok(game.includes("restock-trolley-payload"));
+  assert.ok(game.includes('t("scanDetails"'),"checkout must reveal the scanned item and price");
+  assert.ok(!game.includes('addWorldLabel("customer"'),"people must not have floating labels over their heads");
+  assert.ok(!game.includes('addWorldLabel("shelf"'),"category signs must be physical 3D signs, not screen-covering tags");
   assert.ok(html.includes('id="truckBtn"'));
   assert.ok(html.includes('class="joystick dynamic"'));
   assert.ok(bundle.includes("salesFund"));
@@ -110,6 +117,19 @@ test("shipped game is a self-contained classic bundle with the Three.js license"
   assert.ok(!/^\s*import\s/m.test(bundle));
   assert.ok(!/^\s*export\s/m.test(bundle));
   assert.ok(fs.readFileSync(path.join(assets,"THREE-LICENSE.txt"),"utf8").includes("MIT License"));
+});
+
+test("startup and settings keep only the requested choices",()=>{
+  assert.ok(html.includes('class="start-logo-3d"'));
+  assert.ok(html.includes('data-start-difficulty="easy"'));
+  assert.ok(html.includes('data-start-difficulty="hard"'));
+  assert.ok(!html.includes('class="intro-list"'));
+  assert.ok(!html.includes("<span>ب</span>"));
+  const settings=game.slice(game.indexOf("function renderSettings()"),game.indexOf("function isPaused"));
+  assert.ok(settings.includes('data-lang="ur"'));
+  assert.ok(!settings.includes("data-difficulty"));
+  assert.ok(!settings.includes("data-sound"));
+  assert.ok(!settings.includes("resetBtn"));
 });
 
 test("rigged male and female models share the animation skeleton and required actions",()=>{

@@ -13,7 +13,7 @@
 </head>
 <body>
   <main id="game" aria-label="Bazaar Boss game">
-    <div id="loading" class="loading"><span class="loader">ب</span><strong data-t="loading">دکان تیار ہو رہی ہے…</strong></div>
+    <div id="loading" class="loading"><span class="loader">BB</span><strong data-t="loading">دکان تیار ہو رہی ہے…</strong></div>
     <div id="webglError" class="fatal hidden">
       <span>⚠️</span>
       <strong data-t="startupError">گیم مکمل طور پر شروع نہیں ہو سکی۔</strong>
@@ -23,20 +23,19 @@
 
     <section id="startOverlay" class="start-overlay">
       <div class="start-card">
-        <div class="start-logo"><span>ب</span></div>
-        <p class="country" data-t="country">پاکستان</p>
-        <h1 data-t="gameTitle">Bazaar Boss</h1>
-        <p class="tagline" data-t="tagline">اپنی سپرمارکیٹ خود چلائیں</p>
+        <div class="start-logo-3d" aria-label="Bazaar Boss 3D">
+          <span>BAZAAR</span><b>BOSS</b><small>3D SUPERMARKET</small>
+        </div>
+        <p class="selection-title" data-t="language">زبان</p>
         <div class="language-picks" aria-label="Language">
           <button type="button" data-start-lang="ur">اردو</button>
           <button type="button" data-start-lang="hi">हिन्दी</button>
           <button type="button" data-start-lang="en">English</button>
         </div>
-        <div class="intro-list">
-          <p><span>🕹️</span><b data-t="intro1">دکان میں آزادانہ چلیں اور کیمرہ گھمائیں</b></p>
-          <p><span>📦</span><b data-t="intro2">اسٹور روم سے کریٹ اٹھا کر شیلف بھریں</b></p>
-          <p><span>🛒</span><b data-t="intro3">گاہک خریداری کریں گے، آپ کاؤنٹر پر بل بنائیں</b></p>
-          <p><span>👨‍💼</span><b data-t="intro4">منافع سے کیشیئر رکھیں اور دکان بڑھائیں</b></p>
+        <p class="selection-title" data-t="gameMode">کھیل کی قسم</p>
+        <div class="mode-picks" aria-label="Difficulty">
+          <button type="button" data-start-difficulty="easy"><span>🌱</span><b data-t="easy">آسان</b><small data-t="easyModeDesc">سیکھنے اور آرام سے دکان بڑھانے کے لیے</small></button>
+          <button type="button" data-start-difficulty="hard"><span>🔥</span><b data-t="hard">مشکل</b><small data-t="hardModeDesc">تیز رش، بڑے اخراجات اور سخت ہدف</small></button>
         </div>
         <button id="startBtn" class="primary" type="button" data-t="start">کھیل شروع کریں</button>
       </div>
@@ -44,7 +43,7 @@
 
     <section id="hud" class="hud hidden" aria-live="polite">
       <div class="topbar">
-        <div class="brand-chip"><span>ب</span><p><b>BAZAAR BOSS</b><small id="storeName" data-t="storeName">ذیشان سپرمارکیٹ</small></p></div>
+        <div class="brand-chip"><span class="mini-logo" aria-hidden="true"><i>B</i><i>B</i></span><p><b>BAZAAR BOSS</b><small id="storeName" data-t="storeName">ذیشان سپرمارکیٹ</small></p></div>
         <div class="stat sales-stat"><small data-t="salesFund">سیلز فنڈ</small><b id="salesFund">₨0</b></div>
         <div class="stat budget-stat"><small data-t="operatingBudget">کاروباری بجٹ</small><b id="operatingBudget">₨0</b></div>
         <div class="stat"><small data-t="reputation">ساکھ</small><b id="rep">0%</b></div>

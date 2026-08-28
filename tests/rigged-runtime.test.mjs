@@ -119,6 +119,8 @@ test("shipped male, female and staff characters wear animated bone-attached outf
       assert.ok(pieces.some(piece=>piece.name===name),`${style} missing ${name}`);
     }
     character.updateMatrixWorld(true);
+    const characterBounds=new runtime.THREE.Box3().setFromObject(character);
+    assert.ok(characterBounds.max.y-characterBounds.min.y<2.15,`${style} ${gender} is still oversized`);
     const bounds=new runtime.THREE.Box3();for(const piece of pieces)bounds.expandByObject(piece);
     assert.ok(Number.isFinite(bounds.min.y)&&bounds.max.y>bounds.min.y);
     const sleeve=pieces.find(piece=>piece.name==="outfit-upper-sleeve-l"),before=sleeve.getWorldPosition(new runtime.THREE.Vector3());
@@ -126,6 +128,19 @@ test("shipped male, female and staff characters wear animated bone-attached outf
     const after=sleeve.getWorldPosition(new runtime.THREE.Vector3());
     assert.ok(before.distanceTo(after)>.001,`${style} clothes did not follow the walk animation`);
   }
+});
+
+test("women's braid is attached behind the head",async()=>{
+  const runtime=bundledGameRuntime(),loader=new runtime.GLTFLoader();
+  const male=await parse(loader,embeddedModel("Superhero_Male_FullBody.gltf"));
+  const female=await parse(loader,embeddedModel("Superhero_Female_FullBody.gltf"));
+  const glb=fs.readFileSync(path.join(modelDir,"UAL1_Standard.glb"));
+  const animations=await parse(loader,runtime.bufferFromBase64(glb.toString("base64")));
+  runtime.install(male,female,animations.animations);
+  let braid=[];
+  for(let index=0;index<8&&!braid.length;index++)braid=runtime.create("customer","female",0).userData.hair.pieces.filter(piece=>piece.name.startsWith("hair-braid-"));
+  assert.equal(braid.length,5);
+  assert.ok(braid.every(piece=>piece.position.z<0),"braid segments must sit behind the head, not over the face");
 });
 
 test("a character automatically turns and walks around the checkout counter",()=>{

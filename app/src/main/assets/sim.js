@@ -128,9 +128,9 @@ export function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:12,
+    version:13,
     lang:source?.lang||old.lang||"ur",
-    difficulty:source?.difficulty||old.difficulty||"normal",
+    difficulty:(source?.difficulty||old.difficulty)==="hard"?"hard":"easy",
     sound:source?.sound??old.sound??true,
     cash:legacyCash,
     salesFund,
@@ -194,7 +194,7 @@ export function createState(saved,legacy){
   for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
   if(state.delivery.active){state.delivery.arrived=false;state.delivery.unloading=false}
   if(state.delivery.unloading)state.delivery.arrived=true;
-  if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
+  if(!["easy","hard"].includes(state.difficulty))state.difficulty="easy";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
   syncCash(state);
   return state;

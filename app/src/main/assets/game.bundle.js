@@ -14,30 +14,7 @@ const THREE=(()=>{const {Matrix3:e,Vector2:t,Color:n,Vector3:i,mergeUniforms:r,C
 return {"AdditiveAnimationBlendMode":__THREE_CORE__.AdditiveAnimationBlendMode,"AlwaysStencilFunc":__THREE_CORE__.AlwaysStencilFunc,"AmbientLight":__THREE_CORE__.AmbientLight,"AnimationAction":__THREE_CORE__.AnimationAction,"AnimationClip":__THREE_CORE__.AnimationClip,"AnimationLoader":__THREE_CORE__.AnimationLoader,"AnimationMixer":__THREE_CORE__.AnimationMixer,"AnimationObjectGroup":__THREE_CORE__.AnimationObjectGroup,"AnimationUtils":__THREE_CORE__.AnimationUtils,"ArcCurve":__THREE_CORE__.ArcCurve,"ArrowHelper":__THREE_CORE__.ArrowHelper,"AttachedBindMode":__THREE_CORE__.AttachedBindMode,"Audio":__THREE_CORE__.Audio,"AudioAnalyser":__THREE_CORE__.AudioAnalyser,"AudioContext":__THREE_CORE__.AudioContext,"AudioListener":__THREE_CORE__.AudioListener,"AudioLoader":__THREE_CORE__.AudioLoader,"AxesHelper":__THREE_CORE__.AxesHelper,"BasicDepthPacking":__THREE_CORE__.BasicDepthPacking,"BasicShadowMap":__THREE_CORE__.BasicShadowMap,"BatchedMesh":__THREE_CORE__.BatchedMesh,"BezierInterpolant":__THREE_CORE__.BezierInterpolant,"Bone":__THREE_CORE__.Bone,"BooleanKeyframeTrack":__THREE_CORE__.BooleanKeyframeTrack,"Box2":__THREE_CORE__.Box2,"Box3":__THREE_CORE__.Box3,"Box3Helper":__THREE_CORE__.Box3Helper,"BoxHelper":__THREE_CORE__.BoxHelper,"BufferGeometryLoader":__THREE_CORE__.BufferGeometryLoader,"Cache":__THREE_CORE__.Cache,"Camera":__THREE_CORE__.Camera,"CameraHelper":__THREE_CORE__.CameraHelper,"CanvasTexture":__THREE_CORE__.CanvasTexture,"CapsuleGeometry":__THREE_CORE__.CapsuleGeometry,"CatmullRomCurve3":__THREE_CORE__.CatmullRomCurve3,"CircleGeometry":__THREE_CORE__.CircleGeometry,"Clock":__THREE_CORE__.Clock,"ColorKeyframeTrack":__THREE_CORE__.ColorKeyframeTrack,"Compatibility":__THREE_CORE__.Compatibility,"CompressedArrayTexture":__THREE_CORE__.CompressedArrayTexture,"CompressedCubeTexture":__THREE_CORE__.CompressedCubeTexture,"CompressedTexture":__THREE_CORE__.CompressedTexture,"CompressedTextureLoader":__THREE_CORE__.CompressedTextureLoader,"ConeGeometry":__THREE_CORE__.ConeGeometry,"Controls":__THREE_CORE__.Controls,"CubeTextureLoader":__THREE_CORE__.CubeTextureLoader,"CubicBezierCurve":__THREE_CORE__.CubicBezierCurve,"CubicBezierCurve3":__THREE_CORE__.CubicBezierCurve3,"CubicInterpolant":__THREE_CORE__.CubicInterpolant,"CullFaceFrontBack":__THREE_CORE__.CullFaceFrontBack,"Curve":__THREE_CORE__.Curve,"CurvePath":__THREE_CORE__.CurvePath,"CylinderGeometry":__THREE_CORE__.CylinderGeometry,"Cylindrical":__THREE_CORE__.Cylindrical,"DataTextureLoader":__THREE_CORE__.DataTextureLoader,"DataUtils":__THREE_CORE__.DataUtils,"DecrementStencilOp":__THREE_CORE__.DecrementStencilOp,"DecrementWrapStencilOp":__THREE_CORE__.DecrementWrapStencilOp,"DefaultLoadingManager":__THREE_CORE__.DefaultLoadingManager,"DetachedBindMode":__THREE_CORE__.DetachedBindMode,"DirectionalLight":__THREE_CORE__.DirectionalLight,"DirectionalLightHelper":__THREE_CORE__.DirectionalLightHelper,"DiscreteInterpolant":__THREE_CORE__.DiscreteInterpolant,"DodecahedronGeometry":__THREE_CORE__.DodecahedronGeometry,"DynamicCopyUsage":__THREE_CORE__.DynamicCopyUsage,"DynamicDrawUsage":__THREE_CORE__.DynamicDrawUsage,"DynamicReadUsage":__THREE_CORE__.DynamicReadUsage,"EdgesGeometry":__THREE_CORE__.EdgesGeometry,"EllipseCurve":__THREE_CORE__.EllipseCurve,"EqualStencilFunc":__THREE_CORE__.EqualStencilFunc,"Euler":__THREE_CORE__.Euler,"ExtrudeGeometry":__THREE_CORE__.ExtrudeGeometry,"FileLoader":__THREE_CORE__.FileLoader,"Float16BufferAttribute":__THREE_CORE__.Float16BufferAttribute,"Fog":__THREE_CORE__.Fog,"FogExp2":__THREE_CORE__.FogExp2,"FramebufferTexture":__THREE_CORE__.FramebufferTexture,"FrustumArray":__THREE_CORE__.FrustumArray,"GLBufferAttribute":__THREE_CORE__.GLBufferAttribute,"GLSL1":__THREE_CORE__.GLSL1,"GreaterEqualStencilFunc":__THREE_CORE__.GreaterEqualStencilFunc,"GreaterStencilFunc":__THREE_CORE__.GreaterStencilFunc,"GridHelper":__THREE_CORE__.GridHelper,"Group":__THREE_CORE__.Group,"HTMLTexture":__THREE_CORE__.HTMLTexture,"HemisphereLight":__THREE_CORE__.HemisphereLight,"HemisphereLightHelper":__THREE_CORE__.HemisphereLightHelper,"IcosahedronGeometry":__THREE_CORE__.IcosahedronGeometry,"ImageBitmapLoader":__THREE_CORE__.ImageBitmapLoader,"ImageLoader":__THREE_CORE__.ImageLoader,"ImageUtils":__THREE_CORE__.ImageUtils,"IncrementStencilOp":__THREE_CORE__.IncrementStencilOp,"IncrementWrapStencilOp":__THREE_CORE__.IncrementWrapStencilOp,"InstancedBufferAttribute":__THREE_CORE__.InstancedBufferAttribute,"InstancedBufferGeometry":__THREE_CORE__.InstancedBufferGeometry,"InstancedInterleavedBuffer":__THREE_CORE__.InstancedInterleavedBuffer,"InstancedMesh":__THREE_CORE__.InstancedMesh,"Int16BufferAttribute":__THREE_CORE__.Int16BufferAttribute,"Int32BufferAttribute":__THREE_CORE__.Int32BufferAttribute,"Int8BufferAttribute":__THREE_CORE__.Int8BufferAttribute,"InterleavedBuffer":__THREE_CORE__.InterleavedBuffer,"InterleavedBufferAttribute":__THREE_CORE__.InterleavedBufferAttribute,"Interpolant":__THREE_CORE__.Interpolant,"InterpolateBezier":__THREE_CORE__.InterpolateBezier,"InterpolateDiscrete":__THREE_CORE__.InterpolateDiscrete,"InterpolateLinear":__THREE_CORE__.InterpolateLinear,"InterpolateSmooth":__THREE_CORE__.InterpolateSmooth,"InterpolationSamplingMode":__THREE_CORE__.InterpolationSamplingMode,"InterpolationSamplingType":__THREE_CORE__.InterpolationSamplingType,"InvertStencilOp":__THREE_CORE__.InvertStencilOp,"KeepStencilOp":__THREE_CORE__.KeepStencilOp,"KeyframeTrack":__THREE_CORE__.KeyframeTrack,"LOD":__THREE_CORE__.LOD,"LatheGeometry":__THREE_CORE__.LatheGeometry,"LessEqualStencilFunc":__THREE_CORE__.LessEqualStencilFunc,"LessStencilFunc":__THREE_CORE__.LessStencilFunc,"Light":__THREE_CORE__.Light,"LightProbe":__THREE_CORE__.LightProbe,"Line":__THREE_CORE__.Line,"Line3":__THREE_CORE__.Line3,"LineBasicMaterial":__THREE_CORE__.LineBasicMaterial,"LineCurve":__THREE_CORE__.LineCurve,"LineCurve3":__THREE_CORE__.LineCurve3,"LineDashedMaterial":__THREE_CORE__.LineDashedMaterial,"LineLoop":__THREE_CORE__.LineLoop,"LineSegments":__THREE_CORE__.LineSegments,"LinearInterpolant":__THREE_CORE__.LinearInterpolant,"LinearMipMapLinearFilter":__THREE_CORE__.LinearMipMapLinearFilter,"LinearMipMapNearestFilter":__THREE_CORE__.LinearMipMapNearestFilter,"Loader":__THREE_CORE__.Loader,"LoaderUtils":__THREE_CORE__.LoaderUtils,"LoadingManager":__THREE_CORE__.LoadingManager,"LoopOnce":__THREE_CORE__.LoopOnce,"LoopPingPong":__THREE_CORE__.LoopPingPong,"LoopRepeat":__THREE_CORE__.LoopRepeat,"MOUSE":__THREE_CORE__.MOUSE,"Material":__THREE_CORE__.Material,"MaterialBlending":__THREE_CORE__.MaterialBlending,"MaterialLoader":__THREE_CORE__.MaterialLoader,"MathUtils":__THREE_CORE__.MathUtils,"Matrix2":__THREE_CORE__.Matrix2,"MeshLambertMaterial":__THREE_CORE__.MeshLambertMaterial,"MeshMatcapMaterial":__THREE_CORE__.MeshMatcapMaterial,"MeshNormalMaterial":__THREE_CORE__.MeshNormalMaterial,"MeshPhongMaterial":__THREE_CORE__.MeshPhongMaterial,"MeshPhysicalMaterial":__THREE_CORE__.MeshPhysicalMaterial,"MeshStandardMaterial":__THREE_CORE__.MeshStandardMaterial,"MeshToonMaterial":__THREE_CORE__.MeshToonMaterial,"NearestMipMapLinearFilter":__THREE_CORE__.NearestMipMapLinearFilter,"NearestMipMapNearestFilter":__THREE_CORE__.NearestMipMapNearestFilter,"NeverStencilFunc":__THREE_CORE__.NeverStencilFunc,"NoNormalPacking":__THREE_CORE__.NoNormalPacking,"NormalAnimationBlendMode":__THREE_CORE__.NormalAnimationBlendMode,"NormalGAPacking":__THREE_CORE__.NormalGAPacking,"NormalRGPacking":__THREE_CORE__.NormalRGPacking,"NotEqualStencilFunc":__THREE_CORE__.NotEqualStencilFunc,"NumberKeyframeTrack":__THREE_CORE__.NumberKeyframeTrack,"Object3D":__THREE_CORE__.Object3D,"ObjectLoader":__THREE_CORE__.ObjectLoader,"OctahedronGeometry":__THREE_CORE__.OctahedronGeometry,"Path":__THREE_CORE__.Path,"PlaneHelper":__THREE_CORE__.PlaneHelper,"PointLight":__THREE_CORE__.PointLight,"PointLightHelper":__THREE_CORE__.PointLightHelper,"Points":__THREE_CORE__.Points,"PointsMaterial":__THREE_CORE__.PointsMaterial,"PolarGridHelper":__THREE_CORE__.PolarGridHelper,"PolyhedronGeometry":__THREE_CORE__.PolyhedronGeometry,"PositionalAudio":__THREE_CORE__.PositionalAudio,"PropertyBinding":__THREE_CORE__.PropertyBinding,"PropertyMixer":__THREE_CORE__.PropertyMixer,"QuadraticBezierCurve":__THREE_CORE__.QuadraticBezierCurve,"QuadraticBezierCurve3":__THREE_CORE__.QuadraticBezierCurve3,"Quaternion":__THREE_CORE__.Quaternion,"QuaternionKeyframeTrack":__THREE_CORE__.QuaternionKeyframeTrack,"QuaternionLinearInterpolant":__THREE_CORE__.QuaternionLinearInterpolant,"RGBADepthPacking":__THREE_CORE__.RGBADepthPacking,"RGBDepthPacking":__THREE_CORE__.RGBDepthPacking,"RGBIntegerFormat":__THREE_CORE__.RGBIntegerFormat,"RGDepthPacking":__THREE_CORE__.RGDepthPacking,"Ray":__THREE_CORE__.Ray,"Raycaster":__THREE_CORE__.Raycaster,"RectAreaLight":__THREE_CORE__.RectAreaLight,"RenderTarget":__THREE_CORE__.RenderTarget,"RenderTarget3D":__THREE_CORE__.RenderTarget3D,"ReplaceStencilOp":__THREE_CORE__.ReplaceStencilOp,"RingGeometry":__THREE_CORE__.RingGeometry,"Scene":__THREE_CORE__.Scene,"ShadowMaterial":__THREE_CORE__.ShadowMaterial,"Shape":__THREE_CORE__.Shape,"ShapeGeometry":__THREE_CORE__.ShapeGeometry,"ShapePath":__THREE_CORE__.ShapePath,"ShapeUtils":__THREE_CORE__.ShapeUtils,"Skeleton":__THREE_CORE__.Skeleton,"SkeletonHelper":__THREE_CORE__.SkeletonHelper,"SkinnedMesh":__THREE_CORE__.SkinnedMesh,"Source":__THREE_CORE__.Source,"Sphere":__THREE_CORE__.Sphere,"SphereGeometry":__THREE_CORE__.SphereGeometry,"Spherical":__THREE_CORE__.Spherical,"SphericalHarmonics3":__THREE_CORE__.SphericalHarmonics3,"SplineCurve":__THREE_CORE__.SplineCurve,"SpotLight":__THREE_CORE__.SpotLight,"SpotLightHelper":__THREE_CORE__.SpotLightHelper,"Sprite":__THREE_CORE__.Sprite,"SpriteMaterial":__THREE_CORE__.SpriteMaterial,"StaticCopyUsage":__THREE_CORE__.StaticCopyUsage,"StaticDrawUsage":__THREE_CORE__.StaticDrawUsage,"StaticReadUsage":__THREE_CORE__.StaticReadUsage,"StereoCamera":__THREE_CORE__.StereoCamera,"StreamCopyUsage":__THREE_CORE__.StreamCopyUsage,"StreamDrawUsage":__THREE_CORE__.StreamDrawUsage,"StreamReadUsage":__THREE_CORE__.StreamReadUsage,"StringKeyframeTrack":__THREE_CORE__.StringKeyframeTrack,"TOUCH":__THREE_CORE__.TOUCH,"TetrahedronGeometry":__THREE_CORE__.TetrahedronGeometry,"TextureLoader":__THREE_CORE__.TextureLoader,"TextureUtils":__THREE_CORE__.TextureUtils,"Timer":__THREE_CORE__.Timer,"TimestampQuery":__THREE_CORE__.TimestampQuery,"TorusGeometry":__THREE_CORE__.TorusGeometry,"TorusKnotGeometry":__THREE_CORE__.TorusKnotGeometry,"Triangle":__THREE_CORE__.Triangle,"TriangleFanDrawMode":__THREE_CORE__.TriangleFanDrawMode,"TriangleStripDrawMode":__THREE_CORE__.TriangleStripDrawMode,"TrianglesDrawMode":__THREE_CORE__.TrianglesDrawMode,"TubeGeometry":__THREE_CORE__.TubeGeometry,"UVMapping":__THREE_CORE__.UVMapping,"Uint8BufferAttribute":__THREE_CORE__.Uint8BufferAttribute,"Uint8ClampedBufferAttribute":__THREE_CORE__.Uint8ClampedBufferAttribute,"Uniform":__THREE_CORE__.Uniform,"UniformsGroup":__THREE_CORE__.UniformsGroup,"VectorKeyframeTrack":__THREE_CORE__.VectorKeyframeTrack,"VideoFrameTexture":__THREE_CORE__.VideoFrameTexture,"VideoTexture":__THREE_CORE__.VideoTexture,"WebGL3DRenderTarget":__THREE_CORE__.WebGL3DRenderTarget,"WebGLArrayRenderTarget":__THREE_CORE__.WebGLArrayRenderTarget,"WebGPUCoordinateSystem":__THREE_CORE__.WebGPUCoordinateSystem,"WireframeGeometry":__THREE_CORE__.WireframeGeometry,"WrapAroundEnding":__THREE_CORE__.WrapAroundEnding,"ZeroCurvatureEnding":__THREE_CORE__.ZeroCurvatureEnding,"ZeroSlopeEnding":__THREE_CORE__.ZeroSlopeEnding,"ZeroStencilOp":__THREE_CORE__.ZeroStencilOp,"getConsoleFunction":__THREE_CORE__.getConsoleFunction,"setConsoleFunction":__THREE_CORE__.setConsoleFunction,"ACESFilmicToneMapping":J,"AddEquation":Ne,"AddOperation":de,"AdditiveBlending":ct,"AgXToneMapping":Q,"AlphaFormat":Ft,"AlwaysCompare":xt,"AlwaysDepth":tt,"ArrayCamera":bn,"BackSide":c,"BoxGeometry":s,"BufferAttribute":N,"BufferGeometry":b,"ByteType":yt,"CineonToneMapping":ee,"ClampToEdgeWrapping":mt,"Color":n,"ColorManagement":f,"ConstantAlphaFactor":Oe,"ConstantColorFactor":Be,"CubeCamera":G,"CubeDepthTexture":Pe,"CubeReflectionMapping":R,"CubeRefractionMapping":A,"CubeTexture":F,"CubeUVReflectionMapping":a,"CullFaceBack":rt,"CullFaceFront":at,"CullFaceNone":it,"CustomBlending":ot,"CustomToneMapping":Z,"Data3DTexture":ie,"DataArrayTexture":X,"DataTexture":Ln,"DepthFormat":be,"DepthStencilFormat":bt,"DepthTexture":Y,"DoubleSide":he,"DstAlphaFactor":ze,"DstColorFactor":ke,"EqualCompare":Mt,"EqualDepth":Je,"EquirectangularReflectionMapping":H,"EquirectangularRefractionMapping":V,"EventDispatcher":An,"ExternalTexture":Rn,"Float32BufferAttribute":q,"FloatType":M,"FrontSide":h,"Frustum":Ue,"GLSL3":se,"GreaterCompare":St,"GreaterDepth":$e,"GreaterEqualCompare":re,"GreaterEqualDepth":Qe,"HalfFloatType":E,"IntType":g,"Layers":Ee,"LessCompare":Tt,"LessDepth":et,"LessEqualCompare":ae,"LessEqualDepth":De,"LinearFilter":O,"LinearMipmapLinearFilter":B,"LinearMipmapNearestFilter":_t,"LinearSRGBColorSpace":y,"LinearToneMapping":ne,"LinearTransfer":pe,"Matrix3":e,"Matrix4":u,"MaxEquation":ft,"Mesh":o,"MeshBasicMaterial":U,"MeshDepthMaterial":xe,"MeshDistanceMaterial":Re,"MinEquation":ut,"MirroredRepeatWrapping":pt,"MixOperation":ue,"MultiplyBlending":st,"MultiplyOperation":fe,"NearestFilter":Ce,"NearestMipmapLinearFilter":gt,"NearestMipmapNearestFilter":vt,"NeutralToneMapping":$,"NeverCompare":Rt,"NeverDepth":nt,"NoBlending":w,"NoColorSpace":At,"NoToneMapping":L,"NormalBlending":_e,"NotEqualCompare":Et,"NotEqualDepth":Ze,"ObjectSpaceNormalMap":ve,"OneFactor":qe,"OneMinusConstantAlphaFactor":ye,"OneMinusConstantColorFactor":Fe,"OneMinusDstAlphaFactor":Ge,"OneMinusDstColorFactor":He,"OneMinusSrcAlphaFactor":Ve,"OneMinusSrcColorFactor":We,"OrthographicCamera":C,"PCFShadowMap":ce,"PCFSoftShadowMap":Ae,"PMREMGenerator":ri,"PerspectiveCamera":P,"Plane":x,"PlaneGeometry":m,"R11_EAC_Format":en,"RED_GREEN_RGTC2_Format":Te,"RED_RGTC1_Format":Mn,"REVISION":wn,"RG11_EAC_Format":Me,"RGBAFormat":T,"RGBAIntegerFormat":Wt,"RGBA_ASTC_10x10_Format":hn,"RGBA_ASTC_10x5_Format":fn,"RGBA_ASTC_10x6_Format":pn,"RGBA_ASTC_10x8_Format":mn,"RGBA_ASTC_12x10_Format":_n,"RGBA_ASTC_12x12_Format":gn,"RGBA_ASTC_4x4_Format":rn,"RGBA_ASTC_5x4_Format":an,"RGBA_ASTC_5x5_Format":on,"RGBA_ASTC_6x5_Format":sn,"RGBA_ASTC_6x6_Format":ln,"RGBA_ASTC_8x5_Format":cn,"RGBA_ASTC_8x6_Format":dn,"RGBA_ASTC_8x8_Format":un,"RGBA_BPTC_Format":vn,"RGBA_ETC2_EAC_Format":Jt,"RGBA_PVRTC_2BPPV1_Format":Zt,"RGBA_PVRTC_4BPPV1_Format":jt,"RGBA_S3TC_DXT1_Format":kt,"RGBA_S3TC_DXT3_Format":Xt,"RGBA_S3TC_DXT5_Format":Kt,"RGBFormat":Bt,"RGB_BPTC_SIGNED_Format":En,"RGB_BPTC_UNSIGNED_Format":Sn,"RGB_ETC1_Format":$t,"RGB_ETC2_Format":Qt,"RGB_PVRTC_2BPPV1_Format":qt,"RGB_PVRTC_4BPPV1_Format":Yt,"RGB_S3TC_DXT1_Format":zt,"RGFormat":Se,"RGIntegerFormat":Vt,"RawShaderMaterial":j,"RedFormat":Gt,"RedIntegerFormat":Ht,"ReinhardToneMapping":te,"RepeatWrapping":ht,"ReverseSubtractEquation":we,"SIGNED_R11_EAC_Format":tn,"SIGNED_RED_GREEN_RGTC2_Format":xn,"SIGNED_RED_RGTC1_Format":Tn,"SIGNED_RG11_EAC_Format":nn,"SRGBColorSpace":Dn,"SRGBTransfer":p,"ShaderChunk":Bn,"ShaderLib":Hn,"ShaderMaterial":l,"ShortType":Ot,"SrcAlphaFactor":Ke,"SrcAlphaSaturateFactor":Xe,"SrcColorFactor":Ye,"SubtractEquation":Ie,"SubtractiveBlending":lt,"TangentSpaceNormalMap":ge,"Texture":oe,"Uint16BufferAttribute":k,"Uint32BufferAttribute":z,"UniformsLib":Gn,"UniformsUtils":me,"UnsignedByteType":S,"UnsignedInt101111Type":Nt,"UnsignedInt248Type":Pt,"UnsignedInt5999Type":It,"UnsignedIntType":Le,"UnsignedShort4444Type":Dt,"UnsignedShort5551Type":wt,"UnsignedShortType":Lt,"VSMShadowMap":le,"Vector2":t,"Vector3":i,"Vector4":K,"WebGLCoordinateSystem":Nn,"WebGLCubeRenderTarget":di,"WebGLRenderTarget":I,"WebGLRenderer":Pa,"WebGLUtils":Ea,"WebXRController":Cn,"ZeroFactor":je,"createCanvasElement":Un,"error":D,"log":In,"warn":v,"warnOnce":W};})();
 const __THREE_BUFFER_UTILS__=(()=>{const {BufferAttribute,BufferGeometry,Float32BufferAttribute,InstancedBufferAttribute,InterleavedBuffer,InterleavedBufferAttribute,TriangleFanDrawMode,TriangleStripDrawMode,TrianglesDrawMode,Vector3}=THREE;
 
-/**
- * @module BufferGeometryUtils
- * @three_import import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
- */
 
-/**
- * Computes vertex tangents using the MikkTSpace algorithm. MikkTSpace generates the same tangents consistently,
- * and is used in most modelling tools and normal map bakers. Use MikkTSpace for materials with normal maps,
- * because inconsistent tangents may lead to subtle visual issues in the normal map, particularly around mirrored
- * UV seams.
- *
- * In comparison to this method, {@link BufferGeometry#computeTangents} (a custom algorithm) generates tangents that
- * probably will not match the tangents in other software. The custom algorithm is sufficient for general use with a
- * custom material, and may be faster than MikkTSpace.
- *
- * Returns the original BufferGeometry. Indexed geometries will be de-indexed. Requires position, normal, and uv attributes.
- *
- * @param {BufferGeometry} geometry - The geometry to compute tangents for.
- * @param {Object} MikkTSpace - Instance of `examples/jsm/libs/mikktspace.module.js`, or `mikktspace` npm package.
- * Await `MikkTSpace.ready` before use.
- * @param {boolean} [negateSign=true] - Whether to negate the sign component (.w) of each tangent.
- * Required for normal map conventions in some formats, including glTF.
- * @return {BufferGeometry} The updated geometry.
- */
 function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 
 	if ( ! MikkTSpace || ! MikkTSpace.isReady ) {
@@ -85,11 +62,9 @@ function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 
 	}
 
-	// MikkTSpace algorithm requires non-indexed input.
 
 	const _geometry = geometry.index ? geometry.toNonIndexed() : geometry;
 
-	// Compute vertex tangents.
 
 	const tangents = MikkTSpace.generateTangents(
 
@@ -99,8 +74,6 @@ function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 
 	);
 
-	// Texture coordinate convention of glTF differs from the apparent
-	// default of the MikkTSpace library; .w component must be flipped.
 
 	if ( negateSign ) {
 
@@ -112,7 +85,6 @@ function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 
 	}
 
-	//
 
 	_geometry.setAttribute( 'tangent', new BufferAttribute( tangents, 4 ) );
 
@@ -126,13 +98,6 @@ function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 
 }
 
-/**
- * Merges a set of geometries into a single instance. All geometries must have compatible attributes.
- *
- * @param {Array<BufferGeometry>} geometries - The geometries to merge.
- * @param {boolean} [useGroups=false] - Whether to use groups or not.
- * @return {?BufferGeometry} The merged geometry. Returns `null` if the merge does not succeed.
- */
 function mergeGeometries( geometries, useGroups = false ) {
 
 	const isIndexed = geometries[ 0 ].index !== null;
@@ -154,7 +119,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 		const geometry = geometries[ i ];
 		let attributesCount = 0;
 
-		// ensure that all geometries are indexed, or none
 
 		if ( isIndexed !== ( geometry.index !== null ) ) {
 
@@ -163,7 +127,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 		}
 
-		// gather attributes, exit early if they're different
 
 		for ( const name in geometry.attributes ) {
 
@@ -182,7 +145,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 		}
 
-		// ensure geometries have the same number of attributes
 
 		if ( attributesCount !== attributesUsed.size ) {
 
@@ -191,7 +153,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 		}
 
-		// gather morph attributes, exit early if they're different
 
 		if ( morphTargetsRelative !== geometry.morphTargetsRelative ) {
 
@@ -242,7 +203,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 	}
 
-	// merge indices
 
 	if ( isIndexed ) {
 
@@ -267,7 +227,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 	}
 
-	// merge attributes
 
 	for ( const name in attributes ) {
 
@@ -284,7 +243,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 	}
 
-	// merge morph attributes
 
 	for ( const name in morphAttributes ) {
 
@@ -323,13 +281,6 @@ function mergeGeometries( geometries, useGroups = false ) {
 
 }
 
-/**
- * Merges a set of attributes into a single instance. All attributes must have compatible properties and types.
- * Instances of {@link InterleavedBufferAttribute} are not supported.
- *
- * @param {Array<BufferAttribute>} attributes - The attributes to merge.
- * @return {?BufferAttribute} The merged attribute. Returns `null` if the merge does not succeed.
- */
 function mergeAttributes( attributes ) {
 
 	let TypedArray;
@@ -419,12 +370,6 @@ function mergeAttributes( attributes ) {
 
 }
 
-/**
- * Performs a deep clone of the given buffer attribute.
- *
- * @param {BufferAttribute} attribute - The attribute to clone.
- * @return {BufferAttribute} The cloned attribute.
- */
 function deepCloneAttribute( attribute ) {
 
 	if ( attribute.isInstancedInterleavedBufferAttribute || attribute.isInterleavedBufferAttribute ) {
@@ -443,22 +388,12 @@ function deepCloneAttribute( attribute ) {
 
 }
 
-/**
- * Interleaves a set of attributes and returns a new array of corresponding attributes that share a
- * single {@link InterleavedBuffer} instance. All attributes must have compatible types.
- *
- * @param {Array<BufferAttribute>} attributes - The attributes to interleave.
- * @return {?Array<InterleavedBufferAttribute>} An array of interleaved attributes. If interleave does not succeed, the method returns `null`.
- */
 function interleaveAttributes( attributes ) {
 
-	// Interleaves the provided attributes into an InterleavedBuffer and returns
-	// a set of InterleavedBufferAttributes for each attribute
 	let TypedArray;
 	let arrayLength = 0;
 	let stride = 0;
 
-	// calculate the length and type of the interleavedBuffer
 	for ( let i = 0, l = attributes.length; i < l; ++ i ) {
 
 		const attribute = attributes[ i ];
@@ -476,7 +411,6 @@ function interleaveAttributes( attributes ) {
 
 	}
 
-	// Create the set of buffer attributes
 	const interleavedBuffer = new InterleavedBuffer( new TypedArray( arrayLength ), stride );
 	let offset = 0;
 	const res = [];
@@ -493,8 +427,6 @@ function interleaveAttributes( attributes ) {
 
 		offset += itemSize;
 
-		// Move the data for each attribute into the new interleavedBuffer
-		// at the appropriate offset
 		for ( let c = 0; c < count; c ++ ) {
 
 			for ( let k = 0; k < itemSize; k ++ ) {
@@ -511,12 +443,6 @@ function interleaveAttributes( attributes ) {
 
 }
 
-/**
- * Returns a new, non-interleaved version of the given attribute.
- *
- * @param {InterleavedBufferAttribute} attribute - The interleaved attribute.
- * @return {BufferAttribute} The non-interleaved attribute.
- */
 function deinterleaveAttribute( attribute ) {
 
 	const cons = attribute.data.array.constructor;
@@ -564,11 +490,6 @@ function deinterleaveAttribute( attribute ) {
 
 }
 
-/**
- * Deinterleaves all attributes on the given geometry.
- *
- * @param {BufferGeometry} geometry - The geometry to deinterleave.
- */
 function deinterleaveGeometry( geometry ) {
 
 	const attributes = geometry.attributes;
@@ -611,17 +532,8 @@ function deinterleaveGeometry( geometry ) {
 
 }
 
-/**
- * Returns the amount of bytes used by all attributes to represent the geometry.
- *
- * @param {BufferGeometry} geometry - The geometry.
- * @return {number} The estimate bytes used.
- */
 function estimateBytesUsed( geometry ) {
 
-	// Return the estimated memory used by this geometry in bytes
-	// Calculate using itemSize, count, and BYTES_PER_ELEMENT to account
-	// for InterleavedBufferAttributes.
 	let mem = 0;
 	for ( const name in geometry.attributes ) {
 
@@ -636,28 +548,17 @@ function estimateBytesUsed( geometry ) {
 
 }
 
-/**
- * Returns a new geometry with vertices for which all similar vertex attributes (within tolerance) are merged.
- *
- * @param {BufferGeometry} geometry - The geometry to merge vertices for.
- * @param {number} [tolerance=1e-4] - The tolerance value.
- * @return {BufferGeometry} - The new geometry with merged vertices.
- */
 function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 	tolerance = Math.max( tolerance, Number.EPSILON );
 
-	// Generate an index buffer if the geometry doesn't have one, or optimize it
-	// if it's already available.
 	const hashToIndex = {};
 	const indices = geometry.getIndex();
 	const positions = geometry.getAttribute( 'position' );
 	const vertexCount = indices ? indices.count : positions.count;
 
-	// next value for triangle indices
 	let nextIndex = 0;
 
-	// attributes and new attribute arrays
 	const attributeNames = Object.keys( geometry.attributes );
 	const tmpAttributes = {};
 	const tmpMorphAttributes = {};
@@ -665,8 +566,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 	const getters = [ 'getX', 'getY', 'getZ', 'getW' ];
 	const setters = [ 'setX', 'setY', 'setZ', 'setW' ];
 
-	// Initialize the arrays, allocating space conservatively. Extra
-	// space will be trimmed in the last step.
 	for ( let i = 0, l = attributeNames.length; i < l; i ++ ) {
 
 		const name = attributeNames[ i ];
@@ -693,7 +592,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 	}
 
-	// convert the error tolerance to an amount of decimal places to truncate to
 	const halfTolerance = tolerance * 0.5;
 	const exponent = Math.log10( 1 / tolerance );
 	const hashMultiplier = Math.pow( 10, exponent );
@@ -702,7 +600,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 		const index = indices ? indices.getX( i ) : i;
 
-		// Generate a hash for the vertex attributes at the current index 'i'
 		let hash = '';
 		for ( let j = 0, l = attributeNames.length; j < l; j ++ ) {
 
@@ -712,22 +609,18 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 			for ( let k = 0; k < itemSize; k ++ ) {
 
-				// double tilde truncates the decimal value
 				hash += `${ ~ ~ ( attribute[ getters[ k ] ]( index ) * hashMultiplier + hashAdditive ) },`;
 
 			}
 
 		}
 
-		// Add another reference to the vertex if it's already
-		// used by another index
 		if ( hash in hashToIndex ) {
 
 			newIndices.push( hashToIndex[ hash ] );
 
 		} else {
 
-			// copy data to the new index in the temporary attributes
 			for ( let j = 0, l = attributeNames.length; j < l; j ++ ) {
 
 				const name = attributeNames[ j ];
@@ -765,7 +658,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 	}
 
-	// generate result BufferGeometry
 	const result = geometry.clone();
 	for ( const name in geometry.attributes ) {
 
@@ -793,7 +685,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 	}
 
-	// indices
 
 	result.setIndex( newIndices );
 
@@ -801,14 +692,6 @@ function mergeVertices( geometry, tolerance = 1e-4 ) {
 
 }
 
-/**
- * Returns a new indexed geometry based on `TrianglesDrawMode` draw mode.
- * This mode corresponds to the `gl.TRIANGLES` primitive in WebGL.
- *
- * @param {BufferGeometry} geometry - The geometry to convert.
- * @param {number} drawMode - The current draw mode.
- * @return {BufferGeometry} The new geometry using `TrianglesDrawMode`.
- */
 function toTrianglesDrawMode( geometry, drawMode ) {
 
 	if ( drawMode === TrianglesDrawMode ) {
@@ -822,7 +705,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 		let index = geometry.getIndex();
 
-		// generate index if not present
 
 		if ( index === null ) {
 
@@ -850,14 +732,12 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 		}
 
-		//
 
 		const numberOfTriangles = index.count - 2;
 		const newIndices = [];
 
 		if ( drawMode === TriangleFanDrawMode ) {
 
-			// gl.TRIANGLE_FAN
 
 			for ( let i = 1; i <= numberOfTriangles; i ++ ) {
 
@@ -869,7 +749,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 		} else {
 
-			// gl.TRIANGLE_STRIP
 
 			for ( let i = 0; i < numberOfTriangles; i ++ ) {
 
@@ -897,7 +776,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 		}
 
-		// build final geometry
 
 		const newGeometry = geometry.clone();
 		newGeometry.setIndex( newIndices );
@@ -914,16 +792,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 }
 
-/**
- * Calculates the morphed attributes of a morphed/skinned BufferGeometry.
- *
- * Helpful for Raytracing or Decals (i.e. a `DecalGeometry` applied to a morphed Object with a `BufferGeometry`
- * will use the original `BufferGeometry`, not the morphed/skinned one, generating an incorrect result.
- * Using this function to create a shadow `Object3`D the `DecalGeometry` can be correctly generated).
- *
- * @param {Mesh|Line|Points} object - The 3D object to compute morph attributes for.
- * @return {Object} An object with original position/normal attributes and morphed ones.
- */
 function computeMorphedAttributes( object ) {
 
 	const _vA = new Vector3();
@@ -1036,7 +904,6 @@ function computeMorphedAttributes( object ) {
 
 	if ( index !== null ) {
 
-		// indexed buffer geometry
 
 		if ( Array.isArray( material ) ) {
 
@@ -1110,7 +977,6 @@ function computeMorphedAttributes( object ) {
 
 	} else {
 
-		// non-indexed buffer geometry
 
 		if ( Array.isArray( material ) ) {
 
@@ -1198,12 +1064,6 @@ function computeMorphedAttributes( object ) {
 
 }
 
-/**
- * Merges the {@link BufferGeometry#groups} for the given geometry.
- *
- * @param {BufferGeometry} geometry - The geometry to modify.
- * @return {BufferGeometry} - The updated geometry
- */
 function mergeGroups( geometry ) {
 
 	if ( geometry.groups.length === 0 ) {
@@ -1215,7 +1075,6 @@ function mergeGroups( geometry ) {
 
 	let groups = geometry.groups;
 
-	// sort groups by material index
 
 	groups = groups.sort( ( a, b ) => {
 
@@ -1225,7 +1084,6 @@ function mergeGroups( geometry ) {
 
 	} );
 
-	// create index for non-indexed geometries
 
 	if ( geometry.getIndex() === null ) {
 
@@ -1242,7 +1100,6 @@ function mergeGroups( geometry ) {
 
 	}
 
-	// sort index
 
 	const index = geometry.getIndex();
 
@@ -1266,7 +1123,6 @@ function mergeGroups( geometry ) {
 	geometry.dispose(); // Required to force buffer recreation
 	geometry.setIndex( newIndices );
 
-	// update groups indices
 
 	let start = 0;
 
@@ -1279,7 +1135,6 @@ function mergeGroups( geometry ) {
 
 	}
 
-	// merge groups
 
 	let currentGroup = groups[ 0 ];
 
@@ -1306,19 +1161,8 @@ function mergeGroups( geometry ) {
 
 }
 
-/**
- * Modifies the supplied geometry if it is non-indexed, otherwise creates a new,
- * non-indexed geometry. Returns the geometry with smooth normals everywhere except
- * faces that meet at an angle greater than the crease angle.
- *
- * @param {BufferGeometry} geometry - The geometry to modify.
- * @param {number} [creaseAngle=Math.PI/3] - The crease angle in radians.
- * @return {BufferGeometry} - The updated geometry
- */
 function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ ) {
 
-	// BufferGeometry.toNonIndexed() warns if the geometry is non-indexed
-	// and returns the original geometry
 	const resultGeometry = geometry.index ? geometry.toNonIndexed() : geometry;
 	const posAttr = resultGeometry.attributes.position;
 	const vertexCount = posAttr.count;
@@ -1331,7 +1175,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 
 	} else {
 
-		// flatten the position buffer so the math below operates on plain numbers
 		positions = new Float64Array( vertexCount * 3 );
 
 		for ( let i = 0; i < vertexCount; i ++ ) {
@@ -1348,7 +1191,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 	const hashMultiplier = ( 1 + 1e-10 ) * 1e2;
 	const faceCount = vertexCount / 3;
 
-	// compute the normal of each face
 	const faceNormals = new Float64Array( faceCount * 3 );
 	for ( let f = 0; f < faceCount; f ++ ) {
 
@@ -1371,8 +1213,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 
 	}
 
-	// assign an id to each vertex, sharing the id between vertices with the same
-	// quantized position via an open-addressed hash table (slots hold id + 1, 0 means empty)
 	const vertexIds = new Int32Array( vertexCount );
 	const quantized = new Int32Array( vertexCount * 3 );
 
@@ -1423,7 +1263,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 
 	}
 
-	// bucket the faces surrounding each unique vertex position
 	const bucketOffsets = new Int32Array( uniqueCount + 1 );
 	for ( let i = 0; i < vertexCount; i ++ ) bucketOffsets[ vertexIds[ i ] + 1 ] ++;
 	for ( let i = 0; i < uniqueCount; i ++ ) bucketOffsets[ i + 1 ] += bucketOffsets[ i ];
@@ -1439,8 +1278,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 
 	}
 
-	// average the normals of the faces surrounding each vertex if they are within the
-	// provided crease threshold
 	const normalArray = new Float32Array( vertexCount * 3 );
 	for ( let f = 0; f < faceCount; f ++ ) {
 
@@ -1491,10 +1328,6 @@ function toCreasedNormals( geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ 
 return {"computeMikkTSpaceTangents":computeMikkTSpaceTangents,"mergeGeometries":mergeGeometries,"mergeAttributes":mergeAttributes,"deepCloneAttribute":deepCloneAttribute,"deinterleaveAttribute":deinterleaveAttribute,"deinterleaveGeometry":deinterleaveGeometry,"interleaveAttributes":interleaveAttributes,"estimateBytesUsed":estimateBytesUsed,"mergeVertices":mergeVertices,"toTrianglesDrawMode":toTrianglesDrawMode,"computeMorphedAttributes":computeMorphedAttributes,"mergeGroups":mergeGroups,"toCreasedNormals":toCreasedNormals};})();
 const __THREE_SKELETON_UTILS__=(()=>{const {AnimationClip,AnimationMixer,Matrix4,Quaternion,QuaternionKeyframeTrack,SkeletonHelper,Vector3,VectorKeyframeTrack}=THREE;
 
-/**
- * @module SkeletonUtils
- * @three_import import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
- */
 
 function getBoneName( bone, options ) {
 
@@ -1508,16 +1341,6 @@ function getBoneName( bone, options ) {
 
 }
 
-/**
- * Retargets the skeleton from the given source to the target.
- *
- * Both `target` and `source` can be a 3D object with a skeleton property (e.g. a skinned mesh)
- * or a {@link Skeleton} directly.
- *
- * @param {Object3D|Skeleton} target - The target object.
- * @param {Object3D|Skeleton} source - The source object.
- * @param {module:SkeletonUtils~RetargetOptions} options - The options.
- */
 function retarget( target, source, options = {} ) {
 
 	const quat = new Quaternion(),
@@ -1539,7 +1362,6 @@ function retarget( target, source, options = {} ) {
 	let bone, name, boneTo,
 		bonesPosition;
 
-	// reset bones
 
 	if ( target.isObject3D ) {
 
@@ -1566,13 +1388,11 @@ function retarget( target, source, options = {} ) {
 
 	if ( options.preserveBoneMatrix ) {
 
-		// reset matrix
 
 		target.updateMatrixWorld();
 
 		target.matrixWorld.identity();
 
-		// reset children matrix
 
 		for ( let i = 0; i < target.children.length; ++ i ) {
 
@@ -1606,12 +1426,10 @@ function retarget( target, source, options = {} ) {
 
 			}
 
-			// ignore scale to extract rotation
 
 			scale.setFromMatrixScale( relativeMatrix );
 			relativeMatrix.scale( scale.set( 1 / scale.x, 1 / scale.y, 1 / scale.z ) );
 
-			// apply to global matrix
 
 			globalMatrix.makeRotationFromQuaternion( quat.setFromRotationMatrix( relativeMatrix ) );
 
@@ -1685,7 +1503,6 @@ function retarget( target, source, options = {} ) {
 
 	if ( options.preserveBoneMatrix ) {
 
-		// restore matrix
 
 		target.updateMatrixWorld( true );
 
@@ -1693,23 +1510,10 @@ function retarget( target, source, options = {} ) {
 
 }
 
-/**
- * Retargets the animation clip of the source to the target 3D object.
- *
- * The `source` can be a 3D object with a skeleton property (e.g. a skinned mesh)
- * or a {@link Skeleton} directly.
- *
- * @param {Object3D} target - The target 3D object. Must have a `skeleton` property.
- * @param {Object3D|Skeleton} source - The source object.
- * @param {AnimationClip} clip - The animation clip.
- * @param {module:SkeletonUtils~RetargetOptions} options - The options.
- * @return {AnimationClip} The retargeted animation clip.
- */
 function retargetClip( target, source, clip, options = {} ) {
 
 	options.useFirstFramePosition = options.useFirstFramePosition !== undefined ? options.useFirstFramePosition : false;
 
-	// Calculate the fps from the source clip based on the track with the most frames, unless fps is already provided.
 	options.fps = options.fps !== undefined ? options.fps : ( Math.max( ...clip.tracks.map( track => track.times.length ) ) / clip.duration );
 	options.names = options.names || [];
 
@@ -1732,7 +1536,6 @@ function retargetClip( target, source, clip, options = {} ) {
 
 	mixer.clipAction( clip ).play();
 
-	// trim
 
 	let start = 0, end = numFrames;
 
@@ -1751,7 +1554,6 @@ function retargetClip( target, source, clip, options = {} ) {
 
 	source.updateMatrixWorld();
 
-	//
 
 	for ( let frame = 0; frame < end; ++ frame ) {
 
@@ -1817,8 +1619,6 @@ function retargetClip( target, source, clip, options = {} ) {
 
 		if ( frame === end - 2 ) {
 
-			// last mixer update before final loop iteration
-			// make sure we do not go over or equal to clip duration
 			mixer.update( delta - 0.0000001 );
 
 		} else {
@@ -1863,14 +1663,6 @@ function retargetClip( target, source, clip, options = {} ) {
 
 }
 
-/**
- * Clones the given 3D object and its descendants, ensuring that any `SkinnedMesh` instances are
- * correctly associated with their bones. Bones are also cloned, and must be descendants of the
- * object passed to this method. Other data, like geometries and materials, are reused by reference.
- *
- * @param {Object3D} source - The 3D object to clone.
- * @return {Object3D} The cloned 3D object.
- */
 function clone( source ) {
 
 	const sourceLookup = new Map();
@@ -1910,7 +1702,6 @@ function clone( source ) {
 
 }
 
-// internal helper
 
 function getBoneByName( name, skeleton ) {
 
@@ -1952,24 +1743,6 @@ function parallelTraverse( a, b, callback ) {
 
 }
 
-/**
- * Retarget options of `SkeletonUtils`.
- *
- * @typedef {Object} module:SkeletonUtils~RetargetOptions
- * @property {boolean} [useFirstFramePosition=false] - Whether to use the position of the first frame or not.
- * @property {number} [fps] - The FPS of the clip.
- * @property {Object<string,string>} [names] - A dictionary for mapping target to source bone names.
- * @property {function(string):string} [getBoneName] - A function for mapping bone names. Alternative to `names`.
- * @property {Array<number>} [trim] - Whether to trim the clip or not. If set the array should hold two values for the start and end.
- * @property {boolean} [preserveBoneMatrix=true] - Whether to preserve bone matrices or not.
- * @property {boolean} [preserveBonePositions=true] - Whether to preserve bone positions or not.
- * @property {boolean} [useTargetMatrix=false] - Whether to use the target matrix or not.
- * @property {string} [hip='hip'] - The name of the source's hip bone.
- * @property {Vector3} [hipInfluence=(1,1,1)] - The hip influence.
- * @property {number} [scale=1] - The scale.
- * @property {Object<string,Matrix4>} [localOffsets] - Per-bone local offset matrices, keyed by bone name.
- * @property {Vector3} [hipPosition] - An additional position offset applied to the hip bone.
- **/
 
 
 return {"retarget":retarget,"retargetClip":retargetClip,"clone":clone};})();
@@ -1977,70 +1750,8 @@ const __THREE_GLTF_LOADER__=(()=>{const {AnimationClip,Bone,Box3,BufferAttribute
 
 
 
-/**
- * A loader for the glTF 2.0 format.
- *
- * [glTF](https://www.khronos.org/gltf/) (GL Transmission Format) is an [open format specification]{@link https://github.com/KhronosGroup/glTF/tree/main/specification/2.0)
- * for efficient delivery and loading of 3D content. Assets may be provided either in JSON (.gltf) or binary (.glb)
- * format. External files store textures (.jpg, .png) and additional binary data (.bin). A glTF asset may deliver
- * one or more scenes, including meshes, materials, textures, skins, skeletons, morph targets, animations, lights,
- * and/or cameras.
- *
- * `GLTFLoader` uses {@link ImageBitmapLoader} whenever possible. Be advised that image bitmaps are not
- * automatically GC-collected when they are no longer referenced, and they require special handling during
- * the disposal process.
- *
- * `GLTFLoader` supports the following glTF 2.0 extensions:
- * - KHR_draco_mesh_compression
- * - KHR_lights_punctual
- * - KHR_materials_anisotropy
- * - KHR_materials_clearcoat
- * - KHR_materials_dispersion
- * - KHR_materials_emissive_strength
- * - KHR_materials_ior
- * - KHR_materials_specular
- * - KHR_materials_transmission
- * - KHR_materials_iridescence
- * - KHR_materials_unlit
- * - KHR_materials_volume
- * - KHR_mesh_quantization
- * - KHR_meshopt_compression
- * - KHR_texture_basisu
- * - KHR_texture_transform
- * - EXT_materials_bump
- * - EXT_meshopt_compression
- * - EXT_mesh_gpu_instancing
- * - EXT_texture_avif
- * - EXT_texture_webp
- *
- * The following glTF 2.0 extension is supported by an external user plugin:
- * - [KHR_materials_variants](https://github.com/takahirox/three-gltf-extensions)
- * - [MSFT_texture_dds](https://github.com/takahirox/three-gltf-extensions)
- * - [KHR_animation_pointer](https://github.com/needle-tools/three-animation-pointer)
- * - [NEEDLE_progressive](https://github.com/needle-tools/gltf-progressive)
- *
- * ```js
- * const loader = new GLTFLoader();
- *
- * // Optional: Provide a DRACOLoader instance to decode compressed mesh data
- * const dracoLoader = new DRACOLoader();
- * dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
- * loader.setDRACOLoader( dracoLoader );
- *
- * const gltf = await loader.loadAsync( 'models/gltf/duck/duck.gltf' );
- * scene.add( gltf.scene );
- * ```
- *
- * @augments Loader
- * @three_import import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
- */
 class GLTFLoader extends Loader {
 
-	/**
-	 * Constructs a new glTF loader.
-	 *
-	 * @param {LoadingManager} [manager] - The loading manager.
-	 */
 	constructor( manager ) {
 
 		super( manager );
@@ -2161,15 +1872,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Starts loading from the given URL and passes the loaded glTF asset
-	 * to the `onLoad()` callback.
-	 *
-	 * @param {string} url - The path/URL of the file to be loaded. This can also be a data URI.
-	 * @param {function(GLTFLoader~LoadObject)} onLoad - Executed when the loading process has been finished.
-	 * @param {onProgressCallback} onProgress - Executed while the loading is in progress.
-	 * @param {onErrorCallback} onError - Executed when errors occur.
-	 */
 	load( url, onLoad, onProgress, onError ) {
 
 		const scope = this;
@@ -2182,11 +1884,6 @@ class GLTFLoader extends Loader {
 
 		} else if ( this.path !== '' ) {
 
-			// If a base path is set, resources will be relative paths from that plus the relative path of the gltf file
-			// Example  path = 'https://my-cnd-server.com/', url = 'assets/models/model.gltf'
-			// resourcePath = 'https://my-cnd-server.com/assets/models/'
-			// referenced resource 'model.bin' will be loaded from 'https://my-cnd-server.com/assets/models/model.bin'
-			// referenced resource '../textures/texture.png' will be loaded from 'https://my-cnd-server.com/assets/textures/texture.png'
 			const relativeUrl = LoaderUtils.extractUrlBase( url );
 			resourcePath = LoaderUtils.resolveURL( relativeUrl, this.path );
 
@@ -2196,9 +1893,6 @@ class GLTFLoader extends Loader {
 
 		}
 
-		// Tells the LoadingManager to track an extra item, which resolves after
-		// the model is fully loaded. This means the count of items loaded will
-		// be incorrect, but ensures manager.onLoad() does not fire early.
 		this.manager.itemStart( url );
 
 		const _onError = function ( e ) {
@@ -2247,13 +1941,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Sets the given Draco loader to this loader. Required for decoding assets
-	 * compressed with the `KHR_draco_mesh_compression` extension.
-	 *
-	 * @param {DRACOLoader} dracoLoader - The Draco loader to set.
-	 * @return {GLTFLoader} A reference to this loader.
-	 */
 	setDRACOLoader( dracoLoader ) {
 
 		this.dracoLoader = dracoLoader;
@@ -2261,13 +1948,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Sets the given KTX2 loader to this loader. Required for loading KTX2
-	 * compressed textures.
-	 *
-	 * @param {KTX2Loader} ktx2Loader - The KTX2 loader to set.
-	 * @return {GLTFLoader} A reference to this loader.
-	 */
 	setKTX2Loader( ktx2Loader ) {
 
 		this.ktx2Loader = ktx2Loader;
@@ -2275,13 +1955,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Sets the given meshopt decoder. Required for decoding assets
-	 * compressed with the `EXT_meshopt_compression` extension.
-	 *
-	 * @param {Object} meshoptDecoder - The meshopt decoder to set.
-	 * @return {GLTFLoader} A reference to this loader.
-	 */
 	setMeshoptDecoder( meshoptDecoder ) {
 
 		this.meshoptDecoder = meshoptDecoder;
@@ -2289,14 +1962,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Registers a plugin callback. This API is internally used to implement the various
-	 * glTF extensions but can also used by third-party code to add additional logic
-	 * to the loader.
-	 *
-	 * @param {function(parser:GLTFParser)} callback - The callback function to register.
-	 * @return {GLTFLoader} A reference to this loader.
-	 */
 	register( callback ) {
 
 		if ( this.pluginCallbacks.indexOf( callback ) === - 1 ) {
@@ -2309,12 +1974,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Unregisters a plugin callback.
-	 *
-	 * @param {Function} callback - The callback function to unregister.
-	 * @return {GLTFLoader} A reference to this loader.
-	 */
 	unregister( callback ) {
 
 		if ( this.pluginCallbacks.indexOf( callback ) !== - 1 ) {
@@ -2327,14 +1986,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Parses the given glTF data and returns the resulting group.
-	 *
-	 * @param {string|ArrayBuffer} data - The raw glTF data.
-	 * @param {string} path - The URL base path.
-	 * @param {function(GLTFLoader~LoadObject)} onLoad - Executed when the loading process has been finished.
-	 * @param {onErrorCallback} onError - Executed when errors occur.
-	 */
 	parse( data, path, onLoad, onError ) {
 
 		let json;
@@ -2405,10 +2056,6 @@ class GLTFLoader extends Loader {
 
 			plugins[ plugin.name ] = plugin;
 
-			// Workaround to avoid determining as unknown extension
-			// in addUnknownExtensionsToUserData().
-			// Remove this workaround if we move all the existing
-			// extension handlers to plugin system
 			extensions[ plugin.name ] = true;
 
 		}
@@ -2458,14 +2105,6 @@ class GLTFLoader extends Loader {
 
 	}
 
-	/**
-	 * Async version of {@link GLTFLoader#parse}.
-	 *
-	 * @async
-	 * @param {string|ArrayBuffer} data - The raw glTF data.
-	 * @param {string} path - The URL base path.
-	 * @return {Promise<GLTFLoader~LoadObject>} A Promise that resolves with the loaded glTF when the parsing has been finished.
-	 */
 	parseAsync( data, path ) {
 
 		const scope = this;
@@ -2480,7 +2119,6 @@ class GLTFLoader extends Loader {
 
 }
 
-/* GLTFREGISTRY */
 
 function GLTFRegistry() {
 
@@ -2516,9 +2154,6 @@ function GLTFRegistry() {
 
 }
 
-/*********************************/
-/********** EXTENSIONS ***********/
-/*********************************/
 
 function getMaterialExtension( parser, materialIndex, extensionName ) {
 
@@ -2560,13 +2195,6 @@ const EXTENSIONS = {
 	EXT_MESH_GPU_INSTANCING: 'EXT_mesh_gpu_instancing'
 };
 
-/**
- * Punctual Lights Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual
- *
- * @private
- */
 class GLTFLightsExtension {
 
 	constructor( parser ) {
@@ -2574,7 +2202,6 @@ class GLTFLightsExtension {
 		this.parser = parser;
 		this.name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
 
-		// Object3D instance caches
 		this.cache = { refs: {}, uses: {} };
 
 	}
@@ -2636,7 +2263,6 @@ class GLTFLightsExtension {
 			case 'spot':
 				lightNode = new SpotLight( color );
 				lightNode.distance = range;
-				// Handle spotlight properties.
 				lightDef.spot = lightDef.spot || {};
 				lightDef.spot.innerConeAngle = lightDef.spot.innerConeAngle !== undefined ? lightDef.spot.innerConeAngle : 0;
 				lightDef.spot.outerConeAngle = lightDef.spot.outerConeAngle !== undefined ? lightDef.spot.outerConeAngle : Math.PI / 4.0;
@@ -2651,8 +2277,6 @@ class GLTFLightsExtension {
 
 		}
 
-		// Some lights (e.g. spot) default to a position other than the origin. Reset the position
-		// here, because node-level parsing will only override position if explicitly specified.
 		lightNode.position.set( 0, 0, 0 );
 
 		assignExtrasToUserData( lightNode, lightDef );
@@ -2698,13 +2322,6 @@ class GLTFLightsExtension {
 
 }
 
-/**
- * Unlit Materials Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit
- *
- * @private
- */
 class GLTFMaterialsUnlitExtension {
 
 	constructor() {
@@ -2753,13 +2370,6 @@ class GLTFMaterialsUnlitExtension {
 
 }
 
-/**
- * Materials Emissive Strength Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/blob/5768b3ce0ef32bc39cdf1bef10b948586635ead3/extensions/2.0/Khronos/KHR_materials_emissive_strength/README.md
- *
- * @private
- */
 class GLTFMaterialsEmissiveStrengthExtension {
 
 	constructor( parser ) {
@@ -2787,13 +2397,6 @@ class GLTFMaterialsEmissiveStrengthExtension {
 
 }
 
-/**
- * Clearcoat Materials Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_clearcoat
- *
- * @private
- */
 class GLTFMaterialsClearcoatExtension {
 
 	constructor( parser ) {
@@ -2863,13 +2466,6 @@ class GLTFMaterialsClearcoatExtension {
 
 }
 
-/**
- * Materials dispersion Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_dispersion
- *
- * @private
- */
 class GLTFMaterialsDispersionExtension {
 
 	constructor( parser ) {
@@ -2901,13 +2497,6 @@ class GLTFMaterialsDispersionExtension {
 
 }
 
-/**
- * Iridescence Materials Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_iridescence
- *
- * @private
- */
 class GLTFMaterialsIridescenceExtension {
 
 	constructor( parser ) {
@@ -2981,13 +2570,6 @@ class GLTFMaterialsIridescenceExtension {
 
 }
 
-/**
- * Sheen Materials Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_sheen
- *
- * @private
- */
 class GLTFMaterialsSheenExtension {
 
 	constructor( parser ) {
@@ -3048,14 +2630,6 @@ class GLTFMaterialsSheenExtension {
 
 }
 
-/**
- * Transmission Materials Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_transmission
- * Draft: https://github.com/KhronosGroup/glTF/pull/1698
- *
- * @private
- */
 class GLTFMaterialsTransmissionExtension {
 
 	constructor( parser ) {
@@ -3099,13 +2673,6 @@ class GLTFMaterialsTransmissionExtension {
 
 }
 
-/**
- * Materials Volume Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_volume
- *
- * @private
- */
 class GLTFMaterialsVolumeExtension {
 
 	constructor( parser ) {
@@ -3150,13 +2717,6 @@ class GLTFMaterialsVolumeExtension {
 
 }
 
-/**
- * Materials ior Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_ior
- *
- * @private
- */
 class GLTFMaterialsIorExtension {
 
 	constructor( parser ) {
@@ -3190,13 +2750,6 @@ class GLTFMaterialsIorExtension {
 
 }
 
-/**
- * Materials specular Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_specular
- *
- * @private
- */
 class GLTFMaterialsSpecularExtension {
 
 	constructor( parser ) {
@@ -3246,13 +2799,6 @@ class GLTFMaterialsSpecularExtension {
 }
 
 
-/**
- * Materials bump Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/EXT_materials_bump
- *
- * @private
- */
 class GLTFMaterialsBumpExtension {
 
 	constructor( parser ) {
@@ -3292,13 +2838,6 @@ class GLTFMaterialsBumpExtension {
 
 }
 
-/**
- * Materials anisotropy Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_anisotropy
- *
- * @private
- */
 class GLTFMaterialsAnisotropyExtension {
 
 	constructor( parser ) {
@@ -3348,13 +2887,6 @@ class GLTFMaterialsAnisotropyExtension {
 
 }
 
-/**
- * BasisU Texture Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_basisu
- *
- * @private
- */
 class GLTFTextureBasisUExtension {
 
 	constructor( parser ) {
@@ -3388,7 +2920,6 @@ class GLTFTextureBasisUExtension {
 
 			} else {
 
-				// Assumes that the extension is optional and that a fallback texture is present
 				return null;
 
 			}
@@ -3401,13 +2932,6 @@ class GLTFTextureBasisUExtension {
 
 }
 
-/**
- * WebP Texture Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_texture_webp
- *
- * @private
- */
 class GLTFTextureWebPExtension {
 
 	constructor( parser ) {
@@ -3448,13 +2972,6 @@ class GLTFTextureWebPExtension {
 
 }
 
-/**
- * AVIF Texture Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_texture_avif
- *
- * @private
- */
 class GLTFTextureAVIFExtension {
 
 	constructor( parser ) {
@@ -3495,13 +3012,6 @@ class GLTFTextureAVIFExtension {
 
 }
 
-/**
- * meshopt BufferView Compression Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_meshopt_compression
- *
- * @private
- */
 class GLTFMeshoptCompression {
 
 	constructor( parser, name ) {
@@ -3531,7 +3041,6 @@ class GLTFMeshoptCompression {
 
 				} else {
 
-					// Assumes that the extension is optional and that fallback buffer data is present
 					return null;
 
 				}
@@ -3558,7 +3067,6 @@ class GLTFMeshoptCompression {
 
 				} else {
 
-					// Support for MeshoptDecoder 0.18 or earlier, without decodeGltfBufferAsync
 					return decoder.ready.then( function () {
 
 						const result = new ArrayBuffer( count * stride );
@@ -3581,13 +3089,6 @@ class GLTFMeshoptCompression {
 
 }
 
-/**
- * GPU Instancing Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_mesh_gpu_instancing
- *
- * @private
- */
 class GLTFMeshGpuInstancing {
 
 	constructor( parser ) {
@@ -3611,7 +3112,6 @@ class GLTFMeshGpuInstancing {
 
 		const meshDef = json.meshes[ nodeDef.mesh ];
 
-		// No Points or Lines + Instancing support yet
 
 		for ( const primitive of meshDef.primitives ) {
 
@@ -3629,7 +3129,6 @@ class GLTFMeshGpuInstancing {
 		const extensionDef = nodeDef.extensions[ this.name ];
 		const attributesDef = extensionDef.attributes;
 
-		// @TODO: Can we support InstancedMesh + SkinnedMesh?
 
 		const pending = [];
 		const attributes = {};
@@ -3662,7 +3161,6 @@ class GLTFMeshGpuInstancing {
 
 			for ( const mesh of meshes ) {
 
-				// Temporal variables
 				const m = new Matrix4();
 				const p = new Vector3();
 				const q = new Quaternion();
@@ -3694,7 +3192,6 @@ class GLTFMeshGpuInstancing {
 
 				}
 
-				// Add instance attributes to the geometry, excluding TRS.
 				for ( const attributeName in attributes ) {
 
 					if ( attributeName === '_COLOR_0' ) {
@@ -3712,7 +3209,6 @@ class GLTFMeshGpuInstancing {
 
 				}
 
-				// Just in case
 				Object3D.prototype.copy.call( instancedMesh, mesh );
 
 				this.parser.assignFinalMaterial( instancedMesh );
@@ -3739,7 +3235,6 @@ class GLTFMeshGpuInstancing {
 
 }
 
-/* BINARY EXTENSION */
 const BINARY_EXTENSION_HEADER_MAGIC = 'glTF';
 const BINARY_EXTENSION_HEADER_LENGTH = 12;
 const BINARY_EXTENSION_CHUNK_TYPES = { JSON: 0x4E4F534A, BIN: 0x004E4942 };
@@ -3795,7 +3290,6 @@ class GLTFBinaryExtension {
 
 			}
 
-			// Clients must ignore chunks with unknown types.
 
 			chunkIndex += chunkLength;
 
@@ -3811,13 +3305,6 @@ class GLTFBinaryExtension {
 
 }
 
-/**
- * DRACO Mesh Compression Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_draco_mesh_compression
- *
- * @private
- */
 class GLTFDracoMeshCompressionExtension {
 
 	constructor( json, dracoLoader ) {
@@ -3896,13 +3383,6 @@ class GLTFDracoMeshCompressionExtension {
 
 }
 
-/**
- * Texture Transform Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_transform
- *
- * @private
- */
 class GLTFTextureTransformExtension {
 
 	constructor() {
@@ -3918,7 +3398,6 @@ class GLTFTextureTransformExtension {
 			&& transform.rotation === undefined
 			&& transform.scale === undefined ) {
 
-			// See https://github.com/mrdoob/three.js/issues/21819.
 			return texture;
 
 		}
@@ -3957,13 +3436,6 @@ class GLTFTextureTransformExtension {
 
 }
 
-/**
- * Mesh Quantization Extension
- *
- * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_mesh_quantization
- *
- * @private
- */
 class GLTFMeshQuantizationExtension {
 
 	constructor() {
@@ -3974,12 +3446,7 @@ class GLTFMeshQuantizationExtension {
 
 }
 
-/*********************************/
-/********** INTERPOLATION ********/
-/*********************************/
 
-// Spline Interpolation
-// Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#appendix-c-spline-interpolation
 class GLTFCubicSplineInterpolant extends Interpolant {
 
 	constructor( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
@@ -3990,8 +3457,6 @@ class GLTFCubicSplineInterpolant extends Interpolant {
 
 	copySampleValue_( index ) {
 
-		// Copies a sample value to the result buffer. See description of glTF
-		// CUBICSPLINE values layout in interpolate_() function below.
 
 		const result = this.resultBuffer,
 			values = this.sampleValues,
@@ -4031,8 +3496,6 @@ class GLTFCubicSplineInterpolant extends Interpolant {
 		const s0 = 1 - s2;
 		const s1 = s3 - pp + p;
 
-		// Layout of keyframe output values for CUBICSPLINE animations:
-		//   [ inTangent_1, splineVertex_1, outTangent_1, inTangent_2, splineVertex_2, ... ]
 		for ( let i = 0; i !== stride; i ++ ) {
 
 			const p0 = values[ offset0 + i + stride ]; // splineVertex_k
@@ -4067,15 +3530,10 @@ class GLTFCubicSplineQuaternionInterpolant extends GLTFCubicSplineInterpolant {
 }
 
 
-/*********************************/
-/********** INTERNALS ************/
-/*********************************/
 
-/* CONSTANTS */
 
 const WEBGL_CONSTANTS = {
 	FLOAT: 5126,
-	//FLOAT_MAT2: 35674,
 	FLOAT_MAT3: 35675,
 	FLOAT_MAT4: 35676,
 	FLOAT_VEC2: 35664,
@@ -4151,7 +3609,6 @@ const PATH_PROPERTIES = {
 
 const INTERPOLATION = {
 	CUBICSPLINE: undefined, // We use a custom interpolant (GLTFCubicSplineInterpolation) for CUBICSPLINE tracks. Each
-		                        // keyframe track will be initialized with a default interpolation type, then modified.
 	LINEAR: InterpolateLinear,
 	STEP: InterpolateDiscrete
 };
@@ -4162,13 +3619,6 @@ const ALPHA_MODES = {
 	BLEND: 'BLEND'
 };
 
-/**
- * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#default-material
- *
- * @private
- * @param {Object<string, Material>} cache
- * @return {Material}
- */
 function createDefaultMaterial( cache ) {
 
 	if ( cache[ 'DefaultMaterial' ] === undefined ) {
@@ -4191,7 +3641,6 @@ function createDefaultMaterial( cache ) {
 
 function addUnknownExtensionsToUserData( knownExtensions, object, objectDef ) {
 
-	// Add unknown glTF extensions to an object's userData.
 
 	for ( const name in objectDef.extensions ) {
 
@@ -4206,12 +3655,6 @@ function addUnknownExtensionsToUserData( knownExtensions, object, objectDef ) {
 
 }
 
-/**
- *
- * @private
- * @param {Object3D|Material|BufferGeometry|Object|AnimationClip} object
- * @param {GLTF.definition} gltfDef
- */
 function assignExtrasToUserData( object, gltfDef ) {
 
 	if ( gltfDef.extras !== undefined ) {
@@ -4230,15 +3673,6 @@ function assignExtrasToUserData( object, gltfDef ) {
 
 }
 
-/**
- * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#morph-targets
- *
- * @private
- * @param {BufferGeometry} geometry
- * @param {Array<GLTF.Target>} targets
- * @param {GLTFParser} parser
- * @return {Promise<BufferGeometry>}
- */
 function addMorphTargets( geometry, targets, parser ) {
 
 	let hasMorphPosition = false;
@@ -4320,12 +3754,6 @@ function addMorphTargets( geometry, targets, parser ) {
 
 }
 
-/**
- *
- * @private
- * @param {Mesh} mesh
- * @param {GLTF.Mesh} meshDef
- */
 function updateMorphTargets( mesh, meshDef ) {
 
 	mesh.updateMorphTargets();
@@ -4340,7 +3768,6 @@ function updateMorphTargets( mesh, meshDef ) {
 
 	}
 
-	// .extras has user-defined data, so check that .extras.targetNames is an array.
 	if ( meshDef.extras && Array.isArray( meshDef.extras.targetNames ) ) {
 
 		const targetNames = meshDef.extras.targetNames;
@@ -4415,8 +3842,6 @@ function createAttributesKey( attributes ) {
 
 function getNormalizedComponentScale( constructor ) {
 
-	// Reference:
-	// https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_mesh_quantization#encoding-quantized-data
 
 	switch ( constructor ) {
 
@@ -4451,7 +3876,6 @@ function getImageURIMimeType( uri ) {
 
 const _identityMatrix = new Matrix4();
 
-/* GLTF PARSER */
 
 class GLTFParser {
 
@@ -4462,19 +3886,14 @@ class GLTFParser {
 		this.plugins = {};
 		this.options = options;
 
-		// loader object cache
 		this.cache = new GLTFRegistry();
 
-		// associations between Three.js objects and glTF elements
 		this.associations = new Map();
 
-		// BufferGeometry caching
 		this.primitiveCache = {};
 
-		// Node cache
 		this.nodeCache = {};
 
-		// Object3D instance caches
 		this.meshCache = { refs: {}, uses: {} };
 		this.cameraCache = { refs: {}, uses: {} };
 		this.lightCache = { refs: {}, uses: {} };
@@ -4482,11 +3901,8 @@ class GLTFParser {
 		this.sourceCache = {};
 		this.textureCache = {};
 
-		// Track node names, to ensure no duplicates
 		this.nodeNamesUsed = {};
 
-		// Use an ImageBitmapLoader if imageBitmaps are supported. Moves much of the
-		// expensive work of uploading a texture to the GPU off the main thread.
 
 		let isSafari = false;
 		let safariVersion = - 1;
@@ -4548,11 +3964,9 @@ class GLTFParser {
 		const json = this.json;
 		const extensions = this.extensions;
 
-		// Clear the loader cache
 		this.cache.removeAll();
 		this.nodeCache = {};
 
-		// Mark the special nodes/meshes in json for efficient parse
 		this._invokeAll( function ( ext ) {
 
 			return ext._markDefs && ext._markDefs();
@@ -4609,19 +4023,12 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Marks the special nodes/meshes in json for efficient parse.
-	 *
-	 * @private
-	 */
 	_markDefs() {
 
 		const nodeDefs = this.json.nodes || [];
 		const skinDefs = this.json.skins || [];
 		const meshDefs = this.json.meshes || [];
 
-		// Nothing in the node definition indicates whether it is a Bone or an
-		// Object3D. Use the skins' joint references to mark bones.
 		for ( let skinIndex = 0, skinLength = skinDefs.length; skinIndex < skinLength; skinIndex ++ ) {
 
 			const joints = skinDefs[ skinIndex ].joints;
@@ -4634,8 +4041,6 @@ class GLTFParser {
 
 		}
 
-		// Iterate over all nodes, marking references to shared resources,
-		// as well as skeleton joints.
 		for ( let nodeIndex = 0, nodeLength = nodeDefs.length; nodeIndex < nodeLength; nodeIndex ++ ) {
 
 			const nodeDef = nodeDefs[ nodeIndex ];
@@ -4644,9 +4049,6 @@ class GLTFParser {
 
 				this._addNodeRef( this.meshCache, nodeDef.mesh );
 
-				// Nothing in the mesh definition indicates whether it is
-				// a SkinnedMesh or Mesh. Use the node's mesh reference
-				// to mark SkinnedMesh if node has skin.
 				if ( nodeDef.skin !== undefined ) {
 
 					meshDefs[ nodeDef.mesh ].isSkinnedMesh = true;
@@ -4665,19 +4067,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Counts references to shared node / Object3D resources. These resources
-	 * can be reused, or "instantiated", at multiple nodes in the scene
-	 * hierarchy. Mesh, Camera, and Light instances are instantiated and must
-	 * be marked. Non-scenegraph resources (like Materials, Geometries, and
-	 * Textures) can be reused directly and are not marked here.
-	 *
-	 * Example: CesiumMilkTruck sample model reuses "Wheel" meshes.
-	 *
-	 * @private
-	 * @param {Object} cache
-	 * @param {Object3D} index
-	 */
 	_addNodeRef( cache, index ) {
 
 		if ( index === undefined ) return;
@@ -4692,23 +4081,12 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Returns a reference to a shared resource, cloning it if necessary.
-	 *
-	 * @private
-	 * @param {Object} cache
-	 * @param {number} index
-	 * @param {Object} object
-	 * @return {Object}
-	 */
 	_getNodeRef( cache, index, object ) {
 
 		if ( cache.refs[ index ] <= 1 ) return object;
 
 		const ref = object.clone();
 
-		// Propagates mappings to the cloned object, prevents mappings on the
-		// original object from being lost.
 		const updateMappings = ( original, clone ) => {
 
 			const mappings = this.associations.get( original );
@@ -4770,14 +4148,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Requests the specified dependency asynchronously, with caching.
-	 *
-	 * @private
-	 * @param {string} type
-	 * @param {number} index
-	 * @return {Promise<Object3D|Material|Texture|AnimationClip|ArrayBuffer|Object>}
-	 */
 	getDependency( type, index ) {
 
 		const cacheKey = type + ':' + index;
@@ -4880,13 +4250,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Requests all dependencies of the specified type asynchronously, with caching.
-	 *
-	 * @private
-	 * @param {string} type
-	 * @return {Promise<Array<Object>>}
-	 */
 	getDependencies( type ) {
 
 		let dependencies = this.cache.get( type );
@@ -4910,13 +4273,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#buffers-and-buffer-views
-	 *
-	 * @private
-	 * @param {number} bufferIndex
-	 * @return {Promise<ArrayBuffer>}
-	 */
 	loadBuffer( bufferIndex ) {
 
 		const bufferDef = this.json.buffers[ bufferIndex ];
@@ -4928,7 +4284,6 @@ class GLTFParser {
 
 		}
 
-		// If present, GLB container is required to be the first buffer.
 		if ( bufferDef.uri === undefined && bufferIndex === 0 ) {
 
 			return Promise.resolve( this.extensions[ EXTENSIONS.KHR_BINARY_GLTF ].body );
@@ -4949,13 +4304,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#buffers-and-buffer-views
-	 *
-	 * @private
-	 * @param {number} bufferViewIndex
-	 * @return {Promise<ArrayBuffer>}
-	 */
 	loadBufferView( bufferViewIndex ) {
 
 		const bufferViewDef = this.json.bufferViews[ bufferViewIndex ];
@@ -4970,13 +4318,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#accessors
-	 *
-	 * @private
-	 * @param {number} accessorIndex
-	 * @return {Promise<BufferAttribute|InterleavedBufferAttribute>}
-	 */
 	loadAccessor( accessorIndex ) {
 
 		const parser = this;
@@ -5021,7 +4362,6 @@ class GLTFParser {
 			const itemSize = WEBGL_TYPE_SIZES[ accessorDef.type ];
 			const TypedArray = WEBGL_COMPONENT_TYPES[ accessorDef.componentType ];
 
-			// For VEC3: itemSize is 3, elementBytes is 4, itemBytes is 12.
 			const elementBytes = TypedArray.BYTES_PER_ELEMENT;
 			const itemBytes = elementBytes * itemSize;
 			const byteOffset = accessorDef.byteOffset || 0;
@@ -5029,11 +4369,8 @@ class GLTFParser {
 			const normalized = accessorDef.normalized === true;
 			let array, bufferAttribute;
 
-			// The buffer is not interleaved if the stride is the item size in bytes.
 			if ( byteStride && byteStride !== itemBytes ) {
 
-				// Each "slice" of the buffer, as defined by 'count' elements of 'byteStride' bytes, gets its own InterleavedBuffer
-				// This makes sure that IBA.count reflects accessor.count properly
 				const ibSlice = Math.floor( byteOffset / byteStride );
 				const ibCacheKey = 'InterleavedBuffer:' + accessorDef.bufferView + ':' + accessorDef.componentType + ':' + ibSlice + ':' + accessorDef.count;
 				let ib = parser.cache.get( ibCacheKey );
@@ -5042,7 +4379,6 @@ class GLTFParser {
 
 					array = new TypedArray( bufferView, ibSlice * byteStride, accessorDef.count * byteStride / elementBytes );
 
-					// Integer parameters to IB/IBA are in array elements, not bytes.
 					ib = new InterleavedBuffer( array, byteStride / elementBytes );
 
 					parser.cache.add( ibCacheKey, ib );
@@ -5067,7 +4403,6 @@ class GLTFParser {
 
 			}
 
-			// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#sparse-accessors
 			if ( accessorDef.sparse !== undefined ) {
 
 				const itemSizeIndices = WEBGL_TYPE_SIZES.SCALAR;
@@ -5081,12 +4416,10 @@ class GLTFParser {
 
 				if ( bufferView !== null ) {
 
-					// Avoid modifying the original ArrayBuffer, if the bufferView wasn't initialized with zeroes.
 					bufferAttribute = new BufferAttribute( bufferAttribute.array.slice(), bufferAttribute.itemSize, bufferAttribute.normalized );
 
 				}
 
-				// Ignore normalized since we copy from sparse
 				bufferAttribute.normalized = false;
 
 				for ( let i = 0, il = sparseIndices.length; i < il; i ++ ) {
@@ -5111,13 +4444,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#textures
-	 *
-	 * @private
-	 * @param {number} textureIndex
-	 * @return {Promise<?Texture>}
-	 */
 	loadTexture( textureIndex ) {
 
 		const json = this.json;
@@ -5151,7 +4477,6 @@ class GLTFParser {
 
 		if ( this.textureCache[ cacheKey ] ) {
 
-			// See https://github.com/mrdoob/three.js/issues/21559.
 			return this.textureCache[ cacheKey ];
 
 		}
@@ -5214,7 +4539,6 @@ class GLTFParser {
 
 		if ( sourceDef.bufferView !== undefined ) {
 
-			// Load binary image data from bufferView, if provided.
 
 			sourceURI = parser.getDependency( 'bufferView', sourceDef.bufferView ).then( function ( bufferView ) {
 
@@ -5256,7 +4580,6 @@ class GLTFParser {
 
 		} ).then( function ( texture ) {
 
-			// Clean up resources and configure Texture.
 
 			if ( isObjectURL === true ) {
 
@@ -5282,16 +4605,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Asynchronously assigns a texture to the given material parameters.
-	 *
-	 * @private
-	 * @param {Object} materialParams
-	 * @param {string} mapName
-	 * @param {Object} mapDef
-	 * @param {string} [colorSpace]
-	 * @return {Promise<Texture>}
-	 */
 	assignTexture( materialParams, mapName, mapDef, colorSpace ) {
 
 		const parser = this;
@@ -5335,16 +4648,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Assigns final material to a Mesh, Line, or Points instance. The instance
-	 * already has a material (generated from the glTF material options alone)
-	 * but reuse of the same glTF material may require multiple threejs materials
-	 * to accommodate different primitive types, defines, etc. New materials will
-	 * be created if necessary, and reused from a cache.
-	 *
-	 * @private
-	 * @param {Object3D} mesh Mesh, Line, or Points instance.
-	 */
 	assignFinalMaterial( mesh ) {
 
 		const geometry = mesh.geometry;
@@ -5395,7 +4698,6 @@ class GLTFParser {
 
 		}
 
-		// Clone the material if it will be modified
 		if ( useDerivativeTangents || useVertexColors || useFlatShading ) {
 
 			let cacheKey = 'ClonedMaterial:' + material.uuid + ':';
@@ -5415,7 +4717,6 @@ class GLTFParser {
 
 				if ( useDerivativeTangents ) {
 
-					// https://github.com/mrdoob/three.js/issues/11438#issuecomment-507003995
 					if ( cachedMaterial.normalScale ) cachedMaterial.normalScale.y *= - 1;
 					if ( cachedMaterial.clearcoatNormalScale ) cachedMaterial.clearcoatNormalScale.y *= - 1;
 
@@ -5441,13 +4742,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#materials
-	 *
-	 * @private
-	 * @param {number} materialIndex
-	 * @return {Promise<Material>}
-	 */
 	loadMaterial( materialIndex ) {
 
 		const parser = this;
@@ -5469,8 +4763,6 @@ class GLTFParser {
 
 		} else {
 
-			// Specification:
-			// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#metallic-roughness-material
 
 			const metallicRoughness = materialDef.pbrMetallicRoughness || {};
 
@@ -5528,7 +4820,6 @@ class GLTFParser {
 
 			materialParams.transparent = true;
 
-			// See: https://github.com/mrdoob/three.js/issues/17706
 			materialParams.depthWrite = false;
 
 		} else {
@@ -5602,13 +4893,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * When Object3D instances are targeted by animation, they need unique names.
-	 *
-	 * @private
-	 * @param {string} originalName
-	 * @return {string}
-	 */
 	createUniqueName( originalName ) {
 
 		const sanitizedName = PropertyBinding.sanitizeNodeName( originalName || '' );
@@ -5627,15 +4911,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#geometry
-	 *
-	 * Creates BufferGeometries from primitives.
-	 *
-	 * @private
-	 * @param {Array<GLTF.Primitive>} primitives
-	 * @return {Promise<Array<BufferGeometry>>}
-	 */
 	loadGeometries( primitives ) {
 
 		const parser = this;
@@ -5661,12 +4936,10 @@ class GLTFParser {
 			const primitive = primitives[ i ];
 			const cacheKey = createPrimitiveKey( primitive );
 
-			// See if we've already created this geometry
 			const cached = cache[ cacheKey ];
 
 			if ( cached ) {
 
-				// Use the cached geometry if it exists
 				pending.push( cached.promise );
 
 			} else {
@@ -5675,17 +4948,14 @@ class GLTFParser {
 
 				if ( primitive.extensions && primitive.extensions[ EXTENSIONS.KHR_DRACO_MESH_COMPRESSION ] ) {
 
-					// Use DRACO geometry if available
 					geometryPromise = createDracoPrimitive( primitive );
 
 				} else {
 
-					// Otherwise create a new geometry
 					geometryPromise = addPrimitiveAttributes( new BufferGeometry(), primitive, parser );
 
 				}
 
-				// Cache this geometry
 				cache[ cacheKey ] = { primitive: primitive, promise: geometryPromise };
 
 				pending.push( geometryPromise );
@@ -5698,13 +4968,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#meshes
-	 *
-	 * @private
-	 * @param {number} meshIndex
-	 * @return {Promise<Group|Mesh|SkinnedMesh|Line|Points>}
-	 */
 	loadMesh( meshIndex ) {
 
 		const parser = this;
@@ -5740,7 +5003,6 @@ class GLTFParser {
 				const geometry = geometries[ i ];
 				const primitive = primitives[ i ];
 
-				// 1. create Mesh
 
 				let mesh;
 
@@ -5751,14 +5013,12 @@ class GLTFParser {
 						primitive.mode === WEBGL_CONSTANTS.TRIANGLE_FAN ||
 						primitive.mode === undefined ) {
 
-					// .isSkinnedMesh isn't in glTF spec. See ._markDefs()
 					mesh = meshDef.isSkinnedMesh === true
 						? new SkinnedMesh( geometry, material )
 						: new Mesh( geometry, material );
 
 					if ( mesh.isSkinnedMesh === true ) {
 
-						// normalize skin weights to fix malformed assets (see #15319)
 						mesh.normalizeSkinWeights();
 
 					}
@@ -5848,13 +5108,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#cameras
-	 *
-	 * @private
-	 * @param {number} cameraIndex
-	 * @return {Promise<Camera>|undefined}
-	 */
 	loadCamera( cameraIndex ) {
 
 		let camera;
@@ -5886,13 +5139,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#skins
-	 *
-	 * @private
-	 * @param {number} skinIndex
-	 * @return {Promise<Skeleton>}
-	 */
 	loadSkin( skinIndex ) {
 
 		const skinDef = this.json.skins[ skinIndex ];
@@ -5920,8 +5166,6 @@ class GLTFParser {
 			const inverseBindMatrices = results.pop();
 			const jointNodes = results;
 
-			// Note that bones (joint nodes) may or may not be in the
-			// scene graph at this time.
 
 			const bones = [];
 			const boneInverses = [];
@@ -5958,13 +5202,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#animations
-	 *
-	 * @private
-	 * @param {number} animationIndex
-	 * @return {Promise<AnimationClip>}
-	 */
 	loadAnimation( animationIndex ) {
 
 		const json = this.json;
@@ -6068,7 +5305,6 @@ class GLTFParser {
 
 			const node = parser._getNodeRef( parser.meshCache, nodeDef.mesh, mesh );
 
-			// if weights are provided on the node, override weights on the mesh.
 			if ( nodeDef.weights !== undefined ) {
 
 				node.traverse( function ( o ) {
@@ -6091,13 +5327,6 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#nodes-and-hierarchy
-	 *
-	 * @private
-	 * @param {number} nodeIndex
-	 * @return {Promise<Object3D>}
-	 */
 	loadNode( nodeIndex ) {
 
 		const json = this.json;
@@ -6132,8 +5361,6 @@ class GLTFParser {
 
 			if ( skeleton !== null ) {
 
-				// This full traverse should be fine because
-				// child glTF nodes have not been added to this node yet.
 				node.traverse( function ( mesh ) {
 
 					if ( ! mesh.isSkinnedMesh ) return;
@@ -6150,22 +5377,17 @@ class GLTFParser {
 
 			}
 
-			// Reconstruct pivot from container pattern created by GLTFExporter
-			// The container has position+pivot, rotation, scale; child has -pivot offset and mesh
 			if ( node.userData.pivot !== undefined && children.length > 0 ) {
 
 				const pivot = node.userData.pivot;
 				const pivotChild = children[ 0 ];
 
-				// Set pivot on container and adjust transforms
 				node.pivot = new Vector3().fromArray( pivot );
 
-				// Adjust container position: stored as position + pivot, so subtract pivot
 				node.position.x -= pivot[ 0 ];
 				node.position.y -= pivot[ 1 ];
 				node.position.z -= pivot[ 2 ];
 
-				// Remove the child's -pivot offset since pivot now handles it
 				pivotChild.position.set( 0, 0, 0 );
 
 				delete node.userData.pivot;
@@ -6178,16 +5400,12 @@ class GLTFParser {
 
 	}
 
-	// ._loadNodeShallow() parses a single node.
-	// skin and child nodes are created and added in .loadNode() (no '_' prefix).
 	_loadNodeShallow( nodeIndex ) {
 
 		const json = this.json;
 		const extensions = this.extensions;
 		const parser = this;
 
-		// This method is called from .loadNode() and .loadSkin().
-		// Cache a node to avoid duplication.
 
 		if ( this.nodeCache[ nodeIndex ] !== undefined ) {
 
@@ -6197,7 +5415,6 @@ class GLTFParser {
 
 		const nodeDef = json.nodes[ nodeIndex ];
 
-		// reserve node's name before its dependencies, so the root has the intended name.
 		const nodeName = nodeDef.name ? parser.createUniqueName( nodeDef.name ) : '';
 
 		const pending = [];
@@ -6238,7 +5455,6 @@ class GLTFParser {
 
 			let node;
 
-			// .isBone isn't in glTF spec. See ._markDefs
 			if ( nodeDef.isBone === true ) {
 
 				node = new Bone();
@@ -6327,21 +5543,12 @@ class GLTFParser {
 
 	}
 
-	/**
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#scenes
-	 *
-	 * @private
-	 * @param {number} sceneIndex
-	 * @return {Promise<Group>}
-	 */
 	loadScene( sceneIndex ) {
 
 		const extensions = this.extensions;
 		const sceneDef = this.json.scenes[ sceneIndex ];
 		const parser = this;
 
-		// Loader returns Group, not Scene.
-		// See: https://github.com/mrdoob/three.js/issues/18342#issuecomment-578981172
 		const scene = new Group();
 		if ( sceneDef.name ) scene.name = parser.createUniqueName( sceneDef.name );
 
@@ -6365,9 +5572,6 @@ class GLTFParser {
 
 				const node = nodes[ i ];
 
-				// If the node already has a parent, it means it's being reused across multiple scenes.
-				// Clone it to avoid the second scene's add() removing it from the first scene.
-				// See: https://github.com/mrdoob/three.js/issues/27993
 				if ( node.parent !== null ) {
 
 					scene.add( clone( node ) );
@@ -6380,8 +5584,6 @@ class GLTFParser {
 
 			}
 
-			// Removes dangling associations, associations that reference a node that
-			// didn't make it into the scene.
 			const reduceAssociations = ( node ) => {
 
 				const reducedAssociations = new Map();
@@ -6442,7 +5644,6 @@ class GLTFParser {
 
 			collectMorphTargets( node );
 
-			// for multi-primitive meshes, the node is a Group containing the sub-meshes
 
 			if ( node.isGroup ) {
 
@@ -6509,7 +5710,6 @@ class GLTFParser {
 				interpolation
 			);
 
-			// Override interpolation with custom factory method.
 			if ( sampler.interpolation === 'CUBICSPLINE' ) {
 
 				this._createCubicSplineTrackInterpolant( track );
@@ -6551,9 +5751,6 @@ class GLTFParser {
 
 		track.createInterpolant = function InterpolantFactoryMethodGLTFCubicSpline( result ) {
 
-			// A CUBICSPLINE keyframe in glTF has three output values for each input value,
-			// representing inTangent, splineVertex, and outTangent. As a result, track.getValueSize()
-			// must be divided by three to get the interpolant's sampleSize argument.
 
 			const interpolantType = ( this instanceof QuaternionKeyframeTrack ) ? GLTFCubicSplineQuaternionInterpolant : GLTFCubicSplineInterpolant;
 
@@ -6561,20 +5758,12 @@ class GLTFParser {
 
 		};
 
-		// Mark as CUBICSPLINE. `track.getInterpolation()` doesn't support custom interpolants.
 		track.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline = true;
 
 	}
 
 }
 
-/**
- *
- * @private
- * @param {BufferGeometry} geometry
- * @param {GLTF.Primitive} primitiveDef
- * @param {GLTFParser} parser
- */
 function computeBounds( geometry, primitiveDef, parser ) {
 
 	const attributes = primitiveDef.attributes;
@@ -6588,7 +5777,6 @@ function computeBounds( geometry, primitiveDef, parser ) {
 		const min = accessor.min;
 		const max = accessor.max;
 
-		// glTF requires 'min' and 'max', but VRM (which extends glTF) currently ignores that requirement.
 
 		if ( min !== undefined && max !== undefined ) {
 
@@ -6636,11 +5824,9 @@ function computeBounds( geometry, primitiveDef, parser ) {
 				const min = accessor.min;
 				const max = accessor.max;
 
-				// glTF requires 'min' and 'max', but VRM (which extends glTF) currently ignores that requirement.
 
 				if ( min !== undefined && max !== undefined ) {
 
-					// we need to get max of absolute components because target weight is [-1,1]
 					vector.setX( Math.max( Math.abs( min[ 0 ] ), Math.abs( max[ 0 ] ) ) );
 					vector.setY( Math.max( Math.abs( min[ 1 ] ), Math.abs( max[ 1 ] ) ) );
 					vector.setZ( Math.max( Math.abs( min[ 2 ] ), Math.abs( max[ 2 ] ) ) );
@@ -6653,10 +5839,6 @@ function computeBounds( geometry, primitiveDef, parser ) {
 
 					}
 
-					// Note: this assumes that the sum of all weights is at most 1. This isn't quite correct - it's more conservative
-					// to assume that each target can have a max weight of 1. However, for some use cases - notably, when morph targets
-					// are used to implement key-frame animations and as such only two are active at a time - this results in very large
-					// boxes. So for now we make a box that's sometimes a touch too small but is hopefully mostly of reasonable size.
 					maxDisplacement.max( vector );
 
 				} else {
@@ -6669,7 +5851,6 @@ function computeBounds( geometry, primitiveDef, parser ) {
 
 		}
 
-		// As per comment above this box isn't conservative, but has a reasonable size for a very large number of morph targets.
 		box.expandByVector( maxDisplacement );
 
 	}
@@ -6685,14 +5866,6 @@ function computeBounds( geometry, primitiveDef, parser ) {
 
 }
 
-/**
- *
- * @private
- * @param {BufferGeometry} geometry
- * @param {GLTF.Primitive} primitiveDef
- * @param {GLTFParser} parser
- * @return {Promise<BufferGeometry>}
- */
 function addPrimitiveAttributes( geometry, primitiveDef, parser ) {
 
 	const attributes = primitiveDef.attributes;
@@ -6714,7 +5887,6 @@ function addPrimitiveAttributes( geometry, primitiveDef, parser ) {
 
 		const threeAttributeName = ATTRIBUTES[ gltfAttributeName ] || gltfAttributeName.toLowerCase();
 
-		// Skip attributes already provided by e.g. Draco extension.
 		if ( threeAttributeName in geometry.attributes ) continue;
 
 		pending.push( assignAttributeAccessor( attributes[ gltfAttributeName ], threeAttributeName ) );
@@ -6753,18 +5925,6 @@ function addPrimitiveAttributes( geometry, primitiveDef, parser ) {
 
 }
 
-/**
- * Loader result of `GLTFLoader`.
- *
- * @typedef {Object} GLTFLoader~LoadObject
- * @property {Array<AnimationClip>} animations - An array of animation clips.
- * @property {Object} asset - Meta data about the loaded asset.
- * @property {Array<Camera>} cameras - An array of cameras.
- * @property {GLTFParser} parser - A reference to the internal parser.
- * @property {Group} scene - The default scene.
- * @property {Array<Group>} scenes - glTF assets might define multiple scenes.
- * @property {Object} userData - Additional data.
- **/
 
 
 return {"GLTFLoader":GLTFLoader};})();
@@ -6899,9 +6059,9 @@ function createState(saved,legacy){
   const salesFund=hasSplit?Math.max(0,Number(source.salesFund)):source||Object.keys(old).length?Math.round(legacyCash*.72):9000;
   const operatingBudget=hasSplit?Math.max(0,Number(source.operatingBudget)):source||Object.keys(old).length?legacyCash-Math.round(legacyCash*.72):3000;
   const state={
-    version:12,
+    version:13,
     lang:source?.lang||old.lang||"ur",
-    difficulty:source?.difficulty||old.difficulty||"normal",
+    difficulty:(source?.difficulty||old.difficulty)==="hard"?"hard":"easy",
     sound:source?.sound??old.sound??true,
     cash:legacyCash,
     salesFund,
@@ -6965,7 +6125,7 @@ function createState(saved,legacy){
   for(const key of Object.keys(BUSINESSES))state.businesses[key]=Boolean(source?.businesses?.[key]);
   if(state.delivery.active){state.delivery.arrived=false;state.delivery.unloading=false}
   if(state.delivery.unloading)state.delivery.arrived=true;
-  if(!DIFFICULTY[state.difficulty])state.difficulty="normal";
+  if(!["easy","hard"].includes(state.difficulty))state.difficulty="easy";
   if(!["ur","hi","en"].includes(state.lang))state.lang="ur";
   syncCash(state);
   return state;
@@ -7303,13 +6463,15 @@ const LEGACY_KEY="bazaarBossPakistanV1";
 const $=id=>document.getElementById(id);
 const clamp=THREE.MathUtils.clamp;
 const rand=(min,max)=>min+Math.random()*(max-min);
-const STORE_BOUNDS={minX:-15.25,maxX:15.25,minZ:-10.45,maxZ:25.8};
-const CHECKOUT_LAYOUT={counterX:7.8,counterZ:9.2,queueX:4.95,queueHeadZ:7.55,scanX:6.15,scanZ:7.78,ownerSeatX:7.03,cashierSeatX:8.53,seatZ:10.29};
+const STORE_BOUNDS={minX:-20.25,maxX:20.25,minZ:-10.45,maxZ:25.8};
+const CHECKOUT_LAYOUT={counterX:12.7,counterZ:9.2,queueX:9.85,queueHeadZ:7.55,scanX:11.05,scanZ:7.78,ownerSeatX:11.93,cashierSeatX:13.43,seatZ:10.29};
+const RESTOCK_TROLLEY_HOME={x:-3.2,z:-8.25,yaw:0};
+const TROLLEY_HANDLE={y:1.06,z:-.52};
 const PRODUCT_SHELVES={
-  flour:{x:-12.6,z:-7.6,side:-1},rice:{x:-12.6,z:-3.8,side:-1},sugar:{x:-12.6,z:0,side:-1},pulses:{x:-12.6,z:3.8,side:-1},salt:{x:-12.6,z:7.6,side:-1},
-  ghee:{x:12.6,z:-7.6,side:1},oil:{x:12.6,z:-3.8,side:1},milk:{x:12.6,z:0,side:1},biscuit:{x:12.6,z:3.8,side:1},toffee:{x:12.6,z:7.6,side:1},
-  detergent:{x:-3.8,z:-5.4,side:-1},soap:{x:-3.8,z:-1.4,side:-1},shampoo:{x:-3.8,z:2.6,side:-1},
-  spices:{x:3.8,z:-5.4,side:1},dishwash:{x:3.8,z:-1.4,side:1}
+  flour:{x:-17.4,z:-7.6,side:-1},rice:{x:-17.4,z:-3.8,side:-1},sugar:{x:-17.4,z:0,side:-1},pulses:{x:-17.4,z:3.8,side:-1},salt:{x:-17.4,z:7.6,side:-1},
+  ghee:{x:17.4,z:-7.6,side:1},oil:{x:17.4,z:-3.8,side:1},milk:{x:17.4,z:0,side:1},biscuit:{x:17.4,z:3.8,side:1},toffee:{x:17.4,z:7.6,side:1},
+  detergent:{x:-6.1,z:-5.4,side:-1},soap:{x:-6.1,z:-1.4,side:-1},shampoo:{x:-6.1,z:2.6,side:-1},
+  spices:{x:6.1,z:-5.4,side:1},dishwash:{x:6.1,z:-1.4,side:1}
 };
 const EVENT_TEXT={
   normal:["eventNormal","eventNormalD"],wedding:["eventWedding","eventWeddingD"],
@@ -7331,7 +6493,7 @@ const CHARACTER_ACTIONS={
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
-let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,counterCashGroup,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea;
+let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,counterCashGroup,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea,restockTrolley,restockTrolleyPayload;
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
 let scan=null,ownerCheckoutSession=null,ownerCheckoutDelay=0,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0,labelRefreshClock=0,nextPersonId=1,giveWayToastAt=0;
@@ -7358,11 +6520,11 @@ function loadGltf(loader,path){
   return new Promise((resolve,reject)=>loader.load(path,resolve,undefined,reject));
 }
 
-function prepareCharacterAsset(gltf){
+function prepareCharacterAsset(gltf,targetHeight=1.74){
   gltf.scene.updateMatrixWorld(true);
   const bounds=new THREE.Box3().setFromObject(gltf.scene);
   const height=Math.max(.01,bounds.max.y-bounds.min.y);
-  return {scene:gltf.scene,scale:2.68/height,minY:bounds.min.y};
+  return {scene:gltf.scene,scale:targetHeight/height,minY:bounds.min.y,targetHeight};
 }
 
 async function loadCharacterAssets(){
@@ -7370,8 +6532,8 @@ async function loadCharacterAssets(){
   const [male,female,animationLibrary]=await Promise.all([
     loadGltf(loader,CHARACTER_FILES.male),loadGltf(loader,CHARACTER_FILES.female),loadGltf(loader,CHARACTER_FILES.animations)
   ]);
-  characterAssets.male=prepareCharacterAsset(male);
-  characterAssets.female=prepareCharacterAsset(female);
+  characterAssets.male=prepareCharacterAsset(male,1.78);
+  characterAssets.female=prepareCharacterAsset(female,1.68);
   characterAssets.clips=new Map(animationLibrary.animations.map(clip=>[clip.name,clip]));
   for(const name of Object.values(CHARACTER_ACTIONS)){
     if(!characterAssets.clips.has(name))throw new Error(`Missing character animation: ${name}`);
@@ -7424,6 +6586,7 @@ function applyLanguage(){
   document.querySelectorAll("[data-t]").forEach(element=>{element.textContent=t(element.dataset.t)});
   document.querySelectorAll("[data-ta]").forEach(element=>{element.setAttribute("aria-label",t(element.dataset.ta));element.title=t(element.dataset.ta)});
   document.querySelectorAll("[data-start-lang]").forEach(button=>button.classList.toggle("active",button.dataset.startLang===state.lang));
+  document.querySelectorAll("[data-start-difficulty]").forEach(button=>button.classList.toggle("active",button.dataset.startDifficulty===state.difficulty));
   $("startBtn").textContent=state.seen3DIntro?t("continue"):t("start");
   updateHUD();
   refreshAllShelfVisuals();
@@ -7523,10 +6686,10 @@ function labelledPlane(width,height,lines,options={}){
 function buildWorld(){
   scene=new THREE.Scene();
   scene.background=new THREE.Color(0x78c6df);
-  scene.fog=new THREE.Fog(0x9fd3df,34,76);
+  scene.fog=new THREE.Fog(0x9fd3df,42,84);
   camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,150);
   renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));
   renderer.setSize(innerWidth,innerHeight);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -7538,12 +6701,12 @@ function buildWorld(){
 
   scene.add(new THREE.HemisphereLight(0xeafaff,0x8d724d,2.25));
   const sun=new THREE.DirectionalLight(0xfff4d2,2.15);sun.position.set(-8,16,12);sun.castShadow=true;
-  sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
+  sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-23;sun.shadow.camera.right=23;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
   const fill=new THREE.DirectionalLight(0xaad5ff,.75);fill.position.set(10,7,-8);scene.add(fill);
 
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[8,6],roughness:.82}));
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(42,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[11,6],roughness:.82}));
   floor.rotation.x=-Math.PI/2;floor.position.z=-.1;floor.receiveShadow=true;scene.add(floor);
-  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(22,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
+  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(32,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
   aisle.rotation.x=-Math.PI/2;aisle.position.set(0,.018,-.4);scene.add(aisle);
   addFloorTiles();
   buildWalls();
@@ -7556,8 +6719,8 @@ function buildWorld(){
   player=createHumanoid(0x247d68,0xd39a73,true,{style:"owner"});
   player.position.set(0,0,8.5);scene.add(player);
   playerShadow=player.userData.shadow;
-  addWorldLabel("interact",()=>new THREE.Vector3(0,3.6,-10.55),()=>t("storeName"));
-  addWorldLabel("interact",()=>new THREE.Vector3(0,2.8,10.8),()=>t("entranceLabel"));
+  addWorldLabel("interact",()=>new THREE.Vector3(0,3.6,-10.55),()=>t("storeName"),{maxDistance:8});
+  addWorldLabel("interact",()=>new THREE.Vector3(0,2.8,10.8),()=>t("entranceLabel"),{maxDistance:6});
   refreshCashierCharacter();
   refreshRestockerCharacter();
   refreshServiceBusinesses();
@@ -7568,10 +6731,10 @@ function buildWorld(){
 function addFloorTiles(){
   const lineMaterial=new THREE.LineBasicMaterial({color:0xd1ae78,transparent:true,opacity:.35});
   for(let z=-10;z<=10;z+=2){
-    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-14.5,.025,z),new THREE.Vector3(14.5,.025,z)]);
+    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-19.5,.025,z),new THREE.Vector3(19.5,.025,z)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
-  for(let x=-15;x<=15;x+=2){
+  for(let x=-20;x<=20;x+=2){
     const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,.026,-11),new THREE.Vector3(x,.026,11)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
@@ -7579,17 +6742,17 @@ function addFloorTiles(){
 
 function buildWalls(){
   const wallMat=texturedMaterial("textures/wall-plaster.webp",{repeat:[5,2],roughness:.92});
-  box(scene,[32,3.8,.3],[0,1.9,-11],0,wallMat);
-  box(scene,[.3,3.8,22],[-15.85,1.9,0],0,wallMat);
-  box(scene,[.3,3.8,22],[15.85,1.9,0],0,wallMat);
-  box(scene,[13,3.8,.22],[-9.5,1.9,11],0,wallMat);
-  box(scene,[13,3.8,.22],[9.5,1.9,11],0,wallMat);
-  box(scene,[32,.3,.3],[0,3.75,-11],0x176b56);
-  box(scene,[.35,.28,22],[-15.78,3.72,0],0xd44a3d);
-  box(scene,[.35,.28,22],[15.78,3.72,0],0xd44a3d);
+  box(scene,[42,3.8,.3],[0,1.9,-11],0,wallMat);
+  box(scene,[.3,3.8,22],[-20.85,1.9,0],0,wallMat);
+  box(scene,[.3,3.8,22],[20.85,1.9,0],0,wallMat);
+  box(scene,[18,3.8,.22],[-12,1.9,11],0,wallMat);
+  box(scene,[18,3.8,.22],[12,1.9,11],0,wallMat);
+  box(scene,[42,.3,.3],[0,3.75,-11],0x176b56);
+  box(scene,[.35,.28,22],[-20.78,3.72,0],0xd44a3d);
+  box(scene,[.35,.28,22],[20.78,3.72,0],0xd44a3d);
   for(let z=-9;z<11;z+=4){
-    box(scene,[.12,2.9,.12],[-15.62,1.48,z],0x176b56);
-    box(scene,[.12,2.9,.12],[15.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[-20.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[20.62,1.48,z],0x176b56);
   }
   const signCanvas=document.createElement("canvas");signCanvas.width=512;signCanvas.height=150;
   const context=signCanvas.getContext("2d");
@@ -7603,14 +6766,14 @@ function buildWalls(){
 }
 
 function buildOutside(){
-  const road=new THREE.Mesh(new THREE.PlaneGeometry(34,17),texturedMaterial("textures/road-asphalt.webp",{repeat:[8,4],roughness:.96}));
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(44,17),texturedMaterial("textures/road-asphalt.webp",{repeat:[11,4],roughness:.96}));
   road.rotation.x=-Math.PI/2;road.position.set(0,-.02,19.4);scene.add(road);
-  const curb=box(scene,[26,.18,1],[0,.08,12.25],0xd9c095);
-  for(let x=-14;x<=14;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
+  const curb=box(scene,[36,.18,1],[0,.08,12.25],0xd9c095);
+  for(let x=-20;x<=20;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
   const buildingColors=[0xef8466,0x5aa9b6,0xf0bd58,0x8b75ad,0x68a76f];
-  for(let i=0;i<8;i++){
+  for(let i=0;i<10;i++){
     const group=new THREE.Group();
-    const x=-17.5+i*5;
+    const x=-22.5+i*5;
     const height=rand(4,7);
     box(group,[4.3,height,3],[0,height/2,0],buildingColors[i%buildingColors.length]);
     box(group,[4.5,.32,3.2],[0,height+.14,0],0xf3e5c2);
@@ -7670,7 +6833,13 @@ function buildShelves(){
   const wood=texturedMaterial("textures/shelf-wood.webp",{repeat:[2,1],roughness:.66,color:0xd9b18c});
   for(const item of PRODUCTS){
     const layout=PRODUCT_SHELVES[item.id];
-    const group=new THREE.Group();
+    const group=new THREE.Group();group.name=`category-gallery-${item.id}`;
+    const galleryColor=new THREE.Color(item.color);
+    const galleryMat=new THREE.Mesh(new THREE.PlaneGeometry(2.75,3.35),new THREE.MeshBasicMaterial({color:galleryColor,transparent:true,opacity:.14,depthWrite:false}));
+    galleryMat.name=`category-floor-${item.id}`;galleryMat.rotation.x=-Math.PI/2;galleryMat.position.set(-layout.side*.82,.029,0);group.add(galleryMat);
+    const entranceX=-layout.side*1.04;
+    for(const z of [-1.48,1.48])box(group,[.09,2.95,.09],[entranceX,1.48,z],item.color);
+    box(group,[.12,.18,3.05],[entranceX,2.93,0],item.color);
     const backX=layout.side*.43;
     box(group,[.16,2.45,2.75],[backX,1.25,0],0,wood);
     for(const y of [.35,1.12,1.88])box(group,[.92,.12,2.86],[0,y,0],0,wood);
@@ -7681,7 +6850,6 @@ function buildShelves(){
     group.add(entry.holders,entry.signHolder);shelves.set(item.id,entry);
     blockers.push({minX:layout.x-1.05,maxX:layout.x+1.05,minZ:layout.z-1.65,maxZ:layout.z+1.65});
     zones.push({kind:"shelf",id:item.id,x:shelfAccessX(layout),z:layout.z,icon:item.emoji});
-    addWorldLabel("shelf",()=>new THREE.Vector3(layout.x-layout.side*.78,3.22,layout.z),()=>`${item.emoji} ${productName(item.id)} • ${money(retailPrice(state,item.id))} • ${t("shelfStock",{stock:localNumber(state.shelfStock[item.id]),cap:localNumber(shelfCapacity(state))})}`);
     refreshShelfVisual(item.id);
   }
 }
@@ -7753,7 +6921,7 @@ function refreshShelfSign(id){
   const item=productById(id);
   const brands=item.brands.map(brand=>brandName(id,brand.id)).join(" • ");
   const sign=labelledPlane(2.62,1.34,[`${item.emoji} ${productName(id)}`,brands,productUnit(id),`${t("sellingPrice",{price:localNumber(retailPrice(state,id))})}`],{background:"#173f39",accent:`#${item.color.toString(16).padStart(6,"0")}`});
-  sign.position.set(entry.layout.side<0?.57:-.57,3.02,0);sign.rotation.y=entry.layout.side<0?Math.PI/2:-Math.PI/2;entry.signHolder.add(sign);
+  sign.position.set(-entry.layout.side*1.045,3.38,0);sign.rotation.y=entry.layout.side<0?Math.PI/2:-Math.PI/2;entry.signHolder.add(sign);
 }
 
 function refreshShelfVisual(id){
@@ -7789,9 +6957,8 @@ function buildMarketArea(){
   market.position.set(-5.9,0,23.15);scene.add(market);
   blockers.push({minX:-8.25,maxX:-3.7,minZ:22.05,maxZ:24.25});
   zones.push({kind:"market",x:-3.45,z:21.55,icon:"🤝"});
-  addWorldLabel("interact",()=>new THREE.Vector3(-5.9,4.05,23.15),()=>`🤝 ${t("supplyLabel")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(-5.9,4.05,23.15),()=>`🤝 ${t("supplyLabel")}`,{maxDistance:7});
   marketVendor=createHumanoid(0x73502f,SKINS[2],false,{style:"vendor",kind:2});marketVendor.position.set(-5.9,0,21.75);marketVendor.rotation.y=0;scene.add(marketVendor);
-  addWorldLabel("interact",()=>marketVendor.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>`🧔 ${t("vendorLabel")}`);
 
   const rack=new THREE.Group();
   box(rack,[1.25,2.5,3],[0,1.25,0],0x765039);
@@ -7800,7 +6967,8 @@ function buildMarketArea(){
   rack.rotation.y=Math.PI/2;rack.position.set(-5.5,0,-10.05);scene.add(rack);
   blockers.push({minX:-7.3,maxX:-3.7,minZ:-10.75,maxZ:-9.1});
   zones.push({kind:"stockroom",x:-5.5,z:-8.35,icon:"📦"});
-  addWorldLabel("interact",()=>new THREE.Vector3(-5.5,2.9,-9.65),()=>`📦 ${t("stockroom")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(-5.5,2.9,-9.65),()=>`📦 ${t("stockroom")}`,{maxDistance:5.5});
+  buildRestockTrolley();
 
   const marker=new THREE.Group();
   const ring=new THREE.Mesh(new THREE.TorusGeometry(.72,.08,8,28),new THREE.MeshBasicMaterial({color:0xb86cef}));ring.rotation.x=Math.PI/2;ring.position.y=.06;marker.add(ring);
@@ -7918,7 +7086,6 @@ function ensureLabourerModels(){
     mesh.scale.setScalar(.94);mesh.userData.labourerIndex=index;mesh.userData.labourPathIndex=0;
     const crate=createStockCrate(PRODUCTS[(state.day+index)%PRODUCTS.length],"labour-crate");crate.scale.setScalar(.9);setHeldObject(mesh,crate,"auto");
     scene.add(mesh);labourerMeshes.push(mesh);
-    labourerLabels.push(addWorldLabel("customer",()=>mesh.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>mesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("dailyLabourer")} ${localNumber(index+1)}`));
   }
 }
 
@@ -7926,7 +7093,7 @@ function updateLabourerModels(delta){
   if(!state.delivery.unloading)return;
   for(const mesh of labourerMeshes){
     const index=mesh.userData.labourerIndex||0,offset=index?.38:-.38;
-    const route=[new THREE.Vector3(4.35+offset,0,13.2),new THREE.Vector3(4.35+offset,0,11.65),new THREE.Vector3(1.15+offset,0,11.15),new THREE.Vector3(offset,0,8.6),new THREE.Vector3(offset,0,-7.55),new THREE.Vector3(-3.18,0,-8.25+offset)];
+    const route=[new THREE.Vector3(4.35+offset,0,13.2),new THREE.Vector3(4.35+offset,0,11.65),new THREE.Vector3(1.15+offset,0,11.15),new THREE.Vector3(offset,0,8.6),new THREE.Vector3(offset,0,-7.55),new THREE.Vector3(-5.4+offset,0,-8.25)];
     const pathIndex=mesh.userData.labourPathIndex||0,target=route[pathIndex];
     if(!target){animateHumanoid(mesh,false,0);continue}
     if(pathIndex===0&&mesh.position.lengthSq()===0)mesh.position.copy(target);
@@ -7955,8 +7122,7 @@ function buildCheckout(){
   buildChair(CHECKOUT_LAYOUT.ownerSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x176b56);buildChair(CHECKOUT_LAYOUT.cashierSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x245b88);
   blockers.push({kind:"checkout",minX:CHECKOUT_LAYOUT.counterX-2.23,maxX:CHECKOUT_LAYOUT.counterX+2.3,minZ:CHECKOUT_LAYOUT.counterZ-1.08,maxZ:CHECKOUT_LAYOUT.counterZ+1.62});
   zones.push({kind:"checkout",x:CHECKOUT_LAYOUT.queueX,z:9.0,icon:"🧾"});
-  addWorldLabel("interact",()=>new THREE.Vector3(CHECKOUT_LAYOUT.counterX,2.65,CHECKOUT_LAYOUT.counterZ),()=>`🧾 ${t("checkoutLabel")}`);
-  addWorldLabel("customer",()=>new THREE.Vector3(CHECKOUT_LAYOUT.queueX,2.4,CHECKOUT_LAYOUT.queueHeadZ),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
+  addWorldLabel("interact",()=>new THREE.Vector3(CHECKOUT_LAYOUT.counterX,2.65,CHECKOUT_LAYOUT.counterZ),()=>`🧾 ${t("checkoutLabel")}`,{maxDistance:5.5});
   for(let index=0;index<12;index++){
     const marker=new THREE.Mesh(new THREE.RingGeometry(.3,.38,20),new THREE.MeshBasicMaterial({color:index?0xf0b83d:0x2cb78b,transparent:true,opacity:.55,side:THREE.DoubleSide}));
     marker.rotation.x=-Math.PI/2;marker.position.set(CHECKOUT_LAYOUT.queueX,.035,CHECKOUT_LAYOUT.queueHeadZ-index*.92);scene.add(marker);
@@ -8028,7 +7194,7 @@ function refreshCashierCharacter(){
   if(!state.staff.cashier)return;
   cashierMesh=createHumanoid(0x245b88,SKINS[3],false,{style:"cashier"});
   cashierMesh.position.set(CHECKOUT_LAYOUT.cashierSeatX,-.17,CHECKOUT_LAYOUT.seatZ);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
-  cashierLabel=addWorldLabel("interact",()=>cashierMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`👨‍💼 ${t("cashierLabel")} • ${localNumber(state.staff.cashier)}/2`);
+  cashierLabel=null;
 }
 
 function removeRestocker(){
@@ -8045,8 +7211,8 @@ function refreshRestockerCharacter(){
   removeRestocker();
   if(!state.staff.restocker)return;
   restockerMesh=createHumanoid(0xb46c35,SKINS[1],false,{style:"restocker",kind:1});
-  restockerMesh.position.set(-3.1,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
-  restockerLabel=addWorldLabel("interact",()=>restockerMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>restockerMesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("restocker")} • ${restockerJob?t("staffWorking"):t("ready")}`);
+  restockerMesh.position.set(-6.35,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
+  restockerLabel=null;
 }
 
 function updateRestocker(delta){
@@ -8073,7 +7239,7 @@ function updateRestocker(delta){
     const before=state.storeLevel,result=restockerTransfer(state,restockerJob.id);
     if(result.ok){refreshShelfVisual(restockerJob.id);if(state.storeLevel>before)toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300);save();updateHUD();updateWorldLabelText()}
     clearHeldObject(restockerMesh);
-    restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-3.1,0,-8.15);return;
+    restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-6.35,0,-8.15);return;
   }
   if(moveToward({mesh:restockerMesh},restockerJob.target,delta*2.1)){
     restockerJob=null;restockerCooldown=state.staff.restocker===2?2.2:4.2;updateWorldLabelText();
@@ -8248,12 +7414,13 @@ function addCharacterHair(model,{gender="male",variant=0,style="customer"}={}){
   if(hairVariant===1){
     add("hair-side-part",garmentGeometry("hair-side-part",()=>new THREE.BoxGeometry(.19,.055,.2)),[.075,.215,-.04],[0,0,-.24]);
   }else if(hairVariant===2){
-    add("hair-bun",garmentGeometry("hair-bun",()=>new THREE.DodecahedronGeometry(.105,1)),[0,.15,.16]);
+    add("hair-bun",garmentGeometry("hair-bun",()=>new THREE.DodecahedronGeometry(.105,1)),[0,.15,-.16]);
   }else if(hairVariant===3){
-    add("hair-ponytail",garmentGeometry("hair-ponytail",()=>new THREE.CapsuleGeometry(.065,.24,5,8)),[0,.02,.17],[.28,0,0]);
+    const braid=garmentGeometry("hair-braid-segment",()=>new THREE.DodecahedronGeometry(.062,0));
+    for(let index=0;index<5;index++)add(`hair-braid-${index}`,braid,[0,.09-index*.07,-.17-index*.012],[-.12,0,index%2?.08:-.08]);
   }else if(hairVariant===4){
     const curl=garmentGeometry("hair-curl",()=>new THREE.DodecahedronGeometry(.075,0));
-    for(const [index,position] of [[0,[-.12,.17,.03]],[1,[0,.23,.02]],[2,[.12,.17,.03]],[3,[-.08,.13,.14]],[4,[.08,.13,.14]]])add(`hair-curl-${index}`,curl,position);
+    for(const [index,position] of [[0,[-.12,.17,-.02]],[1,[0,.23,-.03]],[2,[.12,.17,-.02]],[3,[-.08,.13,-.14]],[4,[.08,.13,-.14]]])add(`hair-curl-${index}`,curl,position);
   }else if(hairVariant===5){
     add("hair-crop",garmentGeometry("hair-crop",()=>new THREE.BoxGeometry(.075,.13,.25)),[0,.24,.01],[0,0,.05]);
   }
@@ -8272,7 +7439,8 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   const shadow=fakeShadow(group,isPlayer?.56:.48);
   const model=cloneSkinnedCharacter(asset.scene);
   model.name=`rigged-${style}-${gender}`;
-  model.scale.setScalar(asset.scale);
+  const bodyWidth=gender==="male"?.9:.94;
+  model.scale.set(asset.scale*bodyWidth,asset.scale,asset.scale*.96);
   model.position.y=-asset.minY*asset.scale;
   model.traverse(child=>{
     if(child.isMesh){child.castShadow=true;child.receiveShadow=true;child.frustumCulled=false}
@@ -8288,7 +7456,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   };
   group.userData={
     rigged:true,model,mixer,actions:new Map(),currentAction:null,bones,outfit,hair,shadow,style,gender,kind,isPlayer,seated:false,
-    personId,collisionRadius:.44,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both",
+    personId,collisionRadius:.36,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both",
     walkRate:.82+(personId%6)*.065,runRate:.92+(personId%5)*.055,walkSway:.012+(personId%4)*.006,walkPhase:(personId%7)*.9
   };
   animatedCharacters.add(group);
@@ -8340,10 +7508,10 @@ function updateCharacterAnimations(delta){
   }
 }
 
-function addWorldLabel(cssClass,position,text){
+function addWorldLabel(cssClass,position,text,options={}){
   const element=document.createElement("div");element.className=`world-label ${cssClass}`;
   $("worldLabels").appendChild(element);
-  const label={element,position,text};worldLabels.push(label);return label;
+  const label={element,position,text,maxDistance:options.maxDistance??6};worldLabels.push(label);return label;
 }
 
 function updateWorldLabelText(){for(const label of worldLabels)label.element.textContent=label.text()}
@@ -8352,8 +7520,9 @@ function updateLabels(){
   if(!camera||!started)return;
   const width=innerWidth,height=innerHeight;
   for(const label of worldLabels){
-    const point=label.position().clone();point.project(camera);
-    const visible=Boolean(label.element.textContent.trim())&&point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
+    const worldPoint=label.position(),distance=player?Math.hypot(worldPoint.x-player.position.x,worldPoint.z-player.position.z):Infinity;
+    const point=worldPoint.clone();point.project(camera);
+    const visible=distance<=label.maxDistance&&Boolean(label.element.textContent.trim())&&point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
     label.element.style.opacity=visible?"1":"0";
     if(visible){label.element.style.left=`${(point.x*.5+.5)*width}px`;label.element.style.top=`${(-point.y*.5+.5)*height}px`}
   }
@@ -8378,17 +7547,8 @@ function makeCustomer(){
   const customer={mesh,order,carrier,hasProduct:false,trolley:null,payload:null,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.85,2.3),timer:0,waited:0,blockedTime:0,label:null};
   mesh.userData.customer=customer;
   setupCustomerCarrier(customer);
-  customer.label=addWorldLabel("customer",()=>customer.mesh.position.clone().add(new THREE.Vector3(0,2.75,0)),()=>customerLabelText(customer));
   customers.push(customer);
   return true;
-}
-
-function customerLabelText(customer){
-  if(customer.mesh.userData.giveWayUntil>worldTime&&!['queue','scanning'].includes(customer.phase))return `🙏 ${t("pleaseGiveWay")}`;
-  if(!customer.hasProduct)return "";
-  if(customer.phase==="queue")return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})} • ${t("queueWait",{seconds:localNumber(Math.floor(customer.waited))})}`;
-  if(customer.phase==="scanning")return `🧾 ${t("scanning")}`;
-  return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})}`;
 }
 
 function setCustomerPath(customer,points,phase){customer.path=points;customer.pathIndex=0;customer.phase=phase}
@@ -8406,7 +7566,6 @@ function updateCustomer(customer,delta){
     const target=new THREE.Vector3(CHECKOUT_LAYOUT.queueX,0,CHECKOUT_LAYOUT.queueHeadZ-index*.92);
     moveToward(customer,target,delta*1.8,{ignoreQueue:true,suppressGiveWay:true});
     customer.waited+=delta;
-    customer.label.element.textContent=customerLabelText(customer);
   }
 }
 
@@ -8501,14 +7660,12 @@ function moveToward(customer,target,distance,options={}){
     if(blocker&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
       data.giveWayUntil=worldTime+1.5;
       if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
-      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
     }
   }else{
     data.blockedTime=(data.blockedTime||0)+distance/Math.max(.4,customer.speed||1.8);animateHumanoid(customer.mesh,false,0);
     if(blocker&&data.blockedTime>.22&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
       data.giveWayUntil=worldTime+1.5;
       if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
-      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
     }
   }
   return moved&&!data.avoidance&&length<=distance+.08;
@@ -8563,17 +7720,52 @@ function createShoppingBasket(){
 function createShoppingTrolley(){
   const trolley=new THREE.Group();trolley.name="shopping-trolley";
   const metal=standard(0x9aa7aa,.38),red=standard(0xc63e34,.58);
-  box(trolley,[.92,.08,1.12],[0,.64,.12],0,metal);
-  for(const x of [-.43,.43])for(const z of [-.4,.57])box(trolley,[.055,.72,.055],[x,.72,z],0,metal);
-  for(const y of [.68,.9,1.12])for(const x of [-.44,.44])box(trolley,[.05,.05,1.05],[x,y,.08],0,metal);
-  for(const z of [-.4,.1,.57])box(trolley,[.92,.05,.05],[0,.88,z],0,metal);
-  box(trolley,[1.06,.09,.08],[0,1.36,-.52],0,red);
+  box(trolley,[.92,.08,1.12],[0,.47,.12],0,metal);
+  for(const x of [-.43,.43])for(const z of [-.4,.57])box(trolley,[.055,.64,.055],[x,.65,z],0,metal);
+  for(const y of [.51,.72,.93])for(const x of [-.44,.44])box(trolley,[.05,.05,1.05],[x,y,.08],0,metal);
+  for(const z of [-.4,.1,.57])box(trolley,[.92,.05,.05],[0,.72,z],0,metal);
+  box(trolley,[1.06,.09,.08],[0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z],0,red);
   for(const x of [-.4,.4])for(const z of [-.38,.5]){
     const wheel=cylinder(trolley,.105,.075,[x,.15,z],0x1f2425,14);wheel.rotation.z=Math.PI/2;
   }
-  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.set(0,.86,.08);trolley.add(payload);
+  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.set(0,.72,.08);trolley.add(payload);
   fakeShadow(trolley,.68);
   return {carrier:trolley,payload};
+}
+
+function createRestockTrolley(){
+  const trolley=new THREE.Group();trolley.name="restock-trolley";
+  const metal=standard(0x7e8c90,.34),green=standard(0x176b56,.5),wood=standard(0xa46a3d,.72);
+  box(trolley,[1.02,.12,1.28],[0,.42,.08],0,wood);
+  for(const x of [-.46,.46])for(const z of [-.48,.62])box(trolley,[.065,.72,.065],[x,.68,z],0,metal);
+  for(const x of [-.46,.46])box(trolley,[.06,.06,1.12],[x,.84,.07],0,metal);
+  box(trolley,[1.14,.1,.09],[0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z],0,green);
+  for(const x of [-.42,.42])for(const z of [-.42,.54]){
+    const wheel=cylinder(trolley,.12,.08,[x,.14,z],0x1f2425,14);wheel.rotation.z=Math.PI/2;
+  }
+  const payload=new THREE.Group();payload.name="restock-trolley-payload";payload.position.set(0,.76,.08);trolley.add(payload);
+  const board=labelledPlane(.78,.28,["STOCK"],{background:"#176b56",accent:"#f5bd3c"});board.position.set(0,.72,.72);trolley.add(board);
+  fakeShadow(trolley,.72);return {carrier:trolley,payload};
+}
+
+function buildRestockTrolley(){
+  const made=createRestockTrolley();restockTrolley=made.carrier;restockTrolleyPayload=made.payload;
+  restockTrolley.position.set(RESTOCK_TROLLEY_HOME.x,0,RESTOCK_TROLLEY_HOME.z);restockTrolley.rotation.y=RESTOCK_TROLLEY_HOME.yaw;scene.add(restockTrolley);
+}
+
+function syncRestockTrolley(){
+  if(!restockTrolley||!player)return;
+  restockTrolley.visible=!player.userData.seated;
+  if(!carrying){
+    restockTrolley.position.set(RESTOCK_TROLLEY_HOME.x,0,RESTOCK_TROLLEY_HOME.z);restockTrolley.rotation.y=RESTOCK_TROLLEY_HOME.yaw;return;
+  }
+  const yaw=player.rotation.y,bones=player.userData.bones;player.updateMatrixWorld(true);
+  const left=bones?.leftHand?.getWorldPosition(new THREE.Vector3()),right=bones?.rightHand?.getWorldPosition(new THREE.Vector3());
+  if(left&&right){
+    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    restockTrolley.position.set(hands.x-handleOffset.x,0,hands.z-handleOffset.z);
+  }else restockTrolley.position.set(player.position.x+Math.sin(yaw)*.9,0,player.position.z+Math.cos(yaw)*.9);
+  restockTrolley.rotation.y=yaw;
 }
 
 function setupCustomerCarrier(customer){
@@ -8591,7 +7783,7 @@ function syncCustomerTrolley(customer){
   customer.mesh.updateMatrixWorld(true);
   const left=bones?.leftHand?.getWorldPosition(new THREE.Vector3()),right=bones?.rightHand?.getWorldPosition(new THREE.Vector3());
   if(left&&right){
-    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,1.36,-.52).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
     customer.trolley.position.set(hands.x-handleOffset.x,0,hands.z-handleOffset.z);
   }else customer.trolley.position.set(customer.mesh.position.x+Math.sin(yaw)*.9,0,customer.mesh.position.z+Math.cos(yaw)*.9);
   customer.trolley.rotation.y=yaw;
@@ -8641,8 +7833,7 @@ function clearTrash(){
 function removeCustomer(customer){
   const queueIndex=checkoutQueue.indexOf(customer);if(queueIndex>=0)checkoutQueue.splice(queueIndex,1);
   const index=customers.indexOf(customer);if(index>=0)customers.splice(index,1);
-  const labelIndex=worldLabels.indexOf(customer.label);if(labelIndex>=0)worldLabels.splice(labelIndex,1);
-  customer.label.element.remove();
+  if(customer.label){const labelIndex=worldLabels.indexOf(customer.label);if(labelIndex>=0)worldLabels.splice(labelIndex,1);customer.label.element.remove()}
   if(customer.trolley)scene.remove(customer.trolley);
   unregisterCharacter(customer.mesh);scene.remove(customer.mesh);
 }
@@ -8711,7 +7902,10 @@ function startScanning(auto=false){
       ownerCheckoutSession={returnPosition:player.position.clone(),returnRotation:player.rotation.y,seatFrom:player.position.clone(),seatElapsed:0,seatDuration:.72};
     }
   }
-  $("scanText").textContent=auto?t("autoScanning"):t("scanning");
+  $("scanText").textContent=t("scanDetails",{
+    quantity:localNumber(customer.order.quantity),item:productName(customer.order.product),
+    brand:brandName(customer.order.product,customer.order.brand),price:localNumber(customer.order.price)
+  });
   $("scanFill").style.width="0%";$("scanBox").classList.remove("hidden");
   tone("up");updateHUD();updateWorldLabelText();
 }
@@ -8731,7 +7925,7 @@ function updateScan(delta){
     const ratio=Math.min(1,ownerCheckoutSession.seatElapsed/ownerCheckoutSession.seatDuration),smooth=ratio*ratio*(3-2*ratio);
     player.position.lerpVectors(ownerCheckoutSession.seatFrom,new THREE.Vector3(CHECKOUT_LAYOUT.ownerSeatX,-.17,CHECKOUT_LAYOUT.seatZ),smooth);
     player.rotation.y=THREE.MathUtils.lerp(ownerCheckoutSession.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
-    if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=false}
+    if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate()}
     return;
   }
   if(!scan.auto)animateCheckoutHands(player);
@@ -8761,7 +7955,7 @@ function leaveOwnerSeat(session=ownerCheckoutSession){
   if(session.returnPosition)player.position.copy(session.returnPosition);
   if(Number.isFinite(session.returnRotation))player.rotation.y=session.returnRotation;
   ownerCheckoutSession=null;ownerCheckoutDelay=0;
-  updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=true;
+  updateCarriedCrate();
   updateInteractions();
 }
 
@@ -8869,13 +8063,16 @@ function updateCamera(delta){
 }
 
 function updateCarriedCrate(){
-  if(!player)return;
-  const old=player.getObjectByName("carried-crate");
-  if(!carrying){if(old)clearHeldObject(player);return}
-  if(old&&old.userData.id===carrying.id)return;
-  if(old)clearHeldObject(player);
-  const item=productById(carrying.id),crate=createStockCrate(item,"carried-crate");
-  setHeldObject(player,crate,"auto");
+  if(!player||!restockTrolleyPayload)return;
+  const held=player.getObjectByName("carried-crate");if(held)clearHeldObject(player);
+  player.userData.usingTrolley=Boolean(carrying)&&!player.userData.seated;
+  const current=restockTrolleyPayload.getObjectByName("restock-trolley-crate");
+  if(!carrying){if(current)restockTrolleyPayload.remove(current);syncRestockTrolley();return}
+  if(!current||current.userData.id!==carrying.id){
+    while(restockTrolleyPayload.children.length)restockTrolleyPayload.remove(restockTrolleyPayload.children[0]);
+    const crate=createStockCrate(productById(carrying.id),"restock-trolley-crate");crate.scale.setScalar(.78);crate.position.set(0,0,0);restockTrolleyPayload.add(crate);
+  }
+  syncRestockTrolley();
 }
 
 function updateInteractions(){
@@ -9127,16 +8324,8 @@ function renderUpgrades(){
 
 function renderSettings(){
   const languageButtons=`<div class="choice-grid"><button data-lang="ur" class="${state.lang==="ur"?"active":""}">اردو</button><button data-lang="hi" class="${state.lang==="hi"?"active":""}">हिन्दी</button><button data-lang="en" class="${state.lang==="en"?"active":""}">English</button></div>`;
-  const difficulties=["easy","normal","hard"].map(level=>`<button data-difficulty="${level}" class="${state.difficulty===level?"active":""}">${t(level)}</button>`).join("");
-  const soundButtons=`<div class="choice-grid wide-choice"><button data-sound="on" class="${state.sound?"active":""}">${t("on")}</button><button data-sound="off" class="${!state.sound?"active":""}">${t("off")}</button></div>`;
-  panelFrame("⚙️",t("settings"),`<section class="settings-section"><h3>${t("language")}</h3>${languageButtons}</section><section class="settings-section"><h3>${t("difficulty")}</h3><div class="choice-grid">${difficulties}</div></section><section class="settings-section"><h3>${t("sound")}</h3>${soundButtons}</section><button id="resetBtn" class="danger">${t("reset")}</button>`);
+  panelFrame("🌐",t("language"),`<section class="settings-section"><h3>${t("language")}</h3>${languageButtons}</section>`);
   $("panelBody").querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>{state.lang=button.dataset.lang;save();applyLanguage()}));
-  $("panelBody").querySelectorAll("[data-difficulty]").forEach(button=>button.addEventListener("click",()=>{state.difficulty=button.dataset.difficulty;save();updateHUD();renderSettings()}));
-  $("panelBody").querySelectorAll("[data-sound]").forEach(button=>button.addEventListener("click",()=>{state.sound=button.dataset.sound==="on";save();renderSettings();if(state.sound)tone("up")}));
-  $("resetBtn").addEventListener("click",()=>{
-    if(!confirm(t("resetConfirm")))return;
-    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();clearLabourerModels();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCounterCash();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
-  });
 }
 
 function isPaused(includeStart=true){return (includeStart&&!started)||currentPanel!==null||!$("dayModal").classList.contains("hidden")}
@@ -9151,6 +8340,7 @@ function startGame(){
 function setupControls(){
   $("startBtn").addEventListener("click",startGame);
   document.querySelectorAll("[data-start-lang]").forEach(button=>button.addEventListener("click",()=>{state.lang=button.dataset.startLang;save();applyLanguage()}));
+  document.querySelectorAll("[data-start-difficulty]").forEach(button=>button.addEventListener("click",()=>{state.difficulty=button.dataset.startDifficulty;save();applyLanguage()}));
   $("settingsBtn").addEventListener("click",()=>openPanel("settings"));
   $("marketBtn").addEventListener("click",()=>{
     const distance=Math.hypot(player.position.x+3.45,player.position.z-21.55);
@@ -9225,7 +8415,7 @@ function setupControls(){
   addEventListener("pagehide",save);
 }
 
-function onResize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35))}
+function onResize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25))}
 
 function animate(time){
   requestAnimationFrame(animate);
@@ -9236,11 +8426,12 @@ function animate(time){
     updateDeliveryTruck(delta);updatePlayer(delta);updateSpawning(delta);
     for(const customer of [...customers])updateCustomer(customer,delta);
     updateAutomaticCheckout(delta);updateScan(delta);updateOwnerCheckout(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
-    resolvePeopleOverlaps();for(const customer of customers)syncCustomerTrolley(customer);
+    resolvePeopleOverlaps();
     labelRefreshClock+=delta;if(labelRefreshClock>=.3){labelRefreshClock=0;updateWorldLabelText()}
     autosaveClock+=delta;if(autosaveClock>=5){autosaveClock=0;save()}
   }
   updateCharacterAnimations(delta);
+  syncRestockTrolley();for(const customer of customers)syncCustomerTrolley(customer);
   updateCamera(delta);updateLabels();renderer.render(scene,camera);
 }
 

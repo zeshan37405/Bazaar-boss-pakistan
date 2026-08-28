@@ -13,13 +13,15 @@ const LEGACY_KEY="bazaarBossPakistanV1";
 const $=id=>document.getElementById(id);
 const clamp=THREE.MathUtils.clamp;
 const rand=(min,max)=>min+Math.random()*(max-min);
-const STORE_BOUNDS={minX:-15.25,maxX:15.25,minZ:-10.45,maxZ:25.8};
-const CHECKOUT_LAYOUT={counterX:7.8,counterZ:9.2,queueX:4.95,queueHeadZ:7.55,scanX:6.15,scanZ:7.78,ownerSeatX:7.03,cashierSeatX:8.53,seatZ:10.29};
+const STORE_BOUNDS={minX:-20.25,maxX:20.25,minZ:-10.45,maxZ:25.8};
+const CHECKOUT_LAYOUT={counterX:12.7,counterZ:9.2,queueX:9.85,queueHeadZ:7.55,scanX:11.05,scanZ:7.78,ownerSeatX:11.93,cashierSeatX:13.43,seatZ:10.29};
+const RESTOCK_TROLLEY_HOME={x:-3.2,z:-8.25,yaw:0};
+const TROLLEY_HANDLE={y:1.06,z:-.52};
 const PRODUCT_SHELVES={
-  flour:{x:-12.6,z:-7.6,side:-1},rice:{x:-12.6,z:-3.8,side:-1},sugar:{x:-12.6,z:0,side:-1},pulses:{x:-12.6,z:3.8,side:-1},salt:{x:-12.6,z:7.6,side:-1},
-  ghee:{x:12.6,z:-7.6,side:1},oil:{x:12.6,z:-3.8,side:1},milk:{x:12.6,z:0,side:1},biscuit:{x:12.6,z:3.8,side:1},toffee:{x:12.6,z:7.6,side:1},
-  detergent:{x:-3.8,z:-5.4,side:-1},soap:{x:-3.8,z:-1.4,side:-1},shampoo:{x:-3.8,z:2.6,side:-1},
-  spices:{x:3.8,z:-5.4,side:1},dishwash:{x:3.8,z:-1.4,side:1}
+  flour:{x:-17.4,z:-7.6,side:-1},rice:{x:-17.4,z:-3.8,side:-1},sugar:{x:-17.4,z:0,side:-1},pulses:{x:-17.4,z:3.8,side:-1},salt:{x:-17.4,z:7.6,side:-1},
+  ghee:{x:17.4,z:-7.6,side:1},oil:{x:17.4,z:-3.8,side:1},milk:{x:17.4,z:0,side:1},biscuit:{x:17.4,z:3.8,side:1},toffee:{x:17.4,z:7.6,side:1},
+  detergent:{x:-6.1,z:-5.4,side:-1},soap:{x:-6.1,z:-1.4,side:-1},shampoo:{x:-6.1,z:2.6,side:-1},
+  spices:{x:6.1,z:-5.4,side:1},dishwash:{x:6.1,z:-1.4,side:1}
 };
 const EVENT_TEXT={
   normal:["eventNormal","eventNormalD"],wedding:["eventWedding","eventWeddingD"],
@@ -41,7 +43,7 @@ const CHARACTER_ACTIONS={
 
 let state=loadState();
 let carrying=state.carrying?copy(state.carrying):null;
-let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,counterCashGroup,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea;
+let scene,camera,renderer,player,playerShadow,marketMarker,marketVendor,cashierMesh,cashierLabel,restockerMesh,restockerLabel,checkoutSign,counterCashGroup,mandiSignHolder,deliveryTruck,truckCargoGroup,truckDriver,serviceArea,restockTrolley,restockTrolleyPayload;
 let started=false,currentPanel=null,currentZone=null,dayPopupTimer=null;
 let cameraYaw=0,cameraPitch=.38,walkTime=0,spawnClock=1.8,worldTime=0;
 let scan=null,ownerCheckoutSession=null,ownerCheckoutDelay=0,audioContext=null,cashierCooldown=.8,truckArrivalHold=0,restockerCooldown=2.5,restockerJob=null,autosaveClock=0,labelRefreshClock=0,nextPersonId=1,giveWayToastAt=0;
@@ -68,11 +70,11 @@ function loadGltf(loader,path){
   return new Promise((resolve,reject)=>loader.load(path,resolve,undefined,reject));
 }
 
-function prepareCharacterAsset(gltf){
+function prepareCharacterAsset(gltf,targetHeight=1.74){
   gltf.scene.updateMatrixWorld(true);
   const bounds=new THREE.Box3().setFromObject(gltf.scene);
   const height=Math.max(.01,bounds.max.y-bounds.min.y);
-  return {scene:gltf.scene,scale:2.68/height,minY:bounds.min.y};
+  return {scene:gltf.scene,scale:targetHeight/height,minY:bounds.min.y,targetHeight};
 }
 
 async function loadCharacterAssets(){
@@ -80,8 +82,8 @@ async function loadCharacterAssets(){
   const [male,female,animationLibrary]=await Promise.all([
     loadGltf(loader,CHARACTER_FILES.male),loadGltf(loader,CHARACTER_FILES.female),loadGltf(loader,CHARACTER_FILES.animations)
   ]);
-  characterAssets.male=prepareCharacterAsset(male);
-  characterAssets.female=prepareCharacterAsset(female);
+  characterAssets.male=prepareCharacterAsset(male,1.78);
+  characterAssets.female=prepareCharacterAsset(female,1.68);
   characterAssets.clips=new Map(animationLibrary.animations.map(clip=>[clip.name,clip]));
   for(const name of Object.values(CHARACTER_ACTIONS)){
     if(!characterAssets.clips.has(name))throw new Error(`Missing character animation: ${name}`);
@@ -134,6 +136,7 @@ function applyLanguage(){
   document.querySelectorAll("[data-t]").forEach(element=>{element.textContent=t(element.dataset.t)});
   document.querySelectorAll("[data-ta]").forEach(element=>{element.setAttribute("aria-label",t(element.dataset.ta));element.title=t(element.dataset.ta)});
   document.querySelectorAll("[data-start-lang]").forEach(button=>button.classList.toggle("active",button.dataset.startLang===state.lang));
+  document.querySelectorAll("[data-start-difficulty]").forEach(button=>button.classList.toggle("active",button.dataset.startDifficulty===state.difficulty));
   $("startBtn").textContent=state.seen3DIntro?t("continue"):t("start");
   updateHUD();
   refreshAllShelfVisuals();
@@ -233,10 +236,10 @@ function labelledPlane(width,height,lines,options={}){
 function buildWorld(){
   scene=new THREE.Scene();
   scene.background=new THREE.Color(0x78c6df);
-  scene.fog=new THREE.Fog(0x9fd3df,34,76);
+  scene.fog=new THREE.Fog(0x9fd3df,42,84);
   camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,150);
   renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));
   renderer.setSize(innerWidth,innerHeight);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -248,12 +251,12 @@ function buildWorld(){
 
   scene.add(new THREE.HemisphereLight(0xeafaff,0x8d724d,2.25));
   const sun=new THREE.DirectionalLight(0xfff4d2,2.15);sun.position.set(-8,16,12);sun.castShadow=true;
-  sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
+  sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-23;sun.shadow.camera.right=23;sun.shadow.camera.top=28;sun.shadow.camera.bottom=-18;scene.add(sun);
   const fill=new THREE.DirectionalLight(0xaad5ff,.75);fill.position.set(10,7,-8);scene.add(fill);
 
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[8,6],roughness:.82}));
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(42,23),texturedMaterial("textures/floor-terrazzo.webp",{repeat:[11,6],roughness:.82}));
   floor.rotation.x=-Math.PI/2;floor.position.z=-.1;floor.receiveShadow=true;scene.add(floor);
-  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(22,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
+  const aisle=new THREE.Mesh(new THREE.PlaneGeometry(32,18),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.13,roughness:.7}));
   aisle.rotation.x=-Math.PI/2;aisle.position.set(0,.018,-.4);scene.add(aisle);
   addFloorTiles();
   buildWalls();
@@ -266,8 +269,8 @@ function buildWorld(){
   player=createHumanoid(0x247d68,0xd39a73,true,{style:"owner"});
   player.position.set(0,0,8.5);scene.add(player);
   playerShadow=player.userData.shadow;
-  addWorldLabel("interact",()=>new THREE.Vector3(0,3.6,-10.55),()=>t("storeName"));
-  addWorldLabel("interact",()=>new THREE.Vector3(0,2.8,10.8),()=>t("entranceLabel"));
+  addWorldLabel("interact",()=>new THREE.Vector3(0,3.6,-10.55),()=>t("storeName"),{maxDistance:8});
+  addWorldLabel("interact",()=>new THREE.Vector3(0,2.8,10.8),()=>t("entranceLabel"),{maxDistance:6});
   refreshCashierCharacter();
   refreshRestockerCharacter();
   refreshServiceBusinesses();
@@ -278,10 +281,10 @@ function buildWorld(){
 function addFloorTiles(){
   const lineMaterial=new THREE.LineBasicMaterial({color:0xd1ae78,transparent:true,opacity:.35});
   for(let z=-10;z<=10;z+=2){
-    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-14.5,.025,z),new THREE.Vector3(14.5,.025,z)]);
+    const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-19.5,.025,z),new THREE.Vector3(19.5,.025,z)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
-  for(let x=-15;x<=15;x+=2){
+  for(let x=-20;x<=20;x+=2){
     const geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,.026,-11),new THREE.Vector3(x,.026,11)]);
     scene.add(new THREE.Line(geometry,lineMaterial));
   }
@@ -289,17 +292,17 @@ function addFloorTiles(){
 
 function buildWalls(){
   const wallMat=texturedMaterial("textures/wall-plaster.webp",{repeat:[5,2],roughness:.92});
-  box(scene,[32,3.8,.3],[0,1.9,-11],0,wallMat);
-  box(scene,[.3,3.8,22],[-15.85,1.9,0],0,wallMat);
-  box(scene,[.3,3.8,22],[15.85,1.9,0],0,wallMat);
-  box(scene,[13,3.8,.22],[-9.5,1.9,11],0,wallMat);
-  box(scene,[13,3.8,.22],[9.5,1.9,11],0,wallMat);
-  box(scene,[32,.3,.3],[0,3.75,-11],0x176b56);
-  box(scene,[.35,.28,22],[-15.78,3.72,0],0xd44a3d);
-  box(scene,[.35,.28,22],[15.78,3.72,0],0xd44a3d);
+  box(scene,[42,3.8,.3],[0,1.9,-11],0,wallMat);
+  box(scene,[.3,3.8,22],[-20.85,1.9,0],0,wallMat);
+  box(scene,[.3,3.8,22],[20.85,1.9,0],0,wallMat);
+  box(scene,[18,3.8,.22],[-12,1.9,11],0,wallMat);
+  box(scene,[18,3.8,.22],[12,1.9,11],0,wallMat);
+  box(scene,[42,.3,.3],[0,3.75,-11],0x176b56);
+  box(scene,[.35,.28,22],[-20.78,3.72,0],0xd44a3d);
+  box(scene,[.35,.28,22],[20.78,3.72,0],0xd44a3d);
   for(let z=-9;z<11;z+=4){
-    box(scene,[.12,2.9,.12],[-15.62,1.48,z],0x176b56);
-    box(scene,[.12,2.9,.12],[15.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[-20.62,1.48,z],0x176b56);
+    box(scene,[.12,2.9,.12],[20.62,1.48,z],0x176b56);
   }
   const signCanvas=document.createElement("canvas");signCanvas.width=512;signCanvas.height=150;
   const context=signCanvas.getContext("2d");
@@ -313,14 +316,14 @@ function buildWalls(){
 }
 
 function buildOutside(){
-  const road=new THREE.Mesh(new THREE.PlaneGeometry(34,17),texturedMaterial("textures/road-asphalt.webp",{repeat:[8,4],roughness:.96}));
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(44,17),texturedMaterial("textures/road-asphalt.webp",{repeat:[11,4],roughness:.96}));
   road.rotation.x=-Math.PI/2;road.position.set(0,-.02,19.4);scene.add(road);
-  const curb=box(scene,[26,.18,1],[0,.08,12.25],0xd9c095);
-  for(let x=-14;x<=14;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
+  const curb=box(scene,[36,.18,1],[0,.08,12.25],0xd9c095);
+  for(let x=-20;x<=20;x+=4)box(scene,[1.9,.035,.12],[x,.02,17],0xf4d354,basic(0xf4d354));
   const buildingColors=[0xef8466,0x5aa9b6,0xf0bd58,0x8b75ad,0x68a76f];
-  for(let i=0;i<8;i++){
+  for(let i=0;i<10;i++){
     const group=new THREE.Group();
-    const x=-17.5+i*5;
+    const x=-22.5+i*5;
     const height=rand(4,7);
     box(group,[4.3,height,3],[0,height/2,0],buildingColors[i%buildingColors.length]);
     box(group,[4.5,.32,3.2],[0,height+.14,0],0xf3e5c2);
@@ -380,7 +383,13 @@ function buildShelves(){
   const wood=texturedMaterial("textures/shelf-wood.webp",{repeat:[2,1],roughness:.66,color:0xd9b18c});
   for(const item of PRODUCTS){
     const layout=PRODUCT_SHELVES[item.id];
-    const group=new THREE.Group();
+    const group=new THREE.Group();group.name=`category-gallery-${item.id}`;
+    const galleryColor=new THREE.Color(item.color);
+    const galleryMat=new THREE.Mesh(new THREE.PlaneGeometry(2.75,3.35),new THREE.MeshBasicMaterial({color:galleryColor,transparent:true,opacity:.14,depthWrite:false}));
+    galleryMat.name=`category-floor-${item.id}`;galleryMat.rotation.x=-Math.PI/2;galleryMat.position.set(-layout.side*.82,.029,0);group.add(galleryMat);
+    const entranceX=-layout.side*1.04;
+    for(const z of [-1.48,1.48])box(group,[.09,2.95,.09],[entranceX,1.48,z],item.color);
+    box(group,[.12,.18,3.05],[entranceX,2.93,0],item.color);
     const backX=layout.side*.43;
     box(group,[.16,2.45,2.75],[backX,1.25,0],0,wood);
     for(const y of [.35,1.12,1.88])box(group,[.92,.12,2.86],[0,y,0],0,wood);
@@ -391,7 +400,6 @@ function buildShelves(){
     group.add(entry.holders,entry.signHolder);shelves.set(item.id,entry);
     blockers.push({minX:layout.x-1.05,maxX:layout.x+1.05,minZ:layout.z-1.65,maxZ:layout.z+1.65});
     zones.push({kind:"shelf",id:item.id,x:shelfAccessX(layout),z:layout.z,icon:item.emoji});
-    addWorldLabel("shelf",()=>new THREE.Vector3(layout.x-layout.side*.78,3.22,layout.z),()=>`${item.emoji} ${productName(item.id)} • ${money(retailPrice(state,item.id))} • ${t("shelfStock",{stock:localNumber(state.shelfStock[item.id]),cap:localNumber(shelfCapacity(state))})}`);
     refreshShelfVisual(item.id);
   }
 }
@@ -463,7 +471,7 @@ function refreshShelfSign(id){
   const item=productById(id);
   const brands=item.brands.map(brand=>brandName(id,brand.id)).join(" • ");
   const sign=labelledPlane(2.62,1.34,[`${item.emoji} ${productName(id)}`,brands,productUnit(id),`${t("sellingPrice",{price:localNumber(retailPrice(state,id))})}`],{background:"#173f39",accent:`#${item.color.toString(16).padStart(6,"0")}`});
-  sign.position.set(entry.layout.side<0?.57:-.57,3.02,0);sign.rotation.y=entry.layout.side<0?Math.PI/2:-Math.PI/2;entry.signHolder.add(sign);
+  sign.position.set(-entry.layout.side*1.045,3.38,0);sign.rotation.y=entry.layout.side<0?Math.PI/2:-Math.PI/2;entry.signHolder.add(sign);
 }
 
 function refreshShelfVisual(id){
@@ -499,9 +507,8 @@ function buildMarketArea(){
   market.position.set(-5.9,0,23.15);scene.add(market);
   blockers.push({minX:-8.25,maxX:-3.7,minZ:22.05,maxZ:24.25});
   zones.push({kind:"market",x:-3.45,z:21.55,icon:"🤝"});
-  addWorldLabel("interact",()=>new THREE.Vector3(-5.9,4.05,23.15),()=>`🤝 ${t("supplyLabel")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(-5.9,4.05,23.15),()=>`🤝 ${t("supplyLabel")}`,{maxDistance:7});
   marketVendor=createHumanoid(0x73502f,SKINS[2],false,{style:"vendor",kind:2});marketVendor.position.set(-5.9,0,21.75);marketVendor.rotation.y=0;scene.add(marketVendor);
-  addWorldLabel("interact",()=>marketVendor.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>`🧔 ${t("vendorLabel")}`);
 
   const rack=new THREE.Group();
   box(rack,[1.25,2.5,3],[0,1.25,0],0x765039);
@@ -510,7 +517,8 @@ function buildMarketArea(){
   rack.rotation.y=Math.PI/2;rack.position.set(-5.5,0,-10.05);scene.add(rack);
   blockers.push({minX:-7.3,maxX:-3.7,minZ:-10.75,maxZ:-9.1});
   zones.push({kind:"stockroom",x:-5.5,z:-8.35,icon:"📦"});
-  addWorldLabel("interact",()=>new THREE.Vector3(-5.5,2.9,-9.65),()=>`📦 ${t("stockroom")}`);
+  addWorldLabel("interact",()=>new THREE.Vector3(-5.5,2.9,-9.65),()=>`📦 ${t("stockroom")}`,{maxDistance:5.5});
+  buildRestockTrolley();
 
   const marker=new THREE.Group();
   const ring=new THREE.Mesh(new THREE.TorusGeometry(.72,.08,8,28),new THREE.MeshBasicMaterial({color:0xb86cef}));ring.rotation.x=Math.PI/2;ring.position.y=.06;marker.add(ring);
@@ -628,7 +636,6 @@ function ensureLabourerModels(){
     mesh.scale.setScalar(.94);mesh.userData.labourerIndex=index;mesh.userData.labourPathIndex=0;
     const crate=createStockCrate(PRODUCTS[(state.day+index)%PRODUCTS.length],"labour-crate");crate.scale.setScalar(.9);setHeldObject(mesh,crate,"auto");
     scene.add(mesh);labourerMeshes.push(mesh);
-    labourerLabels.push(addWorldLabel("customer",()=>mesh.position.clone().add(new THREE.Vector3(0,2.9,0)),()=>mesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("dailyLabourer")} ${localNumber(index+1)}`));
   }
 }
 
@@ -636,7 +643,7 @@ function updateLabourerModels(delta){
   if(!state.delivery.unloading)return;
   for(const mesh of labourerMeshes){
     const index=mesh.userData.labourerIndex||0,offset=index?.38:-.38;
-    const route=[new THREE.Vector3(4.35+offset,0,13.2),new THREE.Vector3(4.35+offset,0,11.65),new THREE.Vector3(1.15+offset,0,11.15),new THREE.Vector3(offset,0,8.6),new THREE.Vector3(offset,0,-7.55),new THREE.Vector3(-3.18,0,-8.25+offset)];
+    const route=[new THREE.Vector3(4.35+offset,0,13.2),new THREE.Vector3(4.35+offset,0,11.65),new THREE.Vector3(1.15+offset,0,11.15),new THREE.Vector3(offset,0,8.6),new THREE.Vector3(offset,0,-7.55),new THREE.Vector3(-5.4+offset,0,-8.25)];
     const pathIndex=mesh.userData.labourPathIndex||0,target=route[pathIndex];
     if(!target){animateHumanoid(mesh,false,0);continue}
     if(pathIndex===0&&mesh.position.lengthSq()===0)mesh.position.copy(target);
@@ -665,8 +672,7 @@ function buildCheckout(){
   buildChair(CHECKOUT_LAYOUT.ownerSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x176b56);buildChair(CHECKOUT_LAYOUT.cashierSeatX,CHECKOUT_LAYOUT.seatZ+.06,0x245b88);
   blockers.push({kind:"checkout",minX:CHECKOUT_LAYOUT.counterX-2.23,maxX:CHECKOUT_LAYOUT.counterX+2.3,minZ:CHECKOUT_LAYOUT.counterZ-1.08,maxZ:CHECKOUT_LAYOUT.counterZ+1.62});
   zones.push({kind:"checkout",x:CHECKOUT_LAYOUT.queueX,z:9.0,icon:"🧾"});
-  addWorldLabel("interact",()=>new THREE.Vector3(CHECKOUT_LAYOUT.counterX,2.65,CHECKOUT_LAYOUT.counterZ),()=>`🧾 ${t("checkoutLabel")}`);
-  addWorldLabel("customer",()=>new THREE.Vector3(CHECKOUT_LAYOUT.queueX,2.4,CHECKOUT_LAYOUT.queueHeadZ),()=>checkoutQueue.length?`${t("queueLabel")}: ${localNumber(checkoutQueue.length)}`:t("queueLabel"));
+  addWorldLabel("interact",()=>new THREE.Vector3(CHECKOUT_LAYOUT.counterX,2.65,CHECKOUT_LAYOUT.counterZ),()=>`🧾 ${t("checkoutLabel")}`,{maxDistance:5.5});
   for(let index=0;index<12;index++){
     const marker=new THREE.Mesh(new THREE.RingGeometry(.3,.38,20),new THREE.MeshBasicMaterial({color:index?0xf0b83d:0x2cb78b,transparent:true,opacity:.55,side:THREE.DoubleSide}));
     marker.rotation.x=-Math.PI/2;marker.position.set(CHECKOUT_LAYOUT.queueX,.035,CHECKOUT_LAYOUT.queueHeadZ-index*.92);scene.add(marker);
@@ -738,7 +744,7 @@ function refreshCashierCharacter(){
   if(!state.staff.cashier)return;
   cashierMesh=createHumanoid(0x245b88,SKINS[3],false,{style:"cashier"});
   cashierMesh.position.set(CHECKOUT_LAYOUT.cashierSeatX,-.17,CHECKOUT_LAYOUT.seatZ);cashierMesh.rotation.y=Math.PI;setSeatedPose(cashierMesh,true);scene.add(cashierMesh);
-  cashierLabel=addWorldLabel("interact",()=>cashierMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>`👨‍💼 ${t("cashierLabel")} • ${localNumber(state.staff.cashier)}/2`);
+  cashierLabel=null;
 }
 
 function removeRestocker(){
@@ -755,8 +761,8 @@ function refreshRestockerCharacter(){
   removeRestocker();
   if(!state.staff.restocker)return;
   restockerMesh=createHumanoid(0xb46c35,SKINS[1],false,{style:"restocker",kind:1});
-  restockerMesh.position.set(-3.1,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
-  restockerLabel=addWorldLabel("interact",()=>restockerMesh.position.clone().add(new THREE.Vector3(0,3.05,0)),()=>restockerMesh.userData.giveWayUntil>worldTime?`🙏 ${t("pleaseGiveWay")}`:`📦 ${t("restocker")} • ${restockerJob?t("staffWorking"):t("ready")}`);
+  restockerMesh.position.set(-6.35,0,-8.15);restockerMesh.rotation.y=Math.PI;scene.add(restockerMesh);
+  restockerLabel=null;
 }
 
 function updateRestocker(delta){
@@ -783,7 +789,7 @@ function updateRestocker(delta){
     const before=state.storeLevel,result=restockerTransfer(state,restockerJob.id);
     if(result.ok){refreshShelfVisual(restockerJob.id);if(state.storeLevel>before)toast(t("levelUp",{level:localNumber(state.storeLevel)}),2300);save();updateHUD();updateWorldLabelText()}
     clearHeldObject(restockerMesh);
-    restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-3.1,0,-8.15);return;
+    restockerJob.phase="return";restockerJob.target=new THREE.Vector3(-6.35,0,-8.15);return;
   }
   if(moveToward({mesh:restockerMesh},restockerJob.target,delta*2.1)){
     restockerJob=null;restockerCooldown=state.staff.restocker===2?2.2:4.2;updateWorldLabelText();
@@ -958,12 +964,13 @@ function addCharacterHair(model,{gender="male",variant=0,style="customer"}={}){
   if(hairVariant===1){
     add("hair-side-part",garmentGeometry("hair-side-part",()=>new THREE.BoxGeometry(.19,.055,.2)),[.075,.215,-.04],[0,0,-.24]);
   }else if(hairVariant===2){
-    add("hair-bun",garmentGeometry("hair-bun",()=>new THREE.DodecahedronGeometry(.105,1)),[0,.15,.16]);
+    add("hair-bun",garmentGeometry("hair-bun",()=>new THREE.DodecahedronGeometry(.105,1)),[0,.15,-.16]);
   }else if(hairVariant===3){
-    add("hair-ponytail",garmentGeometry("hair-ponytail",()=>new THREE.CapsuleGeometry(.065,.24,5,8)),[0,.02,.17],[.28,0,0]);
+    const braid=garmentGeometry("hair-braid-segment",()=>new THREE.DodecahedronGeometry(.062,0));
+    for(let index=0;index<5;index++)add(`hair-braid-${index}`,braid,[0,.09-index*.07,-.17-index*.012],[-.12,0,index%2?.08:-.08]);
   }else if(hairVariant===4){
     const curl=garmentGeometry("hair-curl",()=>new THREE.DodecahedronGeometry(.075,0));
-    for(const [index,position] of [[0,[-.12,.17,.03]],[1,[0,.23,.02]],[2,[.12,.17,.03]],[3,[-.08,.13,.14]],[4,[.08,.13,.14]]])add(`hair-curl-${index}`,curl,position);
+    for(const [index,position] of [[0,[-.12,.17,-.02]],[1,[0,.23,-.03]],[2,[.12,.17,-.02]],[3,[-.08,.13,-.14]],[4,[.08,.13,-.14]]])add(`hair-curl-${index}`,curl,position);
   }else if(hairVariant===5){
     add("hair-crop",garmentGeometry("hair-crop",()=>new THREE.BoxGeometry(.075,.13,.25)),[0,.24,.01],[0,0,.05]);
   }
@@ -982,7 +989,8 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   const shadow=fakeShadow(group,isPlayer?.56:.48);
   const model=cloneSkinnedCharacter(asset.scene);
   model.name=`rigged-${style}-${gender}`;
-  model.scale.setScalar(asset.scale);
+  const bodyWidth=gender==="male"?.9:.94;
+  model.scale.set(asset.scale*bodyWidth,asset.scale,asset.scale*.96);
   model.position.y=-asset.minY*asset.scale;
   model.traverse(child=>{
     if(child.isMesh){child.castShadow=true;child.receiveShadow=true;child.frustumCulled=false}
@@ -998,7 +1006,7 @@ function createHumanoid(clothes=0x367ab7,skin=0xefb486,isPlayer=false,appearance
   };
   group.userData={
     rigged:true,model,mixer,actions:new Map(),currentAction:null,bones,outfit,hair,shadow,style,gender,kind,isPlayer,seated:false,
-    personId,collisionRadius:.44,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both",
+    personId,collisionRadius:.36,giveWayUntil:0,blockedTime:0,avoidance:null,heldObject:null,heldMode:"both",
     walkRate:.82+(personId%6)*.065,runRate:.92+(personId%5)*.055,walkSway:.012+(personId%4)*.006,walkPhase:(personId%7)*.9
   };
   animatedCharacters.add(group);
@@ -1050,10 +1058,10 @@ function updateCharacterAnimations(delta){
   }
 }
 
-function addWorldLabel(cssClass,position,text){
+function addWorldLabel(cssClass,position,text,options={}){
   const element=document.createElement("div");element.className=`world-label ${cssClass}`;
   $("worldLabels").appendChild(element);
-  const label={element,position,text};worldLabels.push(label);return label;
+  const label={element,position,text,maxDistance:options.maxDistance??6};worldLabels.push(label);return label;
 }
 
 function updateWorldLabelText(){for(const label of worldLabels)label.element.textContent=label.text()}
@@ -1062,8 +1070,9 @@ function updateLabels(){
   if(!camera||!started)return;
   const width=innerWidth,height=innerHeight;
   for(const label of worldLabels){
-    const point=label.position().clone();point.project(camera);
-    const visible=Boolean(label.element.textContent.trim())&&point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
+    const worldPoint=label.position(),distance=player?Math.hypot(worldPoint.x-player.position.x,worldPoint.z-player.position.z):Infinity;
+    const point=worldPoint.clone();point.project(camera);
+    const visible=distance<=label.maxDistance&&Boolean(label.element.textContent.trim())&&point.z>-1&&point.z<1&&Math.abs(point.x)<1.2&&Math.abs(point.y)<1.25;
     label.element.style.opacity=visible?"1":"0";
     if(visible){label.element.style.left=`${(point.x*.5+.5)*width}px`;label.element.style.top=`${(-point.y*.5+.5)*height}px`}
   }
@@ -1088,17 +1097,8 @@ function makeCustomer(){
   const customer={mesh,order,carrier,hasProduct:false,trolley:null,payload:null,phase:"enter",path:[new THREE.Vector3(0,0,10+shoppingOffset*.25),new THREE.Vector3(0,0,shelf.z+shoppingOffset),new THREE.Vector3(accessX,0,shelf.z+shoppingOffset)],pathIndex:0,speed:rand(1.85,2.3),timer:0,waited:0,blockedTime:0,label:null};
   mesh.userData.customer=customer;
   setupCustomerCarrier(customer);
-  customer.label=addWorldLabel("customer",()=>customer.mesh.position.clone().add(new THREE.Vector3(0,2.75,0)),()=>customerLabelText(customer));
   customers.push(customer);
   return true;
-}
-
-function customerLabelText(customer){
-  if(customer.mesh.userData.giveWayUntil>worldTime&&!['queue','scanning'].includes(customer.phase))return `🙏 ${t("pleaseGiveWay")}`;
-  if(!customer.hasProduct)return "";
-  if(customer.phase==="queue")return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})} • ${t("queueWait",{seconds:localNumber(Math.floor(customer.waited))})}`;
-  if(customer.phase==="scanning")return `🧾 ${t("scanning")}`;
-  return `${productById(customer.order.product).emoji} ${t("items",{quantity:localNumber(customer.order.quantity),item:productName(customer.order.product)})}`;
 }
 
 function setCustomerPath(customer,points,phase){customer.path=points;customer.pathIndex=0;customer.phase=phase}
@@ -1116,7 +1116,6 @@ function updateCustomer(customer,delta){
     const target=new THREE.Vector3(CHECKOUT_LAYOUT.queueX,0,CHECKOUT_LAYOUT.queueHeadZ-index*.92);
     moveToward(customer,target,delta*1.8,{ignoreQueue:true,suppressGiveWay:true});
     customer.waited+=delta;
-    customer.label.element.textContent=customerLabelText(customer);
   }
 }
 
@@ -1211,14 +1210,12 @@ function moveToward(customer,target,distance,options={}){
     if(blocker&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
       data.giveWayUntil=worldTime+1.5;
       if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
-      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
     }
   }else{
     data.blockedTime=(data.blockedTime||0)+distance/Math.max(.4,customer.speed||1.8);animateHumanoid(customer.mesh,false,0);
     if(blocker&&data.blockedTime>.22&&!options.suppressGiveWay&&canAskForWay(customer.mesh,blocker)){
       data.giveWayUntil=worldTime+1.5;
       if(blocker===player&&worldTime>giveWayToastAt){giveWayToastAt=worldTime+2.4;toast(t("pleaseGiveWay"),1300)}
-      if(customer.label)customer.label.element.textContent=customerLabelText(customer);
     }
   }
   return moved&&!data.avoidance&&length<=distance+.08;
@@ -1273,17 +1270,52 @@ function createShoppingBasket(){
 function createShoppingTrolley(){
   const trolley=new THREE.Group();trolley.name="shopping-trolley";
   const metal=standard(0x9aa7aa,.38),red=standard(0xc63e34,.58);
-  box(trolley,[.92,.08,1.12],[0,.64,.12],0,metal);
-  for(const x of [-.43,.43])for(const z of [-.4,.57])box(trolley,[.055,.72,.055],[x,.72,z],0,metal);
-  for(const y of [.68,.9,1.12])for(const x of [-.44,.44])box(trolley,[.05,.05,1.05],[x,y,.08],0,metal);
-  for(const z of [-.4,.1,.57])box(trolley,[.92,.05,.05],[0,.88,z],0,metal);
-  box(trolley,[1.06,.09,.08],[0,1.36,-.52],0,red);
+  box(trolley,[.92,.08,1.12],[0,.47,.12],0,metal);
+  for(const x of [-.43,.43])for(const z of [-.4,.57])box(trolley,[.055,.64,.055],[x,.65,z],0,metal);
+  for(const y of [.51,.72,.93])for(const x of [-.44,.44])box(trolley,[.05,.05,1.05],[x,y,.08],0,metal);
+  for(const z of [-.4,.1,.57])box(trolley,[.92,.05,.05],[0,.72,z],0,metal);
+  box(trolley,[1.06,.09,.08],[0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z],0,red);
   for(const x of [-.4,.4])for(const z of [-.38,.5]){
     const wheel=cylinder(trolley,.105,.075,[x,.15,z],0x1f2425,14);wheel.rotation.z=Math.PI/2;
   }
-  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.set(0,.86,.08);trolley.add(payload);
+  const payload=new THREE.Group();payload.name="shopping-payload";payload.position.set(0,.72,.08);trolley.add(payload);
   fakeShadow(trolley,.68);
   return {carrier:trolley,payload};
+}
+
+function createRestockTrolley(){
+  const trolley=new THREE.Group();trolley.name="restock-trolley";
+  const metal=standard(0x7e8c90,.34),green=standard(0x176b56,.5),wood=standard(0xa46a3d,.72);
+  box(trolley,[1.02,.12,1.28],[0,.42,.08],0,wood);
+  for(const x of [-.46,.46])for(const z of [-.48,.62])box(trolley,[.065,.72,.065],[x,.68,z],0,metal);
+  for(const x of [-.46,.46])box(trolley,[.06,.06,1.12],[x,.84,.07],0,metal);
+  box(trolley,[1.14,.1,.09],[0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z],0,green);
+  for(const x of [-.42,.42])for(const z of [-.42,.54]){
+    const wheel=cylinder(trolley,.12,.08,[x,.14,z],0x1f2425,14);wheel.rotation.z=Math.PI/2;
+  }
+  const payload=new THREE.Group();payload.name="restock-trolley-payload";payload.position.set(0,.76,.08);trolley.add(payload);
+  const board=labelledPlane(.78,.28,["STOCK"],{background:"#176b56",accent:"#f5bd3c"});board.position.set(0,.72,.72);trolley.add(board);
+  fakeShadow(trolley,.72);return {carrier:trolley,payload};
+}
+
+function buildRestockTrolley(){
+  const made=createRestockTrolley();restockTrolley=made.carrier;restockTrolleyPayload=made.payload;
+  restockTrolley.position.set(RESTOCK_TROLLEY_HOME.x,0,RESTOCK_TROLLEY_HOME.z);restockTrolley.rotation.y=RESTOCK_TROLLEY_HOME.yaw;scene.add(restockTrolley);
+}
+
+function syncRestockTrolley(){
+  if(!restockTrolley||!player)return;
+  restockTrolley.visible=!player.userData.seated;
+  if(!carrying){
+    restockTrolley.position.set(RESTOCK_TROLLEY_HOME.x,0,RESTOCK_TROLLEY_HOME.z);restockTrolley.rotation.y=RESTOCK_TROLLEY_HOME.yaw;return;
+  }
+  const yaw=player.rotation.y,bones=player.userData.bones;player.updateMatrixWorld(true);
+  const left=bones?.leftHand?.getWorldPosition(new THREE.Vector3()),right=bones?.rightHand?.getWorldPosition(new THREE.Vector3());
+  if(left&&right){
+    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    restockTrolley.position.set(hands.x-handleOffset.x,0,hands.z-handleOffset.z);
+  }else restockTrolley.position.set(player.position.x+Math.sin(yaw)*.9,0,player.position.z+Math.cos(yaw)*.9);
+  restockTrolley.rotation.y=yaw;
 }
 
 function setupCustomerCarrier(customer){
@@ -1301,7 +1333,7 @@ function syncCustomerTrolley(customer){
   customer.mesh.updateMatrixWorld(true);
   const left=bones?.leftHand?.getWorldPosition(new THREE.Vector3()),right=bones?.rightHand?.getWorldPosition(new THREE.Vector3());
   if(left&&right){
-    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,1.36,-.52).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    const hands=left.add(right).multiplyScalar(.5),handleOffset=new THREE.Vector3(0,TROLLEY_HANDLE.y,TROLLEY_HANDLE.z).applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
     customer.trolley.position.set(hands.x-handleOffset.x,0,hands.z-handleOffset.z);
   }else customer.trolley.position.set(customer.mesh.position.x+Math.sin(yaw)*.9,0,customer.mesh.position.z+Math.cos(yaw)*.9);
   customer.trolley.rotation.y=yaw;
@@ -1351,8 +1383,7 @@ function clearTrash(){
 function removeCustomer(customer){
   const queueIndex=checkoutQueue.indexOf(customer);if(queueIndex>=0)checkoutQueue.splice(queueIndex,1);
   const index=customers.indexOf(customer);if(index>=0)customers.splice(index,1);
-  const labelIndex=worldLabels.indexOf(customer.label);if(labelIndex>=0)worldLabels.splice(labelIndex,1);
-  customer.label.element.remove();
+  if(customer.label){const labelIndex=worldLabels.indexOf(customer.label);if(labelIndex>=0)worldLabels.splice(labelIndex,1);customer.label.element.remove()}
   if(customer.trolley)scene.remove(customer.trolley);
   unregisterCharacter(customer.mesh);scene.remove(customer.mesh);
 }
@@ -1421,7 +1452,10 @@ function startScanning(auto=false){
       ownerCheckoutSession={returnPosition:player.position.clone(),returnRotation:player.rotation.y,seatFrom:player.position.clone(),seatElapsed:0,seatDuration:.72};
     }
   }
-  $("scanText").textContent=auto?t("autoScanning"):t("scanning");
+  $("scanText").textContent=t("scanDetails",{
+    quantity:localNumber(customer.order.quantity),item:productName(customer.order.product),
+    brand:brandName(customer.order.product,customer.order.brand),price:localNumber(customer.order.price)
+  });
   $("scanFill").style.width="0%";$("scanBox").classList.remove("hidden");
   tone("up");updateHUD();updateWorldLabelText();
 }
@@ -1441,7 +1475,7 @@ function updateScan(delta){
     const ratio=Math.min(1,ownerCheckoutSession.seatElapsed/ownerCheckoutSession.seatDuration),smooth=ratio*ratio*(3-2*ratio);
     player.position.lerpVectors(ownerCheckoutSession.seatFrom,new THREE.Vector3(CHECKOUT_LAYOUT.ownerSeatX,-.17,CHECKOUT_LAYOUT.seatZ),smooth);
     player.rotation.y=THREE.MathUtils.lerp(ownerCheckoutSession.returnRotation,Math.PI,smooth);animateHumanoid(player,true,worldTime*8);
-    if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=false}
+    if(ratio>=1){setSeatedPose(player,true);updateCarriedCrate()}
     return;
   }
   if(!scan.auto)animateCheckoutHands(player);
@@ -1471,7 +1505,7 @@ function leaveOwnerSeat(session=ownerCheckoutSession){
   if(session.returnPosition)player.position.copy(session.returnPosition);
   if(Number.isFinite(session.returnRotation))player.rotation.y=session.returnRotation;
   ownerCheckoutSession=null;ownerCheckoutDelay=0;
-  updateCarriedCrate();const crate=player.getObjectByName("carried-crate");if(crate)crate.visible=true;
+  updateCarriedCrate();
   updateInteractions();
 }
 
@@ -1579,13 +1613,16 @@ function updateCamera(delta){
 }
 
 function updateCarriedCrate(){
-  if(!player)return;
-  const old=player.getObjectByName("carried-crate");
-  if(!carrying){if(old)clearHeldObject(player);return}
-  if(old&&old.userData.id===carrying.id)return;
-  if(old)clearHeldObject(player);
-  const item=productById(carrying.id),crate=createStockCrate(item,"carried-crate");
-  setHeldObject(player,crate,"auto");
+  if(!player||!restockTrolleyPayload)return;
+  const held=player.getObjectByName("carried-crate");if(held)clearHeldObject(player);
+  player.userData.usingTrolley=Boolean(carrying)&&!player.userData.seated;
+  const current=restockTrolleyPayload.getObjectByName("restock-trolley-crate");
+  if(!carrying){if(current)restockTrolleyPayload.remove(current);syncRestockTrolley();return}
+  if(!current||current.userData.id!==carrying.id){
+    while(restockTrolleyPayload.children.length)restockTrolleyPayload.remove(restockTrolleyPayload.children[0]);
+    const crate=createStockCrate(productById(carrying.id),"restock-trolley-crate");crate.scale.setScalar(.78);crate.position.set(0,0,0);restockTrolleyPayload.add(crate);
+  }
+  syncRestockTrolley();
 }
 
 function updateInteractions(){
@@ -1837,16 +1874,8 @@ function renderUpgrades(){
 
 function renderSettings(){
   const languageButtons=`<div class="choice-grid"><button data-lang="ur" class="${state.lang==="ur"?"active":""}">اردو</button><button data-lang="hi" class="${state.lang==="hi"?"active":""}">हिन्दी</button><button data-lang="en" class="${state.lang==="en"?"active":""}">English</button></div>`;
-  const difficulties=["easy","normal","hard"].map(level=>`<button data-difficulty="${level}" class="${state.difficulty===level?"active":""}">${t(level)}</button>`).join("");
-  const soundButtons=`<div class="choice-grid wide-choice"><button data-sound="on" class="${state.sound?"active":""}">${t("on")}</button><button data-sound="off" class="${!state.sound?"active":""}">${t("off")}</button></div>`;
-  panelFrame("⚙️",t("settings"),`<section class="settings-section"><h3>${t("language")}</h3>${languageButtons}</section><section class="settings-section"><h3>${t("difficulty")}</h3><div class="choice-grid">${difficulties}</div></section><section class="settings-section"><h3>${t("sound")}</h3>${soundButtons}</section><button id="resetBtn" class="danger">${t("reset")}</button>`);
+  panelFrame("🌐",t("language"),`<section class="settings-section"><h3>${t("language")}</h3>${languageButtons}</section>`);
   $("panelBody").querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>{state.lang=button.dataset.lang;save();applyLanguage()}));
-  $("panelBody").querySelectorAll("[data-difficulty]").forEach(button=>button.addEventListener("click",()=>{state.difficulty=button.dataset.difficulty;save();updateHUD();renderSettings()}));
-  $("panelBody").querySelectorAll("[data-sound]").forEach(button=>button.addEventListener("click",()=>{state.sound=button.dataset.sound==="on";save();renderSettings();if(state.sound)tone("up")}));
-  $("resetBtn").addEventListener("click",()=>{
-    if(!confirm(t("resetConfirm")))return;
-    localStorage.removeItem(SAVE_KEY);state=createState(null,null);carrying=null;clearCustomers();clearTrash();clearLabourerModels();player.position.set(0,0,8.5);spawnClock=1.8;cashierCooldown=.8;restockerCooldown=2.5;truckArrivalHold=0;refreshAllShelfVisuals();refreshCounterCash();refreshCashierCharacter();refreshRestockerCharacter();refreshServiceBusinesses();refreshTruckCargo();if(deliveryTruck)deliveryTruck.position.set(4.35,0,23.4);save();closePanel();applyLanguage();updateCarriedCrate();
-  });
 }
 
 function isPaused(includeStart=true){return (includeStart&&!started)||currentPanel!==null||!$("dayModal").classList.contains("hidden")}
@@ -1861,6 +1890,7 @@ function startGame(){
 function setupControls(){
   $("startBtn").addEventListener("click",startGame);
   document.querySelectorAll("[data-start-lang]").forEach(button=>button.addEventListener("click",()=>{state.lang=button.dataset.startLang;save();applyLanguage()}));
+  document.querySelectorAll("[data-start-difficulty]").forEach(button=>button.addEventListener("click",()=>{state.difficulty=button.dataset.startDifficulty;save();applyLanguage()}));
   $("settingsBtn").addEventListener("click",()=>openPanel("settings"));
   $("marketBtn").addEventListener("click",()=>{
     const distance=Math.hypot(player.position.x+3.45,player.position.z-21.55);
@@ -1935,7 +1965,7 @@ function setupControls(){
   addEventListener("pagehide",save);
 }
 
-function onResize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35))}
+function onResize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25))}
 
 function animate(time){
   requestAnimationFrame(animate);
@@ -1946,11 +1976,12 @@ function animate(time){
     updateDeliveryTruck(delta);updatePlayer(delta);updateSpawning(delta);
     for(const customer of [...customers])updateCustomer(customer,delta);
     updateAutomaticCheckout(delta);updateScan(delta);updateOwnerCheckout(delta);animateCashier(delta);updateRestocker(delta);updateInteractions();
-    resolvePeopleOverlaps();for(const customer of customers)syncCustomerTrolley(customer);
+    resolvePeopleOverlaps();
     labelRefreshClock+=delta;if(labelRefreshClock>=.3){labelRefreshClock=0;updateWorldLabelText()}
     autosaveClock+=delta;if(autosaveClock>=5){autosaveClock=0;save()}
   }
   updateCharacterAnimations(delta);
+  syncRestockTrolley();for(const customer of customers)syncCustomerTrolley(customer);
   updateCamera(delta);updateLabels();renderer.render(scene,camera);
 }
 

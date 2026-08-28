@@ -17,6 +17,12 @@ function objectEntries(entries,source=""){
   return entries.map(({local,exported})=>`${JSON.stringify(exported)}:${source}${local}`).join(",");
 }
 
+function stripAddonComments(source){
+  return source
+    .replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*(?:\r?\n|$)/gm,"")
+    .replace(/^[ \t]*\/\/[^\r\n]*(?:\r?\n|$)/gm,"");
+}
+
 function bundleCore(){
   let source=read("three.core.min.js");
   const match=source.match(/export\{([^}]*)\};?\s*$/s);
@@ -52,7 +58,7 @@ function bundleThree(){
 }
 
 function bundleAddon(file,globalName,dependencies={}){
-  let source=read(`three-addons/${file}`);
+  let source=stripAddonComments(read(`three-addons/${file}`));
   const imports=[];
   source=source.replace(/^[ \t]*import\s*\{([\s\S]*?)\}\s*from\s*['"]([^'"]+)['"];?/gm,(_,bindings,module)=>{
     const entries=specifiers(bindings);
