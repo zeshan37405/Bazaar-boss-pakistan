@@ -1,0 +1,41 @@
+name: Build Confectionery APK
+
+on:
+  push:
+    branches: [confectionery-apk-build]
+    paths:
+      - 'confectionery_order_app/**'
+      - '.github/workflows/confectionery-apk.yml'
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Build debug APK
+        working-directory: confectionery_order_app
+        run: gradle --no-daemon :app:assembleDebug --stacktrace
+
+      - name: Copy APK
+        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Confectionery-Order-Book-APK
+          path: Confectionery-Order-Book.apk
+          if-no-files-found: error
