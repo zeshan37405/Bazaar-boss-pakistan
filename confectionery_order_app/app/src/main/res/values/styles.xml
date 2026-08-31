@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.ConfectioneryOrderBook" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#5D4037</item>
+        <item name="colorPrimaryVariant">#3E2723</item>
+        <item name="colorSecondary">#FFB300</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
