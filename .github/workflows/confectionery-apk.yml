@@ -15,6 +15,12 @@ jobs:
       - name: Apply V5 UI navigation and backup patch
         run: python3 .ci/patch_v5_ui.py
 
+      - name: Repair V5 generated sync screen
+        run: python3 .ci/fix_v5_sync_string.py
+
+      - name: Check sync server JavaScript
+        run: node --check confectionery_sync_server/server.js
+
       - name: Restore stable prototype signing key
         run: base64 -d .ci/confectionery-test-signing.jks.b64 > confectionery_order_app/ci-test-signing.jks
 
