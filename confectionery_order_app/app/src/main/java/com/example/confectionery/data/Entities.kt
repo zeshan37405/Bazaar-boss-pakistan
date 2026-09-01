@@ -1,7 +1,9 @@
 package com.example.confectionery.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(tableName = "users")
 data class UserEntity(
@@ -14,7 +16,7 @@ data class UserEntity(
     val active: Boolean = true
 )
 
-@Entity(tableName = "customers")
+@Entity(tableName = "customers", indices = [Index(value = ["syncId"], unique = true)])
 data class CustomerEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
@@ -24,11 +26,13 @@ data class CustomerEntity(
     val photoUri: String? = null,
     val creditLimit: Double = 0.0,
     val balance: Double = 0.0,
+    val areaName: String = "",
+    val syncId: String = UUID.randomUUID().toString(),
     val synced: Boolean = false,
     val updatedAt: Long = System.currentTimeMillis()
 )
 
-@Entity(tableName = "products")
+@Entity(tableName = "products", indices = [Index(value = ["syncId"], unique = true)])
 data class ProductEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
@@ -38,22 +42,36 @@ data class ProductEntity(
     val photoUri: String? = null,
     val purchaseRate: Double,
     val saleRate: Double,
+    val wholesaleRate: Double = 0.0,
     val stockQty: Double = 0.0,
     val minStockQty: Double = 0.0,
+    val barcode: String = "",
+    val batchNo: String = "",
+    val expiryDate: String = "",
+    val taxPercent: Double = 0.0,
+    val syncId: String = UUID.randomUUID().toString(),
     val synced: Boolean = false,
     val updatedAt: Long = System.currentTimeMillis()
 )
 
-@Entity(tableName = "orders")
+@Entity(tableName = "orders", indices = [Index(value = ["syncId"], unique = true)])
 data class OrderEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val invoiceNo: String,
     val customerId: Long,
+    val customerSyncId: String = "",
     val bookedByUserId: Long,
+    val bookerName: String = "",
+    val areaName: String = "",
+    val deviceId: String = "",
+    val syncId: String = UUID.randomUUID().toString(),
     val saleTotal: Double,
     val purchaseTotal: Double,
+    val discount: Double = 0.0,
+    val taxTotal: Double = 0.0,
     val paymentType: String = "CREDIT",
     val notes: String = "",
+    val documentType: String = "ORDER",
     val status: String = "BOOKED",
     val createdAt: Long = System.currentTimeMillis(),
     val synced: Boolean = false
@@ -64,10 +82,26 @@ data class OrderItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val orderId: Long,
     val productId: Long,
+    val productSyncId: String = "",
     val productName: String,
     val qty: Double,
     val unit: String,
     val purchaseRate: Double,
     val saleRate: Double,
+    val taxPercent: Double = 0.0,
     val lineTotal: Double
+)
+
+@Entity(tableName = "expenses")
+data class ExpenseEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val title: String,
+    val amount: Double,
+    val paymentType: String = "CASH",
+    val areaName: String = "",
+    val bookerName: String = "",
+    val notes: String = "",
+    val createdAt: Long = System.currentTimeMillis(),
+    val syncId: String = UUID.randomUUID().toString(),
+    val synced: Boolean = false
 )
