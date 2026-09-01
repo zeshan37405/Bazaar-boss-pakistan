@@ -8,6 +8,8 @@
     <application
         android:name=".OrderBookApp"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:label="Confectionery Order Book"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConfectioneryOrderBook">
