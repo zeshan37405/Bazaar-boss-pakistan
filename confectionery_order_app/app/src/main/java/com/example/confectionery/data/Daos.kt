@@ -4,12 +4,17 @@ import androidx.room.*
 
 @Dao
 interface UserDao {
+    @Query("SELECT * FROM users WHERE active = 1 AND (LOWER(username)=LOWER(:login) OR LOWER(email)=LOWER(:login)) LIMIT 1") suspend fun byLogin(login: String): UserEntity?
     @Query("SELECT * FROM users WHERE username = :username AND active = 1 LIMIT 1") suspend fun byUsername(username: String): UserEntity?
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1") suspend fun byId(id: Long): UserEntity?
-    @Query("SELECT * FROM users ORDER BY id") suspend fun all(): List<UserEntity>
+    @Query("SELECT * FROM users WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): UserEntity?
+    @Query("SELECT * FROM users ORDER BY name") suspend fun all(): List<UserEntity>
+    @Query("SELECT * FROM users WHERE synced=0 ORDER BY id") suspend fun pending(): List<UserEntity>
     @Query("SELECT COUNT(*) FROM users") suspend fun count(): Int
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(user: UserEntity): Long
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(users: List<UserEntity>)
+    @Update suspend fun update(user: UserEntity)
+    @Query("UPDATE users SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
     @Query("DELETE FROM users") suspend fun deleteAll()
 }
 
