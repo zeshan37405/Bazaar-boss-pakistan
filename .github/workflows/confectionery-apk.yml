@@ -2,7 +2,7 @@ name: Build Confectionery APK
 
 on:
   push:
-    branches: [confectionery-apk-build]
+    branches: [confectionery-v2-ready]
   workflow_dispatch:
 
 jobs:
@@ -28,11 +28,11 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug --stacktrace
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V2.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-APK
-          path: Confectionery-Order-Book.apk
+          name: Confectionery-Order-Book-V2-APK
+          path: Confectionery-Order-Book-V2.apk
           if-no-files-found: error
