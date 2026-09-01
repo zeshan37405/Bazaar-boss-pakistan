@@ -6,15 +6,27 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.UUID
 
-@Entity(tableName = "users")
+@Entity(
+    tableName = "users",
+    indices = [
+        Index(value = ["syncId"], unique = true),
+        Index(value = ["username"]),
+        Index(value = ["email"])
+    ]
+)
 data class UserEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val username: String,
+    @ColumnInfo(defaultValue = "''") val email: String = "",
     val passwordHash: String,
-    val role: String = "OWNER",
+    val role: String = "ORDER_BOOKER",
+    @ColumnInfo(defaultValue = "''") val areaName: String = "",
     val photoUri: String? = null,
-    val active: Boolean = true
+    val active: Boolean = true,
+    @ColumnInfo(defaultValue = "''") val syncId: String = UUID.randomUUID().toString(),
+    @ColumnInfo(defaultValue = "0") val synced: Boolean = false,
+    @ColumnInfo(defaultValue = "0") val updatedAt: Long = System.currentTimeMillis()
 )
 
 @Entity(tableName = "customers", indices = [Index(value = ["syncId"], unique = true)])
