@@ -2,7 +2,7 @@ name: Build Confectionery APK
 
 on:
   push:
-    branches: [confectionery-v2-ready]
+    branches: [confectionery-apk-build]
   workflow_dispatch:
 
 jobs:
