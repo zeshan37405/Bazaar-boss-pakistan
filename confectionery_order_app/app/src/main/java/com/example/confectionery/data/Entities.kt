@@ -80,7 +80,7 @@ data class OrderEntity(
 @Entity(tableName = "order_items")
 data class OrderItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val orderId: Long,
+    val orderId: Long = 0,
     val productId: Long,
     val productSyncId: String = "",
     val productName: String,
