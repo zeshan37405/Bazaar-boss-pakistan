@@ -18,6 +18,9 @@ jobs:
       - name: Repair V5 generated sync screen
         run: python3 .ci/fix_v5_sync_string.py
 
+      - name: Make V6 Kotlin replacements literal-safe
+        run: python3 .ci/fix_v6_regex_literal.py
+
       - name: Apply V6 business workflows
         run: python3 .ci/patch_v6_business.py
 
