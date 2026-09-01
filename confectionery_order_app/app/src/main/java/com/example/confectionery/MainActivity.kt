@@ -1,7 +1,9 @@
 package com.example.confectionery
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
@@ -16,6 +18,7 @@ import com.example.confectionery.data.*
 import com.example.confectionery.sync.SyncWorker
 import com.example.confectionery.util.AppPrefs
 import com.example.confectionery.util.ExportUtil
+import com.example.confectionery.util.PrinterUtil
 import com.example.confectionery.util.Security
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -26,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var root: LinearLayout
     private var photoCallback: ((String) -> Unit)? = null
 
+    private data class CartLine(val product: ProductEntity, val qty: Double, val rate: Double, val tax: Double)
+
     private val photoPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
         uri ?: return@registerForActivityResult
         try { contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION) } catch (_: Exception) {}
@@ -33,19 +38,22 @@ class MainActivity : AppCompatActivity() {
         photoCallback = null
     }
 
+    private val bluetoothPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) showPrinterSettings() else toast("Bluetooth printer permission درکار ہے")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(14), dp(14), dp(14), dp(24))
+            setPadding(dp(14), dp(14), dp(14), dp(28))
         }
         setContentView(ScrollView(this).apply { addView(root) })
-        lifecycleScope.launch {
-            when {
-                db.userDao().count() == 0 -> showOwnerSetup()
-                prefs.currentUserId == 0L -> showLogin()
-                else -> showDashboard()
-            }
+        when {
+            prefs.businessId.isBlank() -> showFirstStart()
+            !prefs.companyLoggedIn -> showCompanyLogin()
+            prefs.deviceBookerName.isBlank() || prefs.deviceAreaName.isBlank() -> showDeviceProfile()
+            else -> showDashboard()
         }
     }
 
@@ -59,67 +67,136 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showOwnerSetup() {
+    private fun showFirstStart() {
         reset("Confectionery Order Book")
-        info("پہلی بار Owner اکاؤنٹ بنائیں۔ Purchase Rate صرف مجاز user PIN کے بعد دیکھ سکے گا۔")
-        val name = edit("Owner name")
-        val username = edit("Username")
-        val password = edit("Password", password = true)
-        val pin = edit("Purchase Rate PIN", numeric = true, password = true)
-        button("Create Owner") {
-            if (txt(name).isBlank() || txt(username).isBlank() || txt(password).length < 4 || txt(pin).length < 4) {
-                toast("تمام معلومات درست درج کریں")
-                return@button
+        info("ایک Company ID کے تحت تمام Order Bookers ایک ہی Customers, Items اور Rates دیکھ سکتے ہیں۔ ہر موبائل کا Booker اور Area الگ tag ہوگا۔")
+        button("Create New Business") { showCreateBusiness() }
+        button("Join Existing Business") { showJoinBusiness() }
+    }
+
+    private fun showCreateBusiness() {
+        reset("Create Business")
+        back { showFirstStart() }
+        val businessName = edit("Business / Company name")
+        val businessId = edit("Company ID (same on all phones)")
+        val password = edit("Company password", password = true)
+        val phone = edit("Business phone")
+        val address = edit("Business address")
+        val booker = edit("This device: Owner / Booker name")
+        val area = edit("This device: Area / Route")
+        val pin = edit("Purchase Rate privacy PIN", numeric = true, password = true)
+        button("Create & Open") {
+            if (txt(businessName).isBlank() || txt(businessId).isBlank() || txt(password).length < 4 || txt(booker).isBlank() || txt(area).isBlank() || txt(pin).length < 4) {
+                return@button toast("ضروری معلومات مکمل درج کریں")
             }
             lifecycleScope.launch {
-                val id = db.userDao().insert(UserEntity(name = txt(name), username = txt(username), passwordHash = Security.sha256(txt(password)), role = "OWNER"))
-                prefs.currentUserId = id
+                prefs.businessName = txt(businessName)
+                prefs.businessId = txt(businessId)
+                prefs.businessPasswordHash = Security.sha256(txt(password))
+                prefs.businessPhone = txt(phone)
+                prefs.businessAddress = txt(address)
+                prefs.deviceBookerName = txt(booker)
+                prefs.deviceAreaName = txt(area)
                 prefs.privacyPinHash = Security.sha256(txt(pin))
+                prefs.companyLoggedIn = true
+                if (prefs.currentUserId == 0L) {
+                    prefs.currentUserId = db.userDao().insert(UserEntity(
+                        name = txt(booker), username = "owner-${prefs.deviceId.take(8)}",
+                        passwordHash = prefs.businessPasswordHash, role = "OWNER"
+                    ))
+                }
+                queueSync()
                 showDashboard()
             }
         }
     }
 
-    private fun showLogin() {
-        reset("Sign in")
-        info("یہ sign-in آفلائن بھی کام کرتا ہے۔")
-        val username = edit("Username")
-        val password = edit("Password", password = true)
-        button("Sign in") {
+    private fun showJoinBusiness() {
+        reset("Join Existing Business")
+        back { showFirstStart() }
+        info("اسی Company ID اور password کو استعمال کریں جو پہلے فون پر بنایا گیا تھا۔ Online مشترکہ data کے لیے Sync Server URL اور token بھی ایک جیسے ہوں گے۔")
+        val businessId = edit("Company ID")
+        val password = edit("Company password", password = true)
+        val syncUrl = edit("HTTPS Sync Server URL")
+        val token = edit("Sync token", password = true)
+        val booker = edit("Order Booker name")
+        val area = edit("Area / Route")
+        button("Join & Sync") {
+            if (txt(businessId).isBlank() || txt(password).length < 4 || txt(booker).isBlank() || txt(area).isBlank()) {
+                return@button toast("Company ID, password, Booker اور Area ضروری ہیں")
+            }
             lifecycleScope.launch {
-                val user = db.userDao().byUsername(txt(username))
-                if (user == null || user.passwordHash != Security.sha256(txt(password))) {
-                    toast("Username یا password غلط ہے")
-                } else {
-                    prefs.currentUserId = user.id
-                    prefs.purchaseRatesUnlocked = false
-                    showDashboard()
-                }
+                prefs.businessId = txt(businessId)
+                prefs.businessName = txt(businessId)
+                prefs.businessPasswordHash = Security.sha256(txt(password))
+                prefs.syncBaseUrl = txt(syncUrl)
+                prefs.syncToken = txt(token)
+                prefs.deviceBookerName = txt(booker)
+                prefs.deviceAreaName = txt(area)
+                prefs.companyLoggedIn = true
+                prefs.currentUserId = db.userDao().insert(UserEntity(
+                    name = txt(booker), username = "booker-${prefs.deviceId.take(8)}",
+                    passwordHash = prefs.businessPasswordHash, role = "ORDER_BOOKER"
+                ))
+                queueSync()
+                showDashboard()
             }
         }
     }
 
-    private fun showDashboard() {
-        reset("Confectionery Order Book")
-        lifecycleScope.launch {
-            val user = db.userDao().byId(prefs.currentUserId)
-            info("Signed in: ${user?.name ?: "User"} • ${user?.role ?: ""}")
-        }
-        button("Customers") { showCustomers() }
-        button("Products / Items") { showProducts() }
-        button("New Order") { showNewOrder() }
-        button("Orders / Invoices") { showOrders() }
-        button("Settings & Privacy") { showSettings() }
-        button("Online Sync") { showSync() }
-        button("Sign out") {
-            prefs.currentUserId = 0
+    private fun showCompanyLogin() {
+        reset("Company Sign in")
+        info("Company ID سب devices پر ایک ہی رہے گی۔ Device کا Booker/Area الگ ہے۔")
+        val id = edit("Company ID")
+        id.setText(prefs.businessId)
+        val password = edit("Company password", password = true)
+        button("Sign in") {
+            if (txt(id) != prefs.businessId || Security.sha256(txt(password)) != prefs.businessPasswordHash) {
+                return@button toast("Company ID یا password غلط ہے")
+            }
+            prefs.companyLoggedIn = true
             prefs.purchaseRatesUnlocked = false
-            showLogin()
+            showDashboard()
+        }
+    }
+
+    private fun showDashboard() {
+        reset(prefs.businessName.ifBlank { "Confectionery Order Book" })
+        info("Company: ${prefs.businessId}\nBooker: ${prefs.deviceBookerName} • Area: ${prefs.deviceAreaName}")
+        button("New Order Booking") { showNewOrder() }
+        button("Area-wise Billing") { showAreaBilling() }
+        button("Customers / Parties") { showCustomers() }
+        button("Products / Inventory") { showProducts() }
+        button("Orders / Invoices") { showOrders() }
+        button("Reports & Profit") { showReports() }
+        button("Expenses") { showExpenses() }
+        button("Printer / Thermal Printer") { showPrinterSettings() }
+        button("Online Sync") { showSync() }
+        button("Settings & Privacy") { showSettings() }
+        button("Sign out") {
+            prefs.companyLoggedIn = false
+            prefs.purchaseRatesUnlocked = false
+            showCompanyLogin()
+        }
+    }
+
+    private fun showDeviceProfile() {
+        reset("This Device Profile")
+        info("Company login مشترک ہے، لیکن یہ نام اور Area اس فون کے آرڈرز پر لگے گا۔")
+        val booker = edit("Order Booker name")
+        booker.setText(prefs.deviceBookerName)
+        val area = edit("Area / Route")
+        area.setText(prefs.deviceAreaName)
+        button("Save Device Profile") {
+            if (txt(booker).isBlank() || txt(area).isBlank()) return@button toast("Booker اور Area ضروری ہیں")
+            prefs.deviceBookerName = txt(booker)
+            prefs.deviceAreaName = txt(area)
+            showDashboard()
         }
     }
 
     private fun showCustomers() {
-        reset("Customers")
+        reset("Customers / Parties")
         back()
         button("+ Add Customer") { showAddCustomer() }
         lifecycleScope.launch {
@@ -131,11 +208,11 @@ class MainActivity : AppCompatActivity() {
                     gravity = Gravity.CENTER_VERTICAL
                     setPadding(0, dp(8), 0, dp(8))
                 }
-                row.addView(image(c.photoUri, 96))
+                row.addView(image(c.photoUri, 90))
                 row.addView(TextView(this@MainActivity).apply {
-                    text = "${c.name}\n${c.shopName}\n${c.phone}\nBalance: Rs ${money(c.balance)}"
-                    textSize = 17f
-                    setPadding(dp(14), 0, 0, 0)
+                    text = "${c.name}\n${c.shopName}\nArea: ${c.areaName}\n${c.phone}\nBalance: Rs ${money(c.balance)}"
+                    textSize = 16f
+                    setPadding(dp(12), 0, 0, 0)
                 })
                 root.addView(row)
             }
@@ -154,13 +231,19 @@ class MainActivity : AppCompatActivity() {
         }
         val name = edit("Customer name")
         val shop = edit("Shop / Business name")
-        val phone = edit("Phone", numeric = true)
+        val phone = edit("Phone")
         val address = edit("Address")
+        val area = edit("Area / Route")
+        area.setText(prefs.deviceAreaName)
         val credit = edit("Credit limit", numeric = true)
         button("Save Customer") {
             if (txt(name).isBlank()) return@button toast("Customer name ضروری ہے")
             lifecycleScope.launch {
-                db.customerDao().insert(CustomerEntity(name = txt(name), shopName = txt(shop), phone = txt(phone), address = txt(address), photoUri = photoUri, creditLimit = txt(credit).toDoubleOrNull() ?: 0.0))
+                db.customerDao().insert(CustomerEntity(
+                    name = txt(name), shopName = txt(shop), phone = txt(phone), address = txt(address),
+                    areaName = txt(area), photoUri = photoUri, creditLimit = txt(credit).toDoubleOrNull() ?: 0.0
+                ))
+                queueSync()
                 toast("Customer محفوظ ہوگیا")
                 showCustomers()
             }
@@ -168,12 +251,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showProducts() {
-        reset("Products / Items")
+        reset("Products / Inventory")
         back()
         button("+ Add Item") { showAddProduct() }
         lifecycleScope.launch {
-            val user = db.userDao().byId(prefs.currentUserId)
-            val showPurchase = (user?.role == "OWNER" || user?.role == "ORDER_BOOKER") && prefs.purchaseRatesUnlocked
+            val showPurchase = prefs.purchaseRatesUnlocked
+            val lowIds = db.productDao().lowStock().map { it.id }.toSet()
             val products = db.productDao().all()
             if (products.isEmpty()) info("ابھی کوئی item موجود نہیں۔")
             products.forEach { p ->
@@ -182,12 +265,14 @@ class MainActivity : AppCompatActivity() {
                     gravity = Gravity.CENTER_VERTICAL
                     setPadding(0, dp(8), 0, dp(8))
                 }
-                row.addView(image(p.photoUri, 96))
+                row.addView(image(p.photoUri, 90))
                 row.addView(TextView(this@MainActivity).apply {
                     val purchase = if (showPurchase) "\nPurchase: Rs ${money(p.purchaseRate)}" else "\nPurchase: HIDDEN"
-                    text = "${p.name}\nSale: Rs ${money(p.saleRate)}$purchase\nStock: ${p.stockQty} ${p.unit}"
-                    textSize = 17f
-                    setPadding(dp(14), 0, 0, 0)
+                    val low = if (p.id in lowIds) "\n⚠ LOW STOCK" else ""
+                    val expiry = if (p.expiryDate.isNotBlank()) "\nExpiry: ${p.expiryDate}" else ""
+                    text = "${p.name}\nSale: Rs ${money(p.saleRate)}$purchase\nStock: ${p.stockQty} ${p.unit}$expiry$low"
+                    textSize = 16f
+                    setPadding(dp(12), 0, 0, 0)
                 })
                 root.addView(row)
             }
@@ -206,17 +291,30 @@ class MainActivity : AppCompatActivity() {
         }
         val name = edit("Item name")
         val sku = edit("SKU / Code")
+        val barcode = edit("Barcode")
         val category = edit("Category")
         val unit = edit("Unit e.g. pcs, box, carton")
         val purchase = edit("Purchase rate", numeric = true)
-        val sale = edit("Sale rate", numeric = true)
+        val sale = edit("Retail sale rate", numeric = true)
+        val wholesale = edit("Wholesale rate (optional)", numeric = true)
         val stock = edit("Opening stock", numeric = true)
+        val minStock = edit("Low-stock alert at", numeric = true)
+        val batch = edit("Batch No (optional)")
+        val expiry = edit("Expiry date e.g. 2027-12-31")
+        val tax = edit("Tax % (optional)", numeric = true)
         button("Save Item") {
             val pr = txt(purchase).toDoubleOrNull()
             val sr = txt(sale).toDoubleOrNull()
             if (txt(name).isBlank() || pr == null || sr == null) return@button toast("Item, purchase rate اور sale rate ضروری ہیں")
             lifecycleScope.launch {
-                db.productDao().insert(ProductEntity(name = txt(name), sku = txt(sku), category = txt(category), unit = txt(unit).ifBlank { "pcs" }, photoUri = photoUri, purchaseRate = pr, saleRate = sr, stockQty = txt(stock).toDoubleOrNull() ?: 0.0))
+                db.productDao().insert(ProductEntity(
+                    name = txt(name), sku = txt(sku), barcode = txt(barcode), category = txt(category),
+                    unit = txt(unit).ifBlank { "pcs" }, photoUri = photoUri,
+                    purchaseRate = pr, saleRate = sr, wholesaleRate = txt(wholesale).toDoubleOrNull() ?: 0.0,
+                    stockQty = txt(stock).toDoubleOrNull() ?: 0.0, minStockQty = txt(minStock).toDoubleOrNull() ?: 0.0,
+                    batchNo = txt(batch), expiryDate = txt(expiry), taxPercent = txt(tax).toDoubleOrNull() ?: 0.0
+                ))
+                queueSync()
                 toast("Item محفوظ ہوگیا")
                 showProducts()
             }
@@ -224,7 +322,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNewOrder() {
-        reset("New Order")
+        reset("New Order Booking")
         back()
         lifecycleScope.launch {
             val customers = db.customerDao().all()
@@ -233,43 +331,133 @@ class MainActivity : AppCompatActivity() {
                 info("آرڈر سے پہلے کم از کم ایک Customer اور ایک Product شامل کریں۔")
                 return@launch
             }
-            root.addView(TextView(this@MainActivity).apply { text = "Customer"; textSize = 16f })
-            val customerSpinner = Spinner(this@MainActivity)
-            customerSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, customers.map { "${it.name} — ${it.shopName}" })
-            root.addView(customerSpinner)
-
-            root.addView(TextView(this@MainActivity).apply { text = "Product"; textSize = 16f })
-            val productSpinner = Spinner(this@MainActivity)
-            productSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, products.map { "${it.name} — Rs ${money(it.saleRate)}" })
-            root.addView(productSpinner)
-
+            val customerSpinner = spinner("Customer", customers.map { "${it.name} — ${it.shopName} — ${it.areaName}" })
+            val productSpinner = spinner("Product", products.map { "${it.name} — Rs ${money(it.saleRate)}" })
+            val priceType = spinner("Price", listOf("RETAIL", "WHOLESALE"))
             val qty = edit("Quantity", numeric = true)
-            root.addView(TextView(this@MainActivity).apply { text = "Payment"; textSize = 16f })
-            val payment = Spinner(this@MainActivity)
-            payment.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, listOf("CREDIT", "CASH", "ONLINE"))
-            root.addView(payment)
-            val notes = edit("Notes")
+            val cart = mutableListOf<CartLine>()
+            val cartView = TextView(this@MainActivity).apply { textSize = 16f; setPadding(dp(4), dp(10), dp(4), dp(10)) }
+            root.addView(cartView)
 
-            button("Save Order") {
+            fun renderCart() {
+                cartView.text = if (cart.isEmpty()) "Cart empty" else cart.mapIndexed { index, c ->
+                    "${index + 1}. ${c.product.name} — ${c.qty} ${c.product.unit} × Rs ${money(c.rate)} = Rs ${money(c.rate * c.qty + c.tax)}"
+                }.joinToString("\n")
+            }
+            renderCart()
+
+            button("+ Add Item to Order") {
                 val q = txt(qty).toDoubleOrNull()
                 if (q == null || q <= 0) return@button toast("Quantity درست درج کریں")
+                val p = products[productSpinner.selectedItemPosition]
+                val useWholesale = priceType.selectedItem.toString() == "WHOLESALE" && p.wholesaleRate > 0
+                val rate = if (useWholesale) p.wholesaleRate else p.saleRate
+                val taxValue = rate * q * p.taxPercent / 100.0
+                cart += CartLine(p, q, rate, taxValue)
+                qty.setText("")
+                renderCart()
+            }
+            button("Clear Cart") { cart.clear(); renderCart() }
+
+            val discount = edit("Discount amount (optional)", numeric = true)
+            val payment = spinner("Payment", listOf("CREDIT", "CASH", "ONLINE", "BANK"))
+            val document = spinner("Document", listOf("ORDER", "QUOTATION", "INVOICE"))
+            val notes = edit("Notes")
+
+            button("Save") {
+                if (cart.isEmpty()) return@button toast("کم از کم ایک item شامل کریں")
                 val customer = customers[customerSpinner.selectedItemPosition]
-                val product = products[productSpinner.selectedItemPosition]
-                val saleTotal = product.saleRate * q
-                val purchaseTotal = product.purchaseRate * q
-                val invoice = "ORD-${System.currentTimeMillis()}"
-                val paymentType = payment.selectedItem.toString()
+                val base = cart.sumOf { it.rate * it.qty }
+                val taxTotal = cart.sumOf { it.tax }
+                val discountValue = (txt(discount).toDoubleOrNull() ?: 0.0).coerceAtLeast(0.0)
+                val saleTotal = (base + taxTotal - discountValue).coerceAtLeast(0.0)
+                val purchaseTotal = cart.sumOf { it.product.purchaseRate * it.qty }
+                val docType = document.selectedItem.toString()
+                val prefix = when (docType) { "QUOTATION" -> "QT"; "INVOICE" -> "INV"; else -> "ORD" }
+                val invoice = "$prefix-${System.currentTimeMillis()}"
+                val status = when (docType) { "INVOICE" -> "BILLED"; "QUOTATION" -> "QUOTED"; else -> "BOOKED" }
                 lifecycleScope.launch {
-                    val order = OrderEntity(invoiceNo = invoice, customerId = customer.id, bookedByUserId = prefs.currentUserId, saleTotal = saleTotal, purchaseTotal = purchaseTotal, paymentType = paymentType, notes = txt(notes))
-                    val item = OrderItemEntity(orderId = 0, productId = product.id, productName = product.name, qty = q, unit = product.unit, purchaseRate = product.purchaseRate, saleRate = product.saleRate, lineTotal = saleTotal)
-                    db.orderDao().insertOrderWithItems(order, listOf(item))
-                    db.productDao().adjustStock(product.id, -q)
-                    if (paymentType == "CREDIT") db.customerDao().adjustBalance(customer.id, saleTotal)
+                    val order = OrderEntity(
+                        invoiceNo = invoice, customerId = customer.id, customerSyncId = customer.syncId,
+                        bookedByUserId = prefs.currentUserId, bookerName = prefs.deviceBookerName,
+                        areaName = prefs.deviceAreaName, deviceId = prefs.deviceId,
+                        saleTotal = saleTotal, purchaseTotal = purchaseTotal, discount = discountValue,
+                        taxTotal = taxTotal, paymentType = payment.selectedItem.toString(), notes = txt(notes),
+                        documentType = docType, status = status
+                    )
+                    val items = cart.map { c -> OrderItemEntity(
+                        productId = c.product.id, productSyncId = c.product.syncId, productName = c.product.name,
+                        qty = c.qty, unit = c.product.unit, purchaseRate = c.product.purchaseRate,
+                        saleRate = c.rate, taxPercent = c.product.taxPercent, lineTotal = c.rate * c.qty + c.tax
+                    ) }
+                    val orderId = db.orderDao().insertOrderWithItems(order, items)
+                    if (docType == "INVOICE") applyBilling(orderId)
                     queueSync()
-                    toast("Order محفوظ ہوگیا")
+                    toast("$docType محفوظ ہوگیا")
                     showOrders()
                 }
             }
+        }
+    }
+
+    private fun showAreaBilling() {
+        reset("Area-wise Billing")
+        back()
+        lifecycleScope.launch {
+            val areas = (db.orderDao().areas() + prefs.deviceAreaName).filter { it.isNotBlank() }.distinct().sorted()
+            if (areas.isEmpty()) return@launch info("ابھی کوئی Area order موجود نہیں۔")
+            val areaSpinner = spinner("Select Area", areas)
+            button("Open Area Orders") { showAreaOrders(areas[areaSpinner.selectedItemPosition]) }
+        }
+    }
+
+    private fun showAreaOrders(area: String) {
+        reset("Billing — $area")
+        back { showAreaBilling() }
+        lifecycleScope.launch {
+            val orders = db.orderDao().byAreaAndStatus(area, "BOOKED")
+            val total = orders.sumOf { it.saleTotal }
+            info("Unbilled orders: ${orders.size}\nArea total: Rs ${money(total)}")
+            if (orders.isNotEmpty()) button("Print Area Order Sheet") { printAreaSheet(area) }
+            orders.forEach { o ->
+                val customer = db.customerDao().byId(o.customerId)
+                info("${o.invoiceNo}\n${customer?.name ?: "Customer"} — Rs ${money(o.saleTotal)}\nBooker: ${o.bookerName}")
+                button("Print ${o.invoiceNo}") { printOrder(o.id) }
+                button("Mark Billed ${o.invoiceNo}") {
+                    lifecycleScope.launch {
+                        applyBilling(o.id)
+                        queueSync()
+                        toast("Invoice billed")
+                        showAreaOrders(area)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun applyBilling(orderId: Long) {
+        val order = db.orderDao().byId(orderId) ?: return
+        if (order.status == "BILLED") return
+        val items = db.orderDao().items(orderId)
+        items.forEach { if (it.productId > 0) db.productDao().adjustStock(it.productId, -it.qty) }
+        if (order.paymentType == "CREDIT" && order.customerId > 0) db.customerDao().adjustBalance(order.customerId, order.saleTotal)
+        db.orderDao().setStatus(orderId, "BILLED")
+    }
+
+    private fun printAreaSheet(area: String) {
+        lifecycleScope.launch {
+            val orders = db.orderDao().byAreaAndStatus(area, "BOOKED")
+            val sb = StringBuilder()
+            sb.appendLine(prefs.businessName)
+            sb.appendLine("AREA ORDER SHEET: $area")
+            sb.appendLine("-".repeat(40))
+            orders.forEachIndexed { index, o ->
+                val c = db.customerDao().byId(o.customerId)
+                sb.appendLine("${index + 1}. ${c?.name ?: "Customer"} | ${o.invoiceNo} | Rs ${money(o.saleTotal)} | ${o.bookerName}")
+            }
+            sb.appendLine("-".repeat(40))
+            sb.appendLine("TOTAL: Rs ${money(orders.sumOf { it.saleTotal })}")
+            printText("Area-$area", sb.toString())
         }
     }
 
@@ -281,10 +469,31 @@ class MainActivity : AppCompatActivity() {
             if (orders.isEmpty()) info("ابھی کوئی order موجود نہیں۔")
             orders.forEach { o ->
                 val customer = db.customerDao().byId(o.customerId)
-                info("${o.invoiceNo}\n${customer?.name ?: "Customer"} • Rs ${money(o.saleTotal)}\n${if (o.synced) "Synced" else "Offline / Pending Sync"}")
-                button("Share Invoice ${o.invoiceNo}") { shareOrder(o.id) }
+                info("${o.invoiceNo} • ${o.status}\n${customer?.name ?: "Customer"} • Rs ${money(o.saleTotal)}\nArea: ${o.areaName} • Booker: ${o.bookerName}\n${if (o.synced) "Synced" else "Offline / Pending Sync"}")
+                button("Print ${o.invoiceNo}") { printOrder(o.id) }
+                button("Share / Export ${o.invoiceNo}") { shareOrder(o.id) }
+                if (o.status == "BOOKED") button("Mark Billed") {
+                    lifecycleScope.launch { applyBilling(o.id); queueSync(); showOrders() }
+                }
             }
         }
+    }
+
+    private fun printOrder(orderId: Long) {
+        lifecycleScope.launch {
+            val text = PrinterUtil.invoiceText(db, orderId, prefs, prefs.thermalPaperChars)
+            printText("Invoice-$orderId", text)
+        }
+    }
+
+    private fun printText(jobName: String, text: String) {
+        if (prefs.printerMode == "THERMAL") {
+            if (prefs.thermalPrinterAddress.isBlank()) return toast("پہلے Thermal printer منتخب کریں")
+            lifecycleScope.launch {
+                val result = PrinterUtil.printThermal(this@MainActivity, prefs.thermalPrinterAddress, text)
+                if (result.isSuccess) toast("Print sent") else toast("Printer error: ${result.exceptionOrNull()?.message ?: "Unknown"}")
+            }
+        } else PrinterUtil.printRegular(this, jobName, text)
     }
 
     private fun shareOrder(orderId: Long) {
@@ -300,22 +509,128 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showReports() {
+        reset("Reports & Profit")
+        back()
+        lifecycleScope.launch {
+            val sales = db.orderDao().totalSales()
+            val gross = db.orderDao().grossProfit()
+            val expenses = db.expenseDao().total()
+            val receivable = db.customerDao().totalReceivable()
+            info("Total Sales: Rs ${money(sales)}\nGross Profit: Rs ${money(gross)}\nExpenses: Rs ${money(expenses)}\nNet after Expenses: Rs ${money(gross - expenses)}\nCustomer Receivable: Rs ${money(receivable)}")
+            val areas = db.orderDao().areas()
+            if (areas.isNotEmpty()) {
+                info("AREA-WISE SALES")
+                areas.forEach { area -> info("$area: Rs ${money(db.orderDao().areaSales(area))}") }
+            }
+            val low = db.productDao().lowStock()
+            if (low.isNotEmpty()) {
+                info("LOW STOCK")
+                low.forEach { p -> info("${p.name}: ${p.stockQty} ${p.unit}") }
+            }
+        }
+    }
+
+    private fun showExpenses() {
+        reset("Expenses")
+        back()
+        button("+ Add Expense") { showAddExpense() }
+        lifecycleScope.launch {
+            val expenses = db.expenseDao().all()
+            info("Total Expenses: Rs ${money(expenses.sumOf { it.amount })}")
+            expenses.forEach { e -> info("${e.title} — Rs ${money(e.amount)}\n${e.areaName} • ${e.bookerName} • ${e.paymentType}") }
+        }
+    }
+
+    private fun showAddExpense() {
+        reset("Add Expense")
+        back { showExpenses() }
+        val title = edit("Expense title")
+        val amount = edit("Amount", numeric = true)
+        val payment = spinner("Payment", listOf("CASH", "BANK", "ONLINE"))
+        val area = edit("Area")
+        area.setText(prefs.deviceAreaName)
+        val notes = edit("Notes")
+        button("Save Expense") {
+            val a = txt(amount).toDoubleOrNull()
+            if (txt(title).isBlank() || a == null || a <= 0) return@button toast("Expense اور amount درست درج کریں")
+            lifecycleScope.launch {
+                db.expenseDao().insert(ExpenseEntity(
+                    title = txt(title), amount = a, paymentType = payment.selectedItem.toString(),
+                    areaName = txt(area), bookerName = prefs.deviceBookerName, notes = txt(notes)
+                ))
+                queueSync()
+                showExpenses()
+            }
+        }
+    }
+
+    private fun showPrinterSettings() {
+        reset("Printer Settings")
+        back()
+        val mode = spinner("Printer type", listOf("REGULAR", "THERMAL"))
+        mode.setSelection(if (prefs.printerMode == "THERMAL") 1 else 0)
+        val paper = spinner("Thermal paper", listOf("58mm / 2 inch", "80mm / 3 inch"))
+        paper.setSelection(if (prefs.thermalPaperChars >= 48) 1 else 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !PrinterUtil.hasBluetoothPermission(this)) {
+            info("Thermal printer دیکھنے کے لیے Bluetooth permission دیں۔")
+            button("Allow Bluetooth Printer") { bluetoothPermission.launch(Manifest.permission.BLUETOOTH_CONNECT) }
+        } else {
+            val devices = PrinterUtil.pairedThermalDevices(this)
+            if (devices.isEmpty()) info("کوئی paired Bluetooth device نہیں ملا۔ پہلے Android Bluetooth settings میں thermal printer pair کریں۔")
+            val labels = if (devices.isEmpty()) listOf("No paired printer") else devices.map { "${it.name} — ${it.address}" }
+            val printer = spinner("Paired thermal printer", labels)
+            if (devices.isNotEmpty()) {
+                val oldIndex = devices.indexOfFirst { it.address == prefs.thermalPrinterAddress }
+                if (oldIndex >= 0) printer.setSelection(oldIndex)
+            }
+            button("Save Printer Settings") {
+                prefs.printerMode = mode.selectedItem.toString()
+                prefs.thermalPaperChars = if (paper.selectedItemPosition == 1) 48 else 32
+                if (devices.isNotEmpty()) prefs.thermalPrinterAddress = devices[printer.selectedItemPosition].address
+                toast("Printer settings saved")
+                showDashboard()
+            }
+            if (devices.isNotEmpty()) button("Thermal Test Print") {
+                prefs.thermalPrinterAddress = devices[printer.selectedItemPosition].address
+                lifecycleScope.launch {
+                    val result = PrinterUtil.printThermal(this@MainActivity, prefs.thermalPrinterAddress, "${prefs.businessName}\nTHERMAL PRINTER TEST\nArea: ${prefs.deviceAreaName}\nBooker: ${prefs.deviceBookerName}\n\n")
+                    if (result.isSuccess) toast("Test print sent") else toast("Printer error")
+                }
+            }
+        }
+        info("REGULAR mode Android print dialog کھولتا ہے؛ وہاں A4/A5, Wi-Fi یا installed printer service منتخب کی جا سکتی ہے۔ THERMAL mode paired Bluetooth ESC/POS printer کو direct receipt بھیجتا ہے۔")
+    }
+
     private fun showSettings() {
         reset("Settings & Privacy")
         back()
-        lifecycleScope.launch {
-            val user = db.userDao().byId(prefs.currentUserId)
-            info("Current role: ${user?.role ?: ""}")
-            button(if (prefs.purchaseRatesUnlocked) "Hide Purchase Rates" else "Unlock Purchase Rates") {
-                if (user?.role != "OWNER" && user?.role != "ORDER_BOOKER") return@button toast("اجازت نہیں ہے")
-                if (prefs.purchaseRatesUnlocked) {
-                    prefs.purchaseRatesUnlocked = false
-                    toast("Purchase rates hidden")
-                    showSettings()
-                } else showPinDialog()
-            }
-            if (user?.role == "OWNER") button("Add Order Booker") { showAddOrderBooker() }
-            info("Invoice CSV کو Vyapar یا دوسری billing app میں Share/Import کیا جا سکتا ہے۔ Direct API connector API access ملنے پر شامل کیا جا سکتا ہے۔")
+        info("Business: ${prefs.businessName}\nCompany ID: ${prefs.businessId}\nDevice: ${prefs.deviceId.take(8)}\nBooker: ${prefs.deviceBookerName}\nArea: ${prefs.deviceAreaName}")
+        button(if (prefs.purchaseRatesUnlocked) "Hide Purchase Rates" else "Unlock Purchase Rates") {
+            if (prefs.purchaseRatesUnlocked) {
+                prefs.purchaseRatesUnlocked = false
+                toast("Purchase rates hidden")
+                showSettings()
+            } else showPinDialog()
+        }
+        button("Change This Device Booker / Area") { showDeviceProfile() }
+        button("Business Profile") { showBusinessProfile() }
+        info("Purchase rates PIN سے محفوظ ہیں۔ Order data Booker + Area + Device کے ساتھ محفوظ ہوتا ہے، جبکہ Customers/Products Company level پر shared رہتے ہیں۔")
+    }
+
+    private fun showBusinessProfile() {
+        reset("Business Profile")
+        back { showSettings() }
+        val name = edit("Business name"); name.setText(prefs.businessName)
+        val phone = edit("Phone"); phone.setText(prefs.businessPhone)
+        val address = edit("Address"); address.setText(prefs.businessAddress)
+        button("Save Business Profile") {
+            prefs.businessName = txt(name)
+            prefs.businessPhone = txt(phone)
+            prefs.businessAddress = txt(address)
+            queueSync()
+            showSettings()
         }
     }
 
@@ -338,50 +653,34 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showAddOrderBooker() {
-        reset("Add Order Booker")
-        back { showSettings() }
-        var photoUri: String? = null
-        val photo = image(null, 180)
-        root.addView(photo)
-        button("Choose Order Booker photo") {
-            photoCallback = { photoUri = it; photo.setImageURI(Uri.parse(it)) }
-            photoPicker.launch(arrayOf("image/*"))
-        }
-        val name = edit("Full name")
-        val username = edit("Username")
-        val password = edit("Password", password = true)
-        button("Create Order Booker") {
-            if (txt(name).isBlank() || txt(username).isBlank() || txt(password).length < 4) return@button toast("تمام معلومات درست درج کریں")
-            lifecycleScope.launch {
-                if (db.userDao().byUsername(txt(username)) != null) return@launch toast("Username پہلے سے موجود ہے")
-                db.userDao().insert(UserEntity(name = txt(name), username = txt(username), passwordHash = Security.sha256(txt(password)), role = "ORDER_BOOKER", photoUri = photoUri))
-                toast("Order Booker account بن گیا")
-                showSettings()
-            }
-        }
-    }
-
     private fun showSync() {
         reset("Online Sync")
         back()
-        info("آف لائن data device میں محفوظ رہتا ہے۔ HTTPS server URL اور token دینے پر pending data sync ہوگا۔")
+        info("تمام phones پر Company ID, Sync URL اور token ایک جیسے رکھیں۔ Offline entries device میں محفوظ رہیں گی اور internet آنے پر exchange sync ہوگا۔")
         val url = edit("HTTPS Sync Server URL")
         url.setText(prefs.syncBaseUrl)
         val token = edit("Sync token", password = true)
         token.setText(prefs.syncToken)
-        button("Save & Sync") {
+        button("Save & Sync Now") {
             prefs.syncBaseUrl = txt(url)
             prefs.syncToken = txt(token)
             queueSync()
-            toast("Sync settings محفوظ")
+            toast("Sync queued")
         }
     }
 
     private fun queueSync() {
         val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
         val request = OneTimeWorkRequestBuilder<SyncWorker>().setConstraints(constraints).build()
-        WorkManager.getInstance(this).enqueueUniqueWork("order-sync", ExistingWorkPolicy.REPLACE, request)
+        WorkManager.getInstance(this).enqueueUniqueWork("company-order-sync", ExistingWorkPolicy.REPLACE, request)
+    }
+
+    private fun spinner(label: String, items: List<String>): Spinner {
+        root.addView(TextView(this).apply { text = label; textSize = 15f; setPadding(0, dp(8), 0, 0) })
+        val s = Spinner(this)
+        s.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        root.addView(s, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+        return s
     }
 
     private fun back(action: (() -> Unit)? = null) {
