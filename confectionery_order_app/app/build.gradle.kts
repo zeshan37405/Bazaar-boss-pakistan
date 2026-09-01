@@ -16,9 +16,22 @@ android {
         versionName = "3.0.0"
     }
 
+    signingConfigs {
+        create("ciTest") {
+            storeFile = rootProject.file("ci-test-signing.jks")
+            storePassword = "ConfectioneryTest2026"
+            keyAlias = "confectionerytest"
+            keyPassword = "ConfectioneryTest2026"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("ciTest")
+        }
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("ciTest")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
