@@ -1,8 +1,8 @@
-name: Build Confectionery APK
+name: Build Confectionery APK V2
 
 on:
   push:
-    branches: [confectionery-apk-build]
+    branches: [confectionery-v2-multiuser-print]
   workflow_dispatch:
 
 jobs:
