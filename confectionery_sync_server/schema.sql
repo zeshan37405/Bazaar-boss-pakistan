@@ -57,7 +57,25 @@ CREATE TABLE IF NOT EXISTS expenses (
     PRIMARY KEY (business_pk, sync_id)
 );
 
+CREATE TABLE IF NOT EXISTS payments (
+    business_pk BIGINT NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
+    sync_id TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    updated_at BIGINT NOT NULL,
+    PRIMARY KEY (business_pk, sync_id)
+);
+
+CREATE TABLE IF NOT EXISTS stock_movements (
+    business_pk BIGINT NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
+    sync_id TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    updated_at BIGINT NOT NULL,
+    PRIMARY KEY (business_pk, sync_id)
+);
+
 CREATE INDEX IF NOT EXISTS customers_business_updated ON customers (business_pk, updated_at);
 CREATE INDEX IF NOT EXISTS products_business_updated ON products (business_pk, updated_at);
 CREATE INDEX IF NOT EXISTS orders_business_updated ON orders (business_pk, updated_at);
 CREATE INDEX IF NOT EXISTS expenses_business_updated ON expenses (business_pk, updated_at);
+CREATE INDEX IF NOT EXISTS payments_business_updated ON payments (business_pk, updated_at);
+CREATE INDEX IF NOT EXISTS stock_movements_business_updated ON stock_movements (business_pk, updated_at);
