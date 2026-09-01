@@ -13,11 +13,16 @@ object ExportUtil {
         val items = db.orderDao().items(orderId)
         val file = File(context.cacheDir, "${order.invoiceNo.replace('/', '-')}.csv")
         file.bufferedWriter().use { w ->
-            w.appendLine("Invoice,Date,Customer,Shop,Phone,Product,Qty,Unit,Sale Rate,Line Total")
+            w.appendLine("Invoice,Date,Document,Status,Area,Booker,Customer,Shop,Phone,Product,Qty,Unit,Sale Rate,Tax %,Line Total")
             val date = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date(order.createdAt))
+            fun esc(s: String) = "\"${s.replace("\"", "\"\"")}\""
             items.forEach { i ->
-                fun esc(s:String) = "\"${s.replace("\"", "\"\"")}\""
-                w.appendLine(listOf(order.invoiceNo,date,customer?.name.orEmpty(),customer?.shopName.orEmpty(),customer?.phone.orEmpty(),i.productName,i.qty.toString(),i.unit,i.saleRate.toString(),i.lineTotal.toString()).joinToString(",") { esc(it) })
+                val row = listOf(
+                    order.invoiceNo, date, order.documentType, order.status, order.areaName, order.bookerName,
+                    customer?.name.orEmpty(), customer?.shopName.orEmpty(), customer?.phone.orEmpty(),
+                    i.productName, i.qty.toString(), i.unit, i.saleRate.toString(), i.taxPercent.toString(), i.lineTotal.toString()
+                )
+                w.appendLine(row.joinToString(",") { esc(it) })
             }
         }
         return file
