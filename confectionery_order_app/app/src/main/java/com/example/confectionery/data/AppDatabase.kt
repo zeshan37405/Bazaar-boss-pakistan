@@ -11,9 +11,11 @@ import androidx.room.RoomDatabase
         ProductUnitPriceEntity::class,
         OrderEntity::class,
         OrderItemEntity::class,
-        ExpenseEntity::class
+        ExpenseEntity::class,
+        PaymentEntity::class,
+        StockMovementEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -23,4 +25,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun productUnitPriceDao(): ProductUnitPriceDao
     abstract fun orderDao(): OrderDao
     abstract fun expenseDao(): ExpenseDao
+    abstract fun paymentDao(): PaymentDao
+    abstract fun stockMovementDao(): StockMovementDao
 }
