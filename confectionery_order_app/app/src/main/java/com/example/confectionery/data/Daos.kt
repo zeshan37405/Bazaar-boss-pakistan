@@ -8,8 +8,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1") suspend fun byId(id: Long): UserEntity?
     @Query("SELECT * FROM users ORDER BY id") suspend fun all(): List<UserEntity>
     @Query("SELECT COUNT(*) FROM users") suspend fun count(): Int
-    @Insert suspend fun insert(user: UserEntity): Long
-    @Insert suspend fun insertAll(users: List<UserEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(user: UserEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(users: List<UserEntity>)
+    @Query("DELETE FROM users") suspend fun deleteAll()
 }
 
 @Dao
@@ -18,9 +19,10 @@ interface CustomerDao {
     @Query("SELECT * FROM customers WHERE areaName=:area ORDER BY name") suspend fun byArea(area: String): List<CustomerEntity>
     @Query("SELECT * FROM customers WHERE id=:id LIMIT 1") suspend fun byId(id: Long): CustomerEntity?
     @Query("SELECT * FROM customers WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): CustomerEntity?
-    @Insert suspend fun insert(customer: CustomerEntity): Long
-    @Insert suspend fun insertAll(customers: List<CustomerEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(customer: CustomerEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(customers: List<CustomerEntity>)
     @Update suspend fun update(customer: CustomerEntity)
+    @Query("DELETE FROM customers") suspend fun deleteAll()
     @Query("UPDATE customers SET balance = balance + :amount, synced = 0, updatedAt = :now WHERE id=:id") suspend fun adjustBalance(id: Long, amount: Double, now: Long = System.currentTimeMillis())
     @Query("SELECT * FROM customers WHERE synced = 0") suspend fun pending(): List<CustomerEntity>
     @Query("UPDATE customers SET synced = 1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
@@ -35,9 +37,10 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id=:id LIMIT 1") suspend fun byId(id: Long): ProductEntity?
     @Query("SELECT * FROM products WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): ProductEntity?
     @Query("SELECT * FROM products WHERE stockQty <= minStockQty AND minStockQty > 0 ORDER BY stockQty") suspend fun lowStock(): List<ProductEntity>
-    @Insert suspend fun insert(product: ProductEntity): Long
-    @Insert suspend fun insertAll(products: List<ProductEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(product: ProductEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(products: List<ProductEntity>)
     @Update suspend fun update(product: ProductEntity)
+    @Query("DELETE FROM products") suspend fun deleteAll()
     @Query("UPDATE products SET stockQty = stockQty + :delta, synced = 0, updatedAt = :now WHERE id=:id") suspend fun adjustStock(id: Long, delta: Double, now: Long = System.currentTimeMillis())
     @Query("SELECT * FROM products WHERE synced = 0") suspend fun pending(): List<ProductEntity>
     @Query("UPDATE products SET synced = 1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
@@ -47,15 +50,17 @@ interface ProductDao {
 interface ProductUnitPriceDao {
     @Query("SELECT * FROM product_unit_prices ORDER BY productId, conversionToBase") suspend fun all(): List<ProductUnitPriceEntity>
     @Query("SELECT * FROM product_unit_prices WHERE productId=:productId AND enabled=1 ORDER BY conversionToBase") suspend fun forProduct(productId: Long): List<ProductUnitPriceEntity>
-    @Insert suspend fun insert(value: ProductUnitPriceEntity): Long
-    @Insert suspend fun insertAll(values: List<ProductUnitPriceEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(value: ProductUnitPriceEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(values: List<ProductUnitPriceEntity>)
     @Update suspend fun update(value: ProductUnitPriceEntity)
     @Query("DELETE FROM product_unit_prices WHERE productId=:productId") suspend fun deleteForProduct(productId: Long)
+    @Query("DELETE FROM product_unit_prices") suspend fun deleteAll()
 }
 
 @Dao
 interface OrderDao {
     @Query("SELECT * FROM orders ORDER BY createdAt DESC") suspend fun all(): List<OrderEntity>
+    @Query("SELECT * FROM order_items ORDER BY orderId, id") suspend fun allItems(): List<OrderItemEntity>
     @Query("SELECT * FROM orders WHERE areaName=:area ORDER BY createdAt DESC") suspend fun byArea(area: String): List<OrderEntity>
     @Query("SELECT * FROM orders WHERE bookerName=:booker ORDER BY createdAt DESC") suspend fun byBooker(booker: String): List<OrderEntity>
     @Query("SELECT * FROM orders WHERE areaName=:area AND status=:status ORDER BY createdAt DESC") suspend fun byAreaAndStatus(area: String, status: String): List<OrderEntity>
@@ -64,11 +69,12 @@ interface OrderDao {
     @Query("SELECT * FROM orders WHERE id=:id LIMIT 1") suspend fun byId(id: Long): OrderEntity?
     @Query("SELECT * FROM orders WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): OrderEntity?
     @Query("SELECT * FROM order_items WHERE orderId=:orderId") suspend fun items(orderId: Long): List<OrderItemEntity>
-    @Query("SELECT * FROM order_items ORDER BY orderId, id") suspend fun allItems(): List<OrderItemEntity>
-    @Insert suspend fun insert(order: OrderEntity): Long
-    @Insert suspend fun insertAll(orders: List<OrderEntity>)
-    @Insert suspend fun insertItems(items: List<OrderItemEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(order: OrderEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(orders: List<OrderEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertItems(items: List<OrderItemEntity>)
     @Update suspend fun update(order: OrderEntity)
+    @Query("DELETE FROM order_items") suspend fun deleteAllItems()
+    @Query("DELETE FROM orders") suspend fun deleteAllOrders()
 
     @Transaction
     suspend fun insertOrderWithItems(order: OrderEntity, items: List<OrderItemEntity>): Long {
@@ -90,9 +96,10 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses ORDER BY createdAt DESC") suspend fun all(): List<ExpenseEntity>
     @Query("SELECT * FROM expenses WHERE areaName=:area ORDER BY createdAt DESC") suspend fun byArea(area: String): List<ExpenseEntity>
     @Query("SELECT * FROM expenses WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): ExpenseEntity?
-    @Insert suspend fun insert(expense: ExpenseEntity): Long
-    @Insert suspend fun insertAll(expenses: List<ExpenseEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(expense: ExpenseEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(expenses: List<ExpenseEntity>)
     @Update suspend fun update(expense: ExpenseEntity)
+    @Query("DELETE FROM expenses") suspend fun deleteAll()
     @Query("SELECT COALESCE(SUM(amount),0) FROM expenses") suspend fun total(): Double
     @Query("SELECT * FROM expenses WHERE synced=0 ORDER BY createdAt") suspend fun pending(): List<ExpenseEntity>
     @Query("UPDATE expenses SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
