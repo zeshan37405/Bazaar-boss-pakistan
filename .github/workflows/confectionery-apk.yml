@@ -15,6 +15,9 @@ jobs:
       - name: Restore stable prototype signing key
         run: base64 -d .ci/confectionery-test-signing.jks.b64 > confectionery_order_app/ci-test-signing.jks
 
+      - name: Wire V4 backup features
+        run: python3 .ci/patch_v4_backup.py
+
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
