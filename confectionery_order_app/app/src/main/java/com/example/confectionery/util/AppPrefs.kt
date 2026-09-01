@@ -10,6 +10,18 @@ class AppPrefs(context: Context) {
         get() = p.getLong("user_id", 0)
         set(v) = p.edit().putLong("user_id", v).apply()
 
+    var currentUserSyncId: String
+        get() = p.getString("user_sync_id", "") ?: ""
+        set(v) = p.edit().putString("user_sync_id", v).apply()
+
+    var currentUserLogin: String
+        get() = p.getString("user_login", "") ?: ""
+        set(v) = p.edit().putString("user_login", v.trim()).apply()
+
+    var currentUserRole: String
+        get() = p.getString("user_role", "") ?: ""
+        set(v) = p.edit().putString("user_role", v).apply()
+
     var purchaseRatesUnlocked: Boolean
         get() = p.getBoolean("purchase_unlocked", false)
         set(v) = p.edit().putBoolean("purchase_unlocked", v).apply()
@@ -65,7 +77,7 @@ class AppPrefs(context: Context) {
 
     var syncBaseUrl: String
         get() = p.getString("sync_url", "") ?: ""
-        set(v) = p.edit().putString("sync_url", v.trimEnd('/')).apply()
+        set(v) = p.edit().putString("sync_url", v.trim().trimEnd('/')).apply()
 
     var syncToken: String
         get() = p.getString("sync_token", "") ?: ""
@@ -98,4 +110,16 @@ class AppPrefs(context: Context) {
     var lastBackupAt: Long
         get() = p.getLong("last_backup_at", 0L)
         set(v) = p.edit().putLong("last_backup_at", v).apply()
+
+    fun clearSession() {
+        companyLoggedIn = false
+        purchaseRatesUnlocked = false
+        currentUserId = 0L
+        currentUserSyncId = ""
+        currentUserLogin = ""
+        currentUserRole = ""
+        deviceBookerName = ""
+        deviceAreaName = ""
+        syncToken = ""
+    }
 }
