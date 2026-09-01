@@ -1,8 +1,8 @@
-name: Build Confectionery APK V3 Stable
+name: Build Confectionery APK V4 Backup
 
 on:
   push:
-    branches: [confectionery-v3-offline-catalog-units]
+    branches: [confectionery-v4-backup-professional]
   workflow_dispatch:
 
 jobs:
@@ -31,11 +31,11 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug --stacktrace
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V3.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V4.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V3-Stable-APK
-          path: Confectionery-Order-Book-V3.apk
+          name: Confectionery-Order-Book-V4-Backup-APK
+          path: Confectionery-Order-Book-V4.apk
           if-no-files-found: error
