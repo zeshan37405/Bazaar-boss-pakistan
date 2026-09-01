@@ -26,7 +26,9 @@ interface CustomerDao {
 
 @Dao
 interface ProductDao {
-    @Query("SELECT * FROM products ORDER BY name") suspend fun all(): List<ProductEntity>
+    @Query("SELECT * FROM products ORDER BY category, name") suspend fun all(): List<ProductEntity>
+    @Query("SELECT * FROM products WHERE category=:category ORDER BY name") suspend fun byCategory(category: String): List<ProductEntity>
+    @Query("SELECT DISTINCT category FROM products WHERE category <> '' ORDER BY category") suspend fun categories(): List<String>
     @Query("SELECT * FROM products WHERE id=:id LIMIT 1") suspend fun byId(id: Long): ProductEntity?
     @Query("SELECT * FROM products WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): ProductEntity?
     @Query("SELECT * FROM products WHERE stockQty <= minStockQty AND minStockQty > 0 ORDER BY stockQty") suspend fun lowStock(): List<ProductEntity>
@@ -35,6 +37,15 @@ interface ProductDao {
     @Query("UPDATE products SET stockQty = stockQty + :delta, synced = 0, updatedAt = :now WHERE id=:id") suspend fun adjustStock(id: Long, delta: Double, now: Long = System.currentTimeMillis())
     @Query("SELECT * FROM products WHERE synced = 0") suspend fun pending(): List<ProductEntity>
     @Query("UPDATE products SET synced = 1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
+}
+
+@Dao
+interface ProductUnitPriceDao {
+    @Query("SELECT * FROM product_unit_prices WHERE productId=:productId AND enabled=1 ORDER BY conversionToBase") suspend fun forProduct(productId: Long): List<ProductUnitPriceEntity>
+    @Insert suspend fun insert(value: ProductUnitPriceEntity): Long
+    @Insert suspend fun insertAll(values: List<ProductUnitPriceEntity>)
+    @Update suspend fun update(value: ProductUnitPriceEntity)
+    @Query("DELETE FROM product_unit_prices WHERE productId=:productId") suspend fun deleteForProduct(productId: Long)
 }
 
 @Dao
