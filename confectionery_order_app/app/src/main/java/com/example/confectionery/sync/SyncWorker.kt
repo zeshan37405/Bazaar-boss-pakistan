@@ -18,10 +18,18 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
         val prefs = AppPrefs(applicationContext)
         if (prefs.syncBaseUrl.isBlank() || prefs.syncToken.isBlank() || prefs.businessId.isBlank()) return Result.success()
         val db = (applicationContext as OrderBookApp).db
+        val users = db.userDao().pending()
         val customers = db.customerDao().pending()
         val products = db.productDao().pending()
         val orders = db.orderDao().pending()
         val expenses = db.expenseDao().pending()
+
+        val userArr = JSONArray().apply {
+            users.forEach { u -> put(JSONObject()
+                .put("sync_id", u.syncId).put("name", u.name).put("username", u.username)
+                .put("email", u.email).put("password_hash", u.passwordHash).put("role", u.role)
+                .put("area_name", u.areaName).put("active", u.active).put("updated_at", u.updatedAt)) }
+        }
 
         val customerArr = JSONArray().apply {
             customers.forEach { c -> put(JSONObject()
@@ -59,6 +67,7 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             orderArr.put(JSONObject().put("sync_id", order.syncId).put("invoice_no", order.invoiceNo)
                 .put("customer_sync_id", order.customerSyncId).put("booker_name", order.bookerName)
                 .put("area_name", order.areaName).put("device_id", order.deviceId)
+                .put("booked_by_user_sync_id", prefs.currentUserSyncId)
                 .put("sale_total", order.saleTotal).put("purchase_total", order.purchaseTotal)
                 .put("discount", order.discount).put("tax_total", order.taxTotal)
                 .put("payment_type", order.paymentType).put("notes", order.notes)
@@ -74,18 +83,20 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
 
         return try {
             val body = JSONObject()
-                .put("business_id", prefs.businessId).put("business_password_hash", prefs.businessPasswordHash)
+                .put("business_id", prefs.businessId)
                 .put("business_name", prefs.businessName).put("business_phone", prefs.businessPhone)
                 .put("business_address", prefs.businessAddress).put("device_id", prefs.deviceId)
-                .put("booker_name", prefs.deviceBookerName).put("area_name", prefs.deviceAreaName)
-                .put("customers", customerArr).put("products", productArr).put("orders", orderArr).put("expenses", expenseArr)
+                .put("current_user_sync_id", prefs.currentUserSyncId)
+                .put("users", userArr).put("customers", customerArr).put("products", productArr)
+                .put("orders", orderArr).put("expenses", expenseArr)
                 .toString().toRequestBody("application/json".toMediaType())
             val req = Request.Builder().url("${prefs.syncBaseUrl}/api/sync/exchange")
                 .header("Authorization", "Bearer ${prefs.syncToken}").post(body).build()
-            val responseText = OkHttpClient().newCall(req).execute().use { r ->
-                if (!r.isSuccessful) return Result.retry()
+            val responseText = OkHttpClient.Builder().build().newCall(req).execute().use { r ->
+                if (!r.isSuccessful) return if (r.code in 401..403) Result.failure() else Result.retry()
                 r.body?.string().orEmpty()
             }
+            if (users.isNotEmpty()) db.userDao().markSynced(users.map { it.id })
             if (customers.isNotEmpty()) db.customerDao().markSynced(customers.map { it.id })
             if (products.isNotEmpty()) db.productDao().markSynced(products.map { it.id })
             if (orders.isNotEmpty()) db.orderDao().markSynced(orders.map { it.id })
@@ -103,13 +114,43 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             b.optString("address").takeIf { it.isNotBlank() }?.let { prefs.businessAddress = it }
         }
 
+        val remoteUsers = root.optJSONArray("users") ?: JSONArray()
+        for (n in 0 until remoteUsers.length()) {
+            val j = remoteUsers.getJSONObject(n)
+            val syncId = j.optString("sync_id")
+            if (syncId.isBlank()) continue
+            val old = db.userDao().bySyncId(syncId)
+            val value = UserEntity(
+                id = old?.id ?: 0,
+                name = j.optString("name"),
+                username = j.optString("username"),
+                email = j.optString("email"),
+                passwordHash = old?.passwordHash.orEmpty(),
+                role = j.optString("role", "ORDER_BOOKER"),
+                areaName = j.optString("area_name"),
+                photoUri = old?.photoUri,
+                active = j.optBoolean("active", true),
+                syncId = syncId,
+                synced = true,
+                updatedAt = j.optLong("updated_at", System.currentTimeMillis())
+            )
+            val localId = if (old == null) db.userDao().insert(value) else { db.userDao().update(value); old.id }
+            if (syncId == prefs.currentUserSyncId) {
+                prefs.currentUserId = localId
+                prefs.currentUserRole = value.role
+                prefs.deviceBookerName = value.name
+                prefs.deviceAreaName = value.areaName
+            }
+        }
+
         val customers = root.optJSONArray("customers") ?: JSONArray()
         for (n in 0 until customers.length()) {
             val j = customers.getJSONObject(n); val syncId = j.optString("sync_id"); if (syncId.isBlank()) continue
             val old = db.customerDao().bySyncId(syncId)
             val value = CustomerEntity(id = old?.id ?: 0, name = j.optString("name"), phone = j.optString("phone"),
-                shopName = j.optString("shop_name"), address = j.optString("address"), creditLimit = j.optDouble("credit_limit", 0.0),
-                balance = j.optDouble("balance", 0.0), areaName = j.optString("area_name"), syncId = syncId, synced = true,
+                shopName = j.optString("shop_name"), address = j.optString("address"), photoUri = old?.photoUri,
+                creditLimit = j.optDouble("credit_limit", 0.0), balance = j.optDouble("balance", 0.0),
+                areaName = j.optString("area_name"), syncId = syncId, synced = true,
                 updatedAt = j.optLong("updated_at", System.currentTimeMillis()))
             if (old == null) db.customerDao().insert(value) else db.customerDao().update(value)
         }
@@ -119,7 +160,8 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             val j = products.getJSONObject(n); val syncId = j.optString("sync_id"); if (syncId.isBlank()) continue
             val old = db.productDao().bySyncId(syncId)
             val value = ProductEntity(id = old?.id ?: 0, name = j.optString("name"), sku = j.optString("sku"), category = j.optString("category"),
-                unit = j.optString("unit", "PIECE"), purchaseRate = j.optDouble("purchase_rate", 0.0), saleRate = j.optDouble("sale_rate", 0.0),
+                unit = j.optString("unit", "PIECE"), photoUri = old?.photoUri,
+                purchaseRate = j.optDouble("purchase_rate", 0.0), saleRate = j.optDouble("sale_rate", 0.0),
                 wholesaleRate = j.optDouble("wholesale_rate", 0.0), superWholesaleRate = j.optDouble("super_wholesale_rate", 0.0),
                 stockQty = j.optDouble("stock_qty", 0.0), minStockQty = j.optDouble("min_stock_qty", 0.0), barcode = j.optString("barcode"),
                 batchNo = j.optString("batch_no"), expiryDate = j.optString("expiry_date"), taxPercent = j.optDouble("tax_percent", 0.0),
@@ -145,9 +187,11 @@ class SyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             val j = orders.getJSONObject(n); val syncId = j.optString("sync_id"); if (syncId.isBlank()) continue
             val existing = db.orderDao().bySyncId(syncId)
             val customerSyncId = j.optString("customer_sync_id")
+            val userSyncId = j.optString("booked_by_user_sync_id")
             val value = OrderEntity(id = existing?.id ?: 0, invoiceNo = j.optString("invoice_no"),
                 customerId = db.customerDao().bySyncId(customerSyncId)?.id ?: 0, customerSyncId = customerSyncId,
-                bookedByUserId = existing?.bookedByUserId ?: 0, bookerName = j.optString("booker_name"), areaName = j.optString("area_name"),
+                bookedByUserId = db.userDao().bySyncId(userSyncId)?.id ?: existing?.bookedByUserId ?: 0,
+                bookerName = j.optString("booker_name"), areaName = j.optString("area_name"),
                 deviceId = j.optString("device_id"), syncId = syncId, saleTotal = j.optDouble("sale_total", 0.0),
                 purchaseTotal = j.optDouble("purchase_total", 0.0), discount = j.optDouble("discount", 0.0), taxTotal = j.optDouble("tax_total", 0.0),
                 paymentType = j.optString("payment_type", "CREDIT"), notes = j.optString("notes"), documentType = j.optString("document_type", "ORDER"),
