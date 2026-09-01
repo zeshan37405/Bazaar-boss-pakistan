@@ -4,8 +4,7 @@ import androidx.room.*
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users WHERE username = :username AND active = 1 LIMIT 1")
-    suspend fun byUsername(username: String): UserEntity?
+    @Query("SELECT * FROM users WHERE username = :username AND active = 1 LIMIT 1") suspend fun byUsername(username: String): UserEntity?
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1") suspend fun byId(id: Long): UserEntity?
     @Query("SELECT COUNT(*) FROM users") suspend fun count(): Int
     @Insert suspend fun insert(user: UserEntity): Long
@@ -72,7 +71,9 @@ interface OrderDao {
 interface ExpenseDao {
     @Query("SELECT * FROM expenses ORDER BY createdAt DESC") suspend fun all(): List<ExpenseEntity>
     @Query("SELECT * FROM expenses WHERE areaName=:area ORDER BY createdAt DESC") suspend fun byArea(area: String): List<ExpenseEntity>
+    @Query("SELECT * FROM expenses WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): ExpenseEntity?
     @Insert suspend fun insert(expense: ExpenseEntity): Long
+    @Update suspend fun update(expense: ExpenseEntity)
     @Query("SELECT COALESCE(SUM(amount),0) FROM expenses") suspend fun total(): Double
     @Query("SELECT * FROM expenses WHERE synced=0 ORDER BY createdAt") suspend fun pending(): List<ExpenseEntity>
     @Query("UPDATE expenses SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
