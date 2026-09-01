@@ -1,6 +1,7 @@
 package com.example.confectionery.util
 
 import android.content.Context
+import com.example.confectionery.BuildConfig
 import java.util.UUID
 
 class AppPrefs(context: Context) {
@@ -76,7 +77,7 @@ class AppPrefs(context: Context) {
         }
 
     var syncBaseUrl: String
-        get() = p.getString("sync_url", "") ?: ""
+        get() = (p.getString("sync_url", "") ?: "").ifBlank { BuildConfig.SYNC_BASE_URL }.trimEnd('/')
         set(v) = p.edit().putString("sync_url", v.trim().trimEnd('/')).apply()
 
     var syncToken: String
