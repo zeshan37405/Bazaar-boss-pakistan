@@ -62,9 +62,9 @@ interface OrderDao {
     @Query("UPDATE orders SET status=:status, synced=0 WHERE id=:id") suspend fun setStatus(id: Long, status: String)
     @Query("SELECT * FROM orders WHERE synced = 0 ORDER BY createdAt") suspend fun pending(): List<OrderEntity>
     @Query("UPDATE orders SET synced = 1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
-    @Query("SELECT COALESCE(SUM(saleTotal),0) FROM orders WHERE status <> 'CANCELLED'") suspend fun totalSales(): Double
-    @Query("SELECT COALESCE(SUM(saleTotal-purchaseTotal-discount),0) FROM orders WHERE status <> 'CANCELLED'") suspend fun grossProfit(): Double
-    @Query("SELECT COALESCE(SUM(saleTotal),0) FROM orders WHERE areaName=:area AND status <> 'CANCELLED'") suspend fun areaSales(area: String): Double
+    @Query("SELECT COALESCE(SUM(saleTotal),0) FROM orders WHERE status = 'BILLED'") suspend fun totalSales(): Double
+    @Query("SELECT COALESCE(SUM(saleTotal-purchaseTotal-discount),0) FROM orders WHERE status = 'BILLED'") suspend fun grossProfit(): Double
+    @Query("SELECT COALESCE(SUM(saleTotal),0) FROM orders WHERE areaName=:area AND status = 'BILLED'") suspend fun areaSales(area: String): Double
 }
 
 @Dao
