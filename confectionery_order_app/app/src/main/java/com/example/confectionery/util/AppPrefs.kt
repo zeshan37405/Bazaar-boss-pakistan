@@ -86,4 +86,16 @@ class AppPrefs(context: Context) {
     var thermalPaperChars: Int
         get() = p.getInt("thermal_chars", 32)
         set(v) = p.edit().putInt("thermal_chars", v).apply()
+
+    var autoBackupEnabled: Boolean
+        get() = p.getBoolean("auto_backup_enabled", false)
+        set(v) = p.edit().putBoolean("auto_backup_enabled", v).apply()
+
+    var autoBackupUri: String
+        get() = p.getString("auto_backup_uri", "") ?: ""
+        set(v) = p.edit().putString("auto_backup_uri", v).apply()
+
+    var lastBackupAt: Long
+        get() = p.getLong("last_backup_at", 0L)
+        set(v) = p.edit().putLong("last_backup_at", v).apply()
 }
