@@ -121,7 +121,7 @@ data class OrderItemEntity(
     val lineTotal: Double
 )
 
-@Entity(tableName = "expenses")
+@Entity(tableName = "expenses", indices = [Index(value = ["syncId"], unique = true)])
 data class ExpenseEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
@@ -129,6 +129,37 @@ data class ExpenseEntity(
     val paymentType: String = "CASH",
     val areaName: String = "",
     val bookerName: String = "",
+    val notes: String = "",
+    val createdAt: Long = System.currentTimeMillis(),
+    val syncId: String = UUID.randomUUID().toString(),
+    val synced: Boolean = false
+)
+
+@Entity(tableName = "payments", indices = [Index(value = ["syncId"], unique = true)])
+data class PaymentEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val customerId: Long,
+    val customerSyncId: String = "",
+    val amount: Double,
+    val direction: String = "RECEIVED",
+    val method: String = "CASH",
+    val notes: String = "",
+    val areaName: String = "",
+    val bookerName: String = "",
+    val createdAt: Long = System.currentTimeMillis(),
+    val syncId: String = UUID.randomUUID().toString(),
+    val synced: Boolean = false
+)
+
+@Entity(tableName = "stock_movements", indices = [Index(value = ["syncId"], unique = true)])
+data class StockMovementEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val productId: Long,
+    val productSyncId: String = "",
+    val movementType: String,
+    val qtyBase: Double,
+    val unitLabel: String = "",
+    val reference: String = "",
     val notes: String = "",
     val createdAt: Long = System.currentTimeMillis(),
     val syncId: String = UUID.randomUUID().toString(),
