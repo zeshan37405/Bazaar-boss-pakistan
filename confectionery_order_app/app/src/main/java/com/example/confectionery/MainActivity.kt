@@ -20,6 +20,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.*
+import com.example.confectionery.backup.AutoBackupWorker
 import com.example.confectionery.data.*
 import com.example.confectionery.sync.SyncWorker
 import com.example.confectionery.util.*
@@ -51,6 +52,51 @@ class MainActivity : AppCompatActivity() {
         uri ?: return@registerForActivityResult
         photoCallback?.invoke(uri)
         photoCallback = null
+    }
+
+    private val manualBackupCreator = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri: Uri? ->
+        uri ?: return@registerForActivityResult
+        lifecycleScope.launch {
+            runCatching { BackupManager.writeBackup(this@MainActivity, db, prefs, uri) }
+                .onSuccess { s -> toast("Backup محفوظ: ${s.products} items, ${s.orders} orders"); showBackup() }
+                .onFailure { toast("Backup failed: ${it.message ?: "Unknown error"}") }
+        }
+    }
+
+    private val autoBackupCreator = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri: Uri? ->
+        uri ?: return@registerForActivityResult
+        runCatching {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+        }
+        prefs.autoBackupUri = uri.toString()
+        prefs.autoBackupEnabled = true
+        lifecycleScope.launch {
+            runCatching { BackupManager.writeBackup(this@MainActivity, db, prefs, uri) }
+                .onSuccess { toast("Auto Backup فعال ہوگیا"); showBackup() }
+                .onFailure { toast("Auto Backup file نہیں لکھی جا سکی: ${it.message ?: "Error"}") }
+        }
+    }
+
+    private val backupRestorer = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+        uri ?: return@registerForActivityResult
+        AlertDialog.Builder(this)
+            .setTitle("Restore Full Backup")
+            .setMessage("موجودہ local data backup کے data سے replace ہوگا۔ جاری رکھیں؟")
+            .setPositiveButton("Restore") { _, _ ->
+                lifecycleScope.launch {
+                    runCatching { BackupManager.restoreBackup(this@MainActivity, db, prefs, uri) }
+                        .onSuccess { s ->
+                            toast("Restore مکمل: ${s.products} items, ${s.orders} orders")
+                            showCompanyLogin()
+                        }
+                        .onFailure { toast("Restore failed: ${it.message ?: "Invalid backup"}") }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private val bluetoothPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -95,8 +141,9 @@ class MainActivity : AppCompatActivity() {
     private fun showFirstStart() {
         reset("Confectionery Order Book")
         info("Offline-first order booking. ایک Company ID کے تحت shared items/customers، جبکہ ہر Booker اور Area کے orders الگ رہیں گے۔")
+        button("♻ Restore Full Backup File") { backupRestorer.launch(arrayOf("application/zip", "application/octet-stream", "*/*")) }
         button("Create New Business") { showCreateBusiness() }
-        button("Join Existing Business / Restore") { showJoinBusiness() }
+        button("Join Existing Business / Cloud Restore") { showJoinBusiness() }
     }
 
     private fun showCreateBusiness() {
@@ -137,9 +184,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showJoinBusiness() {
-        reset("Join Existing Business / Restore")
+        reset("Join Existing Business / Cloud Restore")
         back { showFirstStart() }
-        info("Company ID + password سے business join کریں۔ Cloud restore کے لیے وہی Sync Server URL اور token استعمال ہوں گے۔ Android backup دستیاب ہو تو local database/images بھی خود restore ہو سکتے ہیں۔")
+        info("Company ID + password سے business join کریں۔ Cloud restore کے لیے وہی Sync Server URL اور token استعمال ہوں گے۔ Full file backup ہو تو پچھلی screen سے Restore کریں۔")
         val businessId = edit("Company ID")
         val password = edit("Company password", password = true)
         val syncUrl = edit("HTTPS Sync Server URL")
@@ -179,8 +226,9 @@ class MainActivity : AppCompatActivity() {
             if (txt(id) != prefs.businessId || Security.sha256(txt(password)) != prefs.businessPasswordHash) return@button toast("Company ID یا password غلط ہے")
             prefs.companyLoggedIn = true
             prefs.purchaseRatesUnlocked = false
-            showDashboard()
+            if (prefs.deviceBookerName.isBlank() || prefs.deviceAreaName.isBlank()) showDeviceProfile() else showDashboard()
         }
+        button("♻ Restore Backup File") { backupRestorer.launch(arrayOf("application/zip", "application/octet-stream", "*/*")) }
     }
 
     private fun showDashboard() {
@@ -195,6 +243,7 @@ class MainActivity : AppCompatActivity() {
         button("📊 Reports & Profit") { showReports() }
         button("💸 Expenses") { showExpenses() }
         button("🖨 Printer / Thermal Printer") { showPrinterSettings() }
+        button("💾 Backup & Restore") { showBackup() }
         button("☁ Online Sync / Restore") { showSync() }
         button("⚙ Settings & Privacy") { showSettings() }
         button("Sign out") {
@@ -211,9 +260,18 @@ class MainActivity : AppCompatActivity() {
         val area = edit("Area / Route"); area.setText(prefs.deviceAreaName)
         button("Save Device Profile") {
             if (txt(booker).isBlank() || txt(area).isBlank()) return@button toast("Booker اور Area ضروری ہیں")
-            prefs.deviceBookerName = txt(booker)
-            prefs.deviceAreaName = txt(area)
-            showDashboard()
+            lifecycleScope.launch {
+                prefs.deviceBookerName = txt(booker)
+                prefs.deviceAreaName = txt(area)
+                if (prefs.currentUserId == 0L) {
+                    prefs.currentUserId = db.userDao().insert(UserEntity(
+                        name = txt(booker), username = "booker-${prefs.deviceId.take(8)}",
+                        passwordHash = prefs.businessPasswordHash, role = "ORDER_BOOKER"
+                    ))
+                }
+                queueAutoBackup()
+                showDashboard()
+            }
         }
     }
 
@@ -700,7 +758,7 @@ class MainActivity : AppCompatActivity() {
             button("Save Printer Settings") {
                 prefs.printerMode = mode.selectedItem.toString(); prefs.thermalPaperChars = if (paper.selectedItemPosition == 1) 48 else 32
                 if (devices.isNotEmpty()) prefs.thermalPrinterAddress = devices[printer.selectedItemPosition].address
-                toast("Printer settings saved"); showDashboard()
+                queueAutoBackup(); toast("Printer settings saved"); showDashboard()
             }
             if (devices.isNotEmpty()) button("Thermal Test Print") {
                 prefs.thermalPrinterAddress = devices[printer.selectedItemPosition].address
@@ -713,6 +771,31 @@ class MainActivity : AppCompatActivity() {
         info("Regular mode: Android A4/A5/Wi-Fi/installed printer service۔ Thermal mode: paired Bluetooth ESC/POS 58mm/80mm receipt۔")
     }
 
+    private fun showBackup() {
+        reset("Backup & Restore"); back()
+        val last = if (prefs.lastBackupAt > 0) SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()).format(Date(prefs.lastBackupAt)) else "Never"
+        info("Last backup: $last\nAuto Backup: ${if (prefs.autoBackupEnabled) "ON" else "OFF"}\nBackup میں Customers, Products, Unit Rates, Catalog/Customer Images, Orders, Balances, Expenses اور Business Settings شامل ہیں۔")
+        button("💾 Create Full Backup Now") { manualBackupCreator.launch(BackupManager.suggestedFileName(prefs)) }
+        button(if (prefs.autoBackupEnabled) "🔁 Change Auto Backup Location" else "🔁 Set Auto Backup Location") {
+            autoBackupCreator.launch(BackupManager.suggestedFileName(prefs))
+        }
+        if (prefs.autoBackupEnabled && prefs.autoBackupUri.isNotBlank()) {
+            button("⚡ Backup Now to Auto Location") {
+                lifecycleScope.launch {
+                    runCatching { BackupManager.writeBackup(this@MainActivity, db, prefs, Uri.parse(prefs.autoBackupUri)) }
+                        .onSuccess { toast("Auto-location backup updated"); showBackup() }
+                        .onFailure { toast("Backup location unavailable: ${it.message ?: "Error"}") }
+                }
+            }
+            button("Turn Auto Backup OFF") {
+                prefs.autoBackupEnabled = false
+                showBackup()
+            }
+        }
+        button("♻ Restore Full Backup File") { backupRestorer.launch(arrayOf("application/zip", "application/octet-stream", "*/*")) }
+        info("Auto Backup internet کے بغیر بھی چلتا ہے۔ Google Drive کو Android file picker میں destination منتخب کریں تو backup وہاں بھی محفوظ کیا جا سکتا ہے۔ App uninstall کے بعد اسی .cobak file سے مکمل restore ہو سکتا ہے۔ صرف Company ID سے automatic cloud restore کے لیے central sync server کی online copy ضروری ہے۔")
+    }
+
     private fun showSettings() {
         reset("Settings & Privacy"); back()
         info("Business: ${prefs.businessName}\nCompany ID: ${prefs.businessId}\nDevice: ${prefs.deviceId.take(8)}\nBooker: ${prefs.deviceBookerName}\nArea: ${prefs.deviceAreaName}")
@@ -721,7 +804,8 @@ class MainActivity : AppCompatActivity() {
         }
         button("Change This Device Booker / Area") { showDeviceProfile() }
         button("Business Profile & Logo") { showBusinessProfile() }
-        info("DATA SAFETY: V3 uses non-destructive Room migrations. Normal app updates do not wipe the database. Android Backup is enabled for database, preferences and offline images. Full uninstall/ID restore additionally depends on the central sync server having a cloud copy.")
+        button("Backup & Restore") { showBackup() }
+        info("DATA SAFETY: V4 keeps non-destructive Room migrations, stable APK signing and portable full backup/restore. Normal app updates keep the local database. Uninstall recovery is available through a saved full backup; ID-only cloud recovery requires a deployed central sync server.")
     }
 
     private fun showBusinessProfile() {
@@ -766,6 +850,13 @@ class MainActivity : AppCompatActivity() {
         val request = OneTimeWorkRequestBuilder<SyncWorker>()
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build()
         WorkManager.getInstance(this).enqueueUniqueWork("company-order-sync", ExistingWorkPolicy.REPLACE, request)
+        queueAutoBackup()
+    }
+
+    private fun queueAutoBackup() {
+        if (!prefs.autoBackupEnabled || prefs.autoBackupUri.isBlank()) return
+        val request = OneTimeWorkRequestBuilder<AutoBackupWorker>().build()
+        WorkManager.getInstance(this).enqueueUniqueWork("company-auto-backup", ExistingWorkPolicy.REPLACE, request)
     }
 
     private fun spinner(label: String, items: List<String>): Spinner {
