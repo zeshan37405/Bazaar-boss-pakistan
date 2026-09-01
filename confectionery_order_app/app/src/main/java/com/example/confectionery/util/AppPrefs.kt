@@ -34,6 +34,10 @@ class AppPrefs(context: Context) {
         get() = p.getString("business_address", "") ?: ""
         set(v) = p.edit().putString("business_address", v.trim()).apply()
 
+    var businessLogoUri: String
+        get() = p.getString("business_logo_uri", "") ?: ""
+        set(v) = p.edit().putString("business_logo_uri", v).apply()
+
     var businessPasswordHash: String
         get() = p.getString("business_password_hash", "") ?: ""
         set(v) = p.edit().putString("business_password_hash", v).apply()
@@ -66,6 +70,10 @@ class AppPrefs(context: Context) {
     var syncToken: String
         get() = p.getString("sync_token", "") ?: ""
         set(v) = p.edit().putString("sync_token", v.trim()).apply()
+
+    var lastSyncAt: Long
+        get() = p.getLong("last_sync_at", 0L)
+        set(v) = p.edit().putLong("last_sync_at", v).apply()
 
     var printerMode: String
         get() = p.getString("printer_mode", "REGULAR") ?: "REGULAR"
