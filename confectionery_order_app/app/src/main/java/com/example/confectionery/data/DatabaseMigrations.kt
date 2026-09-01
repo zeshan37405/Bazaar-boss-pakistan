@@ -64,4 +64,14 @@ object DatabaseMigrations {
             db.execSQL("CREATE INDEX IF NOT EXISTS index_users_email ON users(email)")
         }
     }
+
+    val MIGRATION_4_5 = object : Migration(4, 5) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS payments (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, customerId INTEGER NOT NULL, customerSyncId TEXT NOT NULL, amount REAL NOT NULL, direction TEXT NOT NULL, method TEXT NOT NULL, notes TEXT NOT NULL, areaName TEXT NOT NULL, bookerName TEXT NOT NULL, createdAt INTEGER NOT NULL, syncId TEXT NOT NULL, synced INTEGER NOT NULL)")
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_payments_syncId ON payments(syncId)")
+            db.execSQL("CREATE TABLE IF NOT EXISTS stock_movements (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, productId INTEGER NOT NULL, productSyncId TEXT NOT NULL, movementType TEXT NOT NULL, qtyBase REAL NOT NULL, unitLabel TEXT NOT NULL, reference TEXT NOT NULL, notes TEXT NOT NULL, createdAt INTEGER NOT NULL, syncId TEXT NOT NULL, synced INTEGER NOT NULL)")
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_stock_movements_syncId ON stock_movements(syncId)")
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_expenses_syncId ON expenses(syncId)")
+        }
+    }
 }
