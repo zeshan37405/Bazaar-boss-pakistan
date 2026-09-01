@@ -1,8 +1,8 @@
-name: Build Confectionery APK V5 Login Sync
+name: Build Confectionery APK V6 Business Workflows
 
 on:
   push:
-    branches: [confectionery-v5-login-back-sync]
+    branches: [confectionery-v6-vyapar-workflows]
   workflow_dispatch:
 
 jobs:
@@ -12,11 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply V5 UI navigation and backup patch
+      - name: Apply V5 login navigation foundation
         run: python3 .ci/patch_v5_ui.py
 
       - name: Repair V5 generated sync screen
         run: python3 .ci/fix_v5_sync_string.py
+
+      - name: Apply V6 business workflows
+        run: python3 .ci/patch_v6_business.py
 
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
@@ -40,11 +43,11 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug --stacktrace
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V5.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V6.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V5-Login-Sync-APK
-          path: Confectionery-Order-Book-V5.apk
+          name: Confectionery-Order-Book-V6-Business-APK
+          path: Confectionery-Order-Book-V6.apk
           if-no-files-found: error
