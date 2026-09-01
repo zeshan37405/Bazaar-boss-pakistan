@@ -1,22 +1,81 @@
 package com.example.confectionery.util
 
 import android.content.Context
+import java.util.UUID
 
 class AppPrefs(context: Context) {
     private val p = context.getSharedPreferences("orderbook_prefs", Context.MODE_PRIVATE)
+
     var currentUserId: Long
         get() = p.getLong("user_id", 0)
         set(v) = p.edit().putLong("user_id", v).apply()
+
     var purchaseRatesUnlocked: Boolean
         get() = p.getBoolean("purchase_unlocked", false)
         set(v) = p.edit().putBoolean("purchase_unlocked", v).apply()
+
     var privacyPinHash: String
         get() = p.getString("privacy_pin", Security.sha256("7860")) ?: Security.sha256("7860")
         set(v) = p.edit().putString("privacy_pin", v).apply()
+
+    var businessId: String
+        get() = p.getString("business_id", "") ?: ""
+        set(v) = p.edit().putString("business_id", v.trim()).apply()
+
+    var businessName: String
+        get() = p.getString("business_name", "") ?: ""
+        set(v) = p.edit().putString("business_name", v.trim()).apply()
+
+    var businessPhone: String
+        get() = p.getString("business_phone", "") ?: ""
+        set(v) = p.edit().putString("business_phone", v.trim()).apply()
+
+    var businessAddress: String
+        get() = p.getString("business_address", "") ?: ""
+        set(v) = p.edit().putString("business_address", v.trim()).apply()
+
+    var businessPasswordHash: String
+        get() = p.getString("business_password_hash", "") ?: ""
+        set(v) = p.edit().putString("business_password_hash", v).apply()
+
+    var companyLoggedIn: Boolean
+        get() = p.getBoolean("company_logged_in", false)
+        set(v) = p.edit().putBoolean("company_logged_in", v).apply()
+
+    var deviceBookerName: String
+        get() = p.getString("device_booker", "") ?: ""
+        set(v) = p.edit().putString("device_booker", v.trim()).apply()
+
+    var deviceAreaName: String
+        get() = p.getString("device_area", "") ?: ""
+        set(v) = p.edit().putString("device_area", v.trim()).apply()
+
+    val deviceId: String
+        get() {
+            val existing = p.getString("device_id", "").orEmpty()
+            if (existing.isNotBlank()) return existing
+            val generated = UUID.randomUUID().toString()
+            p.edit().putString("device_id", generated).apply()
+            return generated
+        }
+
     var syncBaseUrl: String
         get() = p.getString("sync_url", "") ?: ""
         set(v) = p.edit().putString("sync_url", v.trimEnd('/')).apply()
+
     var syncToken: String
         get() = p.getString("sync_token", "") ?: ""
-        set(v) = p.edit().putString("sync_token", v).apply()
+        set(v) = p.edit().putString("sync_token", v.trim()).apply()
+
+    var printerMode: String
+        get() = p.getString("printer_mode", "REGULAR") ?: "REGULAR"
+        set(v) = p.edit().putString("printer_mode", v).apply()
+
+    var thermalPrinterAddress: String
+        get() = p.getString("thermal_address", "") ?: ""
+        set(v) = p.edit().putString("thermal_address", v).apply()
+
+    var thermalPaperChars: Int
+        get() = p.getInt("thermal_chars", 32)
+        set(v) = p.edit().putInt("thermal_chars", v).apply()
 }
