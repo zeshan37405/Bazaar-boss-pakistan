@@ -68,6 +68,7 @@ interface OrderDao {
     @Query("SELECT * FROM order_items ORDER BY orderId, id") suspend fun allItems(): List<OrderItemEntity>
     @Query("SELECT * FROM orders WHERE areaName=:area ORDER BY createdAt DESC") suspend fun byArea(area: String): List<OrderEntity>
     @Query("SELECT * FROM orders WHERE bookerName=:booker ORDER BY createdAt DESC") suspend fun byBooker(booker: String): List<OrderEntity>
+    @Query("SELECT * FROM orders WHERE customerId=:customerId ORDER BY createdAt DESC") suspend fun byCustomer(customerId: Long): List<OrderEntity>
     @Query("SELECT * FROM orders WHERE areaName=:area AND status=:status ORDER BY createdAt DESC") suspend fun byAreaAndStatus(area: String, status: String): List<OrderEntity>
     @Query("SELECT DISTINCT areaName FROM orders WHERE areaName <> '' ORDER BY areaName") suspend fun areas(): List<String>
     @Query("SELECT DISTINCT bookerName FROM orders WHERE bookerName <> '' ORDER BY bookerName") suspend fun bookers(): List<String>
@@ -108,4 +109,32 @@ interface ExpenseDao {
     @Query("SELECT COALESCE(SUM(amount),0) FROM expenses") suspend fun total(): Double
     @Query("SELECT * FROM expenses WHERE synced=0 ORDER BY createdAt") suspend fun pending(): List<ExpenseEntity>
     @Query("UPDATE expenses SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
+}
+
+@Dao
+interface PaymentDao {
+    @Query("SELECT * FROM payments ORDER BY createdAt DESC") suspend fun all(): List<PaymentEntity>
+    @Query("SELECT * FROM payments WHERE customerId=:customerId ORDER BY createdAt DESC") suspend fun byCustomer(customerId: Long): List<PaymentEntity>
+    @Query("SELECT * FROM payments WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): PaymentEntity?
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(payment: PaymentEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(values: List<PaymentEntity>)
+    @Update suspend fun update(payment: PaymentEntity)
+    @Query("SELECT * FROM payments WHERE synced=0 ORDER BY createdAt") suspend fun pending(): List<PaymentEntity>
+    @Query("UPDATE payments SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
+    @Query("DELETE FROM payments") suspend fun deleteAll()
+    @Query("SELECT COALESCE(SUM(amount),0) FROM payments WHERE direction='RECEIVED'") suspend fun totalReceived(): Double
+    @Query("SELECT COALESCE(SUM(amount),0) FROM payments WHERE direction='RECEIVED' AND method=:method") suspend fun totalReceivedByMethod(method: String): Double
+}
+
+@Dao
+interface StockMovementDao {
+    @Query("SELECT * FROM stock_movements ORDER BY createdAt DESC") suspend fun all(): List<StockMovementEntity>
+    @Query("SELECT * FROM stock_movements WHERE productId=:productId ORDER BY createdAt DESC") suspend fun forProduct(productId: Long): List<StockMovementEntity>
+    @Query("SELECT * FROM stock_movements WHERE syncId=:syncId LIMIT 1") suspend fun bySyncId(syncId: String): StockMovementEntity?
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(value: StockMovementEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertAll(values: List<StockMovementEntity>)
+    @Update suspend fun update(value: StockMovementEntity)
+    @Query("SELECT * FROM stock_movements WHERE synced=0 ORDER BY createdAt") suspend fun pending(): List<StockMovementEntity>
+    @Query("UPDATE stock_movements SET synced=1 WHERE id IN (:ids)") suspend fun markSynced(ids: List<Long>)
+    @Query("DELETE FROM stock_movements") suspend fun deleteAll()
 }
