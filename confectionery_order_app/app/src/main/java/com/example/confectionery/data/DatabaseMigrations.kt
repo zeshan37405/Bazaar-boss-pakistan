@@ -49,4 +49,19 @@ object DatabaseMigrations {
             db.execSQL("UPDATE order_items SET baseQty=qty WHERE baseQty=0")
         }
     }
+
+    val MIGRATION_3_4 = object : Migration(3, 4) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE users ADD COLUMN email TEXT NOT NULL DEFAULT ''")
+            db.execSQL("ALTER TABLE users ADD COLUMN areaName TEXT NOT NULL DEFAULT ''")
+            db.execSQL("ALTER TABLE users ADD COLUMN syncId TEXT NOT NULL DEFAULT ''")
+            db.execSQL("ALTER TABLE users ADD COLUMN synced INTEGER NOT NULL DEFAULT 0")
+            db.execSQL("ALTER TABLE users ADD COLUMN updatedAt INTEGER NOT NULL DEFAULT 0")
+            db.execSQL("UPDATE users SET syncId='legacy-user-' || id WHERE syncId='' ")
+            db.execSQL("UPDATE users SET updatedAt=strftime('%s','now')*1000 WHERE updatedAt=0")
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_users_syncId ON users(syncId)")
+            db.execSQL("CREATE INDEX IF NOT EXISTS index_users_username ON users(username)")
+            db.execSQL("CREATE INDEX IF NOT EXISTS index_users_email ON users(email)")
+        }
+    }
 }
