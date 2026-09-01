@@ -1,5 +1,6 @@
 package com.example.confectionery.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -43,7 +44,7 @@ data class ProductEntity(
     val purchaseRate: Double,
     val saleRate: Double,
     val wholesaleRate: Double = 0.0,
-    val superWholesaleRate: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val superWholesaleRate: Double = 0.0,
     val stockQty: Double = 0.0,
     val minStockQty: Double = 0.0,
     val barcode: String = "",
@@ -55,20 +56,17 @@ data class ProductEntity(
     val updatedAt: Long = System.currentTimeMillis()
 )
 
-@Entity(
-    tableName = "product_unit_prices",
-    indices = [Index(value = ["productId", "unitCode"], unique = true)]
-)
+@Entity(tableName = "product_unit_prices", indices = [Index(value = ["productId", "unitCode"], unique = true)])
 data class ProductUnitPriceEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val productId: Long,
     val unitCode: String,
-    val conversionToBase: Double = 1.0,
-    val purchaseRate: Double = 0.0,
-    val retailRate: Double = 0.0,
-    val wholesaleRate: Double = 0.0,
-    val superWholesaleRate: Double = 0.0,
-    val enabled: Boolean = true
+    @ColumnInfo(defaultValue = "1") val conversionToBase: Double = 1.0,
+    @ColumnInfo(defaultValue = "0") val purchaseRate: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val retailRate: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val wholesaleRate: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val superWholesaleRate: Double = 0.0,
+    @ColumnInfo(defaultValue = "1") val enabled: Boolean = true
 )
 
 @Entity(tableName = "orders", indices = [Index(value = ["syncId"], unique = true)])
@@ -102,11 +100,11 @@ data class OrderItemEntity(
     val productSyncId: String = "",
     val productName: String,
     val qty: Double,
-    val baseQty: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val baseQty: Double = 0.0,
     val unit: String,
     val purchaseRate: Double,
     val saleRate: Double,
-    val priceTier: String = "RETAIL",
+    @ColumnInfo(defaultValue = "'RETAIL'") val priceTier: String = "RETAIL",
     val taxPercent: Double = 0.0,
     val lineTotal: Double
 )
