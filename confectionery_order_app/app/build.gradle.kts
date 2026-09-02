@@ -4,6 +4,9 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+val configuredSyncBaseUrl = providers.gradleProperty("SYNC_BASE_URL").orElse("").get()
+val escapedSyncBaseUrl = configuredSyncBaseUrl.replace("\\", "\\\\").replace("\"", "\\\"")
+
 android {
     namespace = "com.example.confectionery"
     compileSdk = 35
@@ -12,9 +15,9 @@ android {
         applicationId = "com.example.confectionery"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
-        versionName = "6.0.0"
-        buildConfigField("String", "SYNC_BASE_URL", "\"\"")
+        versionCode = 7
+        versionName = "7.0.0"
+        buildConfigField("String", "SYNC_BASE_URL", "\"$escapedSyncBaseUrl\"")
     }
 
     signingConfigs {
