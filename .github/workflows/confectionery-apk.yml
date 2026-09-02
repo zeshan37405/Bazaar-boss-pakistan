@@ -1,8 +1,8 @@
-name: Build Confectionery APK V6 Business Workflows
+name: Build Confectionery Order Book V7 Final
 
 on:
   push:
-    branches: [confectionery-v6-vyapar-workflows]
+    branches: [confectionery-v7-final]
   workflow_dispatch:
 
 jobs:
@@ -24,10 +24,13 @@ jobs:
       - name: Apply V6 business workflows
         run: python3 .ci/patch_v6_business.py
 
+      - name: Apply V7 final UX polish
+        run: python3 .ci/patch_v7_final.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
-      - name: Restore stable prototype signing key
+      - name: Restore stable signing key
         run: base64 -d .ci/confectionery-test-signing.jks.b64 > confectionery_order_app/ci-test-signing.jks
 
       - name: Set up JDK 17
@@ -41,16 +44,18 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Build debug APK
+      - name: Build signed release APK
         working-directory: confectionery_order_app
-        run: gradle --no-daemon :app:assembleDebug --stacktrace
+        env:
+          SYNC_BASE_URL: ${{ vars.CONFECTIONERY_SYNC_BASE_URL }}
+        run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/debug/app-debug.apk Confectionery-Order-Book-V6.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V7-Final.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V6-Business-APK
-          path: Confectionery-Order-Book-V6.apk
+          name: Confectionery-Order-Book-V7-Final-APK
+          path: Confectionery-Order-Book-V7-Final.apk
           if-no-files-found: error
