@@ -79,8 +79,6 @@ object AuthClient {
                 if (online.isSuccess) return@runCatching online.getOrThrow()
             }
 
-            // Offline creation still works. The owner/user and all orders remain local until a
-            // server URL is configured; then the account is uploaded by SyncWorker.
             prefs.businessId = cleanCompany
             prefs.businessName = businessName.trim()
             prefs.businessPhone = phone.trim()
@@ -153,7 +151,7 @@ object AuthClient {
             }
 
             require(prefs.businessId.equals(cleanCompany, ignoreCase = true)) {
-                "Online server required on this device for first login"
+                "First login on this phone needs Cloud Sync or a restored backup"
             }
             val cached = db.userDao().byLogin(cleanLogin) ?: error("User not available offline")
             require(cached.active && cached.passwordHash == clientHash) { "Invalid username/email or password" }
