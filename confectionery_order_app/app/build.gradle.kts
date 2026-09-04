@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.confectionery"
         minSdk = 24
         targetSdk = 35
-        versionCode = 8
-        versionName = "8.0.0"
+        versionCode = 9
+        versionName = "9.0.0"
         buildConfigField("String", "SYNC_BASE_URL", "\"$escapedSyncBaseUrl\"")
     }
 
@@ -30,9 +30,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            signingConfig = signingConfigs.getByName("ciTest")
-        }
+        debug { signingConfig = signingConfigs.getByName("ciTest") }
         release {
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("ciTest")
@@ -45,10 +43,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures {
-        viewBinding = true
-        buildConfig = true
-    }
+    buildFeatures { viewBinding = true; buildConfig = true }
 }
 
 dependencies {
@@ -62,11 +57,9 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
-
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
