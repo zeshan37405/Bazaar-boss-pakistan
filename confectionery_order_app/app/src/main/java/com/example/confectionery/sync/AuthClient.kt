@@ -15,6 +15,119 @@ import java.util.UUID
 
 object AuthClient {
     data class LoginResult(val user: UserEntity, val online: Boolean)
+    private val http by lazy { OkHttpClient.Builder().build() }
+
+    suspend fun signupBooker(
+        db: AppDatabase,
+        prefs: AppPrefs,
+        companyId: String,
+        name: String,
+        username: String,
+        email: String,
+        password: String,
+        areaName: String
+    ): Result<LoginResult> = withContext(Dispatchers.IO) {
+        runCatching {
+            val cleanCompany = companyId.trim()
+            val cleanUser = username.trim()
+            val cleanEmail = email.trim()
+            require(cleanCompany.equals(AppPrefs.FIXED_COMPANY_ID, ignoreCase = true)) { "Invalid Company ID" }
+            require(name.isNotBlank() && cleanUser.isNotBlank()) { "Name and username required" }
+            require(password.length >= 4) { "Password must be at least 4 characters" }
+            require(areaName.isNotBlank()) { "Area / Route required" }
+            require(db.userDao().byLogin(cleanUser) == null) { "Username already exists on this phone" }
+            if (cleanEmail.isNotBlank()) require(db.userDao().byLogin(cleanEmail) == null) { "Email already exists on this phone" }
+
+            val clientHash = Security.sha256(password)
+            val syncId = UUID.randomUUID().toString()
+
+            if (prefs.syncBaseUrl.isNotBlank()) {
+                val remote = runCatching {
+                    val payload = JSONObject()
+                        .put("business_id", AppPrefs.FIXED_COMPANY_ID)
+                        .put("device_id", prefs.deviceId)
+                        .put("user", JSONObject()
+                            .put("sync_id", syncId)
+                            .put("name", name.trim())
+                            .put("username", cleanUser)
+                            .put("email", cleanEmail)
+                            .put("password_hash", clientHash)
+                            .put("area_name", areaName.trim()))
+                        .toString().toRequestBody("application/json".toMediaType())
+                    val request = Request.Builder().url("${prefs.syncBaseUrl}/api/auth/signup").post(payload).build()
+                    val text = http.newCall(request).execute().use { response ->
+                        if (!response.isSuccessful) error(if (response.code == 409) "Username or email already exists" else "Sign up failed (${response.code})")
+                        response.body?.string().orEmpty()
+                    }
+                    val root = JSONObject(text)
+                    val uj = root.getJSONObject("user")
+                    val business = root.optJSONObject("business") ?: JSONObject()
+                    val user = UserEntity(
+                        name = uj.optString("name", name.trim()),
+                        username = uj.optString("username", cleanUser),
+                        email = uj.optString("email", cleanEmail),
+                        passwordHash = clientHash,
+                        role = "ORDER_BOOKER",
+                        areaName = uj.optString("area_name", areaName.trim()),
+                        active = true,
+                        syncId = uj.optString("sync_id", syncId),
+                        synced = true,
+                        updatedAt = uj.optLong("updated_at", System.currentTimeMillis())
+                    )
+                    val localId = db.userDao().insert(user)
+                    prefs.businessId = AppPrefs.FIXED_COMPANY_ID
+                    prefs.businessName = business.optString("name", "Confectionery Order Book")
+                    prefs.businessPhone = business.optString("phone")
+                    prefs.businessAddress = business.optString("address")
+                    prefs.syncToken = root.optString("token")
+                    applySession(prefs, user.copy(id = localId), cleanUser)
+                    LoginResult(user.copy(id = localId), true)
+                }
+                if (remote.isSuccess) return@runCatching remote.getOrThrow()
+            }
+
+            val local = UserEntity(
+                name = name.trim(), username = cleanUser, email = cleanEmail,
+                passwordHash = clientHash, role = "ORDER_BOOKER", areaName = areaName.trim(),
+                active = true, syncId = syncId, synced = false
+            )
+            val localId = db.userDao().insert(local)
+            prefs.businessId = AppPrefs.FIXED_COMPANY_ID
+            if (prefs.businessName.isBlank()) prefs.businessName = "Confectionery Order Book"
+            applySession(prefs, local.copy(id = localId), cleanUser)
+            LoginResult(local.copy(id = localId), false)
+        }
+    }
+
+    suspend fun ensureOnlineSession(db: AppDatabase, prefs: AppPrefs): Result<Boolean> = withContext(Dispatchers.IO) {
+        runCatching {
+            if (prefs.syncBaseUrl.isBlank()) return@runCatching false
+            if (prefs.syncToken.isNotBlank()) return@runCatching true
+            val user = db.userDao().byId(prefs.currentUserId) ?: return@runCatching false
+            if (user.role != "ORDER_BOOKER") return@runCatching false
+            val payload = JSONObject()
+                .put("business_id", AppPrefs.FIXED_COMPANY_ID)
+                .put("device_id", prefs.deviceId)
+                .put("user", JSONObject()
+                    .put("sync_id", user.syncId)
+                    .put("name", user.name)
+                    .put("username", user.username)
+                    .put("email", user.email)
+                    .put("password_hash", user.passwordHash)
+                    .put("area_name", user.areaName))
+                .toString().toRequestBody("application/json".toMediaType())
+            val request = Request.Builder().url("${prefs.syncBaseUrl}/api/auth/signup").post(payload).build()
+            val text = http.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return@runCatching false
+                response.body?.string().orEmpty()
+            }
+            val root = JSONObject(text)
+            prefs.syncToken = root.optString("token")
+            if (prefs.syncToken.isBlank()) return@runCatching false
+            db.userDao().update(user.copy(synced = true, updatedAt = System.currentTimeMillis()))
+            true
+        }
+    }
 
     suspend fun registerBusiness(
         db: AppDatabase,
@@ -53,7 +166,7 @@ object AuthClient {
                             .put("area_name", areaName.trim()))
                         .toString().toRequestBody("application/json".toMediaType())
                     val request = Request.Builder().url("${prefs.syncBaseUrl}/api/business/register").post(payload).build()
-                    val text = OkHttpClient.Builder().build().newCall(request).execute().use { response ->
+                    val text = http.newCall(request).execute().use { response ->
                         if (!response.isSuccessful) error("Business registration failed (${response.code})")
                         response.body?.string().orEmpty()
                     }
@@ -119,7 +232,7 @@ object AuthClient {
                         .toString()
                         .toRequestBody("application/json".toMediaType())
                     val request = Request.Builder().url("${prefs.syncBaseUrl}/api/auth/login").post(payload).build()
-                    val text = OkHttpClient.Builder().build().newCall(request).execute().use { response ->
+                    val text = http.newCall(request).execute().use { response ->
                         if (!response.isSuccessful) error("Online login failed (${response.code})")
                         response.body?.string().orEmpty()
                     }
