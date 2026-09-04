@@ -5,7 +5,7 @@ import com.example.confectionery.BuildConfig
 import java.util.UUID
 
 class AppPrefs(context: Context) {
-    companion object { const val FIXED_COMPANY_ID = "Z37-405" }
+    companion object { const val FIXED_COMPANY_ID = "ZEE37405" }
     private val p = context.getSharedPreferences("orderbook_prefs", Context.MODE_PRIVATE)
 
     var currentUserId: Long
@@ -34,7 +34,7 @@ class AppPrefs(context: Context) {
 
     var businessId: String
         get() = p.getString("business_id", FIXED_COMPANY_ID) ?: FIXED_COMPANY_ID
-        set(v) = p.edit().putString("business_id", v.trim()).apply()
+        set(v) = p.edit().putString("business_id", FIXED_COMPANY_ID).apply()
 
     var businessName: String
         get() = p.getString("business_name", "") ?: ""
