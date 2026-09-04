@@ -33,6 +33,9 @@ jobs:
       - name: Apply V9 signup sync location
         run: python3 .ci/patch_v9_signup_sync_location.py
 
+      - name: Repair V9 LocationClient import
+        run: python3 .ci/fix_v9_location_import.py
+
       - name: Repair V9 server generated newlines
         run: python3 .ci/fix_v9_server_newlines.py
 
