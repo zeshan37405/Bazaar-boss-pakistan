@@ -5,6 +5,7 @@ import com.example.confectionery.BuildConfig
 import java.util.UUID
 
 class AppPrefs(context: Context) {
+    companion object { const val FIXED_COMPANY_ID = "Z37-405" }
     private val p = context.getSharedPreferences("orderbook_prefs", Context.MODE_PRIVATE)
 
     var currentUserId: Long
@@ -32,7 +33,7 @@ class AppPrefs(context: Context) {
         set(v) = p.edit().putString("privacy_pin", v).apply()
 
     var businessId: String
-        get() = p.getString("business_id", "") ?: ""
+        get() = p.getString("business_id", FIXED_COMPANY_ID) ?: FIXED_COMPANY_ID
         set(v) = p.edit().putString("business_id", v.trim()).apply()
 
     var businessName: String
@@ -112,6 +113,26 @@ class AppPrefs(context: Context) {
         get() = p.getLong("last_backup_at", 0L)
         set(v) = p.edit().putLong("last_backup_at", v).apply()
 
+    var locationSharingEnabled: Boolean
+        get() = p.getBoolean("location_sharing_enabled", false)
+        set(v) = p.edit().putBoolean("location_sharing_enabled", v).apply()
+
+    var lastLocationLat: Double
+        get() = java.lang.Double.longBitsToDouble(p.getLong("last_location_lat", java.lang.Double.doubleToRawLongBits(0.0)))
+        set(v) = p.edit().putLong("last_location_lat", java.lang.Double.doubleToRawLongBits(v)).apply()
+
+    var lastLocationLon: Double
+        get() = java.lang.Double.longBitsToDouble(p.getLong("last_location_lon", java.lang.Double.doubleToRawLongBits(0.0)))
+        set(v) = p.edit().putLong("last_location_lon", java.lang.Double.doubleToRawLongBits(v)).apply()
+
+    var lastLocationAccuracy: Float
+        get() = p.getFloat("last_location_accuracy", 0f)
+        set(v) = p.edit().putFloat("last_location_accuracy", v).apply()
+
+    var lastLocationAt: Long
+        get() = p.getLong("last_location_at", 0L)
+        set(v) = p.edit().putLong("last_location_at", v).apply()
+
     fun clearSession() {
         companyLoggedIn = false
         purchaseRatesUnlocked = false
@@ -122,5 +143,6 @@ class AppPrefs(context: Context) {
         deviceBookerName = ""
         deviceAreaName = ""
         syncToken = ""
+        locationSharingEnabled = false
     }
 }
