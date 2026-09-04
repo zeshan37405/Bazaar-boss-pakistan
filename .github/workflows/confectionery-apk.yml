@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V8 Visual Ordering
+name: Build Confectionery Order Book V9 Signup Sync Location
 
 on:
   push:
-    branches: [confectionery-v8-visual-order-billing]
+    branches: [confectionery-v9-signup-sync-location]
   workflow_dispatch:
 
 jobs:
@@ -30,6 +30,9 @@ jobs:
       - name: Apply V8 visual customer ordering
         run: python3 .ci/patch_v8_visual_order.py
 
+      - name: Apply V9 signup sync location
+        run: python3 .ci/patch_v9_signup_sync_location.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
@@ -54,11 +57,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V8-Visual-Ordering.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V9-Signup-Sync-Location.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V8-Visual-Ordering-APK
-          path: Confectionery-Order-Book-V8-Visual-Ordering.apk
+          name: Confectionery-Order-Book-V9-Signup-Sync-Location-APK
+          path: Confectionery-Order-Book-V9-Signup-Sync-Location.apk
           if-no-files-found: error
