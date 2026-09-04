@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.confectionery"
         minSdk = 24
         targetSdk = 35
-        versionCode = 11
-        versionName = "11.0.0"
+        versionCode = 12
+        versionName = "12.0.0"
         buildConfigField("String", "SYNC_BASE_URL", "\"$escapedSyncBaseUrl\"")
     }
 
@@ -62,4 +62,5 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }
