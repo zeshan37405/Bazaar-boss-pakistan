@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.confectionery"
         minSdk = 24
         targetSdk = 35
-        versionCode = 9
-        versionName = "9.0.0"
+        versionCode = 10
+        versionName = "10.0.0"
         buildConfigField("String", "SYNC_BASE_URL", "\"$escapedSyncBaseUrl\"")
     }
 
