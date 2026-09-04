@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V11 Contact Import
+name: Build Confectionery Order Book V12 Barcode QR Unit Formula
 
 on:
   push:
-    branches: [confectionery-v11-contact-import]
+    branches: [confectionery-v12-barcode-unit-formula]
   workflow_dispatch:
 
 jobs:
@@ -45,6 +45,9 @@ jobs:
       - name: Apply V11 phone contact import
         run: python3 .ci/patch_v11_contact_import.py
 
+      - name: Apply V12 barcode QR and unit formulas
+        run: python3 .ci/patch_v12_barcode_units.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
@@ -69,11 +72,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V11-Contact-Import.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V11-Contact-Import-APK
-          path: Confectionery-Order-Book-V11-Contact-Import.apk
+          name: Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula-APK
+          path: Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula.apk
           if-no-files-found: error
