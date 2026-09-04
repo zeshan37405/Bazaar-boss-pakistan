@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V9 Signup Sync Location
+name: Build Confectionery Order Book V10 Owner Signup Privacy Logo
 
 on:
   push:
-    branches: [confectionery-v9-signup-sync-location]
+    branches: [confectionery-v10-owner-signup-rate-privacy-logo]
   workflow_dispatch:
 
 jobs:
@@ -39,6 +39,9 @@ jobs:
       - name: Repair V9 server generated newlines
         run: python3 .ci/fix_v9_server_newlines.py
 
+      - name: Apply V10 owner signup privacy and branding
+        run: python3 .ci/patch_v10_owner_privacy.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
@@ -63,11 +66,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V9-Signup-Sync-Location.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V10-Owner-Signup-Privacy-Logo.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V9-Signup-Sync-Location-APK
-          path: Confectionery-Order-Book-V9-Signup-Sync-Location.apk
+          name: Confectionery-Order-Book-V10-Owner-Signup-Privacy-Logo-APK
+          path: Confectionery-Order-Book-V10-Owner-Signup-Privacy-Logo.apk
           if-no-files-found: error
