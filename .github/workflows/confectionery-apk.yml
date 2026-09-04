@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V7 Final
+name: Build Confectionery Order Book V8 Visual Ordering
 
 on:
   push:
-    branches: [confectionery-v7-final]
+    branches: [confectionery-v8-visual-order-billing]
   workflow_dispatch:
 
 jobs:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Apply V7 final UX polish
         run: python3 .ci/patch_v7_final.py
+
+      - name: Apply V8 visual customer ordering
+        run: python3 .ci/patch_v8_visual_order.py
 
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
@@ -51,11 +54,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V7-Final.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V8-Visual-Ordering.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V7-Final-APK
-          path: Confectionery-Order-Book-V7-Final.apk
+          name: Confectionery-Order-Book-V8-Visual-Ordering-APK
+          path: Confectionery-Order-Book-V8-Visual-Ordering.apk
           if-no-files-found: error
