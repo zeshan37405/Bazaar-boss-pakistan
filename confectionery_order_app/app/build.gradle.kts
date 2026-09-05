@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.confectionery"
         minSdk = 24
         targetSdk = 35
-        versionCode = 12
-        versionName = "12.0.0"
+        versionCode = 13
+        versionName = "13.0.0"
         buildConfigField("String", "SYNC_BASE_URL", "\"$escapedSyncBaseUrl\"")
     }
 
@@ -63,4 +63,6 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:image-labeling:17.0.9")
 }
