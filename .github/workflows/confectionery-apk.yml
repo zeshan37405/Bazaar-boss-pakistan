@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V12 Barcode QR Unit Formula
+name: Build Confectionery Order Book V13 Auto Detect Profit Catalog Order
 
 on:
   push:
-    branches: [confectionery-v12-barcode-unit-formula]
+    branches: [confectionery-v13-auto-detect-profit-catalog-order]
   workflow_dispatch:
 
 jobs:
@@ -48,6 +48,9 @@ jobs:
       - name: Apply V12 barcode QR and unit formulas
         run: python3 .ci/patch_v12_barcode_units.py
 
+      - name: Apply V13 auto detect profit and catalog order
+        run: python3 .ci/patch_v13_ai_profit_catalog.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
@@ -72,11 +75,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V13.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula-APK
-          path: Confectionery-Order-Book-V12-Barcode-QR-Unit-Formula.apk
+          name: Confectionery-Order-Book-V13-APK
+          path: Confectionery-Order-Book-V13.apk
           if-no-files-found: error
