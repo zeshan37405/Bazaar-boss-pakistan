@@ -54,6 +54,9 @@ jobs:
       - name: Apply V14 delete optional carton rates portrait scanner and stronger OCR
         run: python3 .ci/patch_v14_delete_optional_ocr.py
 
+      - name: Repair V14 OCR nullable callback
+        run: python3 .ci/fix_v14_ocr_nullable.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
