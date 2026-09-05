@@ -1,8 +1,8 @@
-name: Build Confectionery Order Book V13 Auto Detect Profit Catalog Order
+name: Build Confectionery Order Book V14 Delete Optional Carton OCR Scanner
 
 on:
   push:
-    branches: [confectionery-v13-auto-detect-profit-catalog-order]
+    branches: [confectionery-v14-delete-optional-carton-ocr-scanner]
   workflow_dispatch:
 
 jobs:
@@ -51,6 +51,9 @@ jobs:
       - name: Apply V13 auto detect profit and catalog order
         run: python3 .ci/patch_v13_ai_profit_catalog.py
 
+      - name: Apply V14 delete optional carton rates portrait scanner and stronger OCR
+        run: python3 .ci/patch_v14_delete_optional_ocr.py
+
       - name: Check sync server JavaScript
         run: node --check confectionery_sync_server/server.js
 
@@ -75,11 +78,11 @@ jobs:
         run: gradle --no-daemon :app:assembleRelease --stacktrace -PSYNC_BASE_URL="$SYNC_BASE_URL"
 
       - name: Copy APK
-        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V13.apk
+        run: cp confectionery_order_app/app/build/outputs/apk/release/app-release.apk Confectionery-Order-Book-V14.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Confectionery-Order-Book-V13-APK
-          path: Confectionery-Order-Book-V13.apk
+          name: Confectionery-Order-Book-V14-APK
+          path: Confectionery-Order-Book-V14.apk
           if-no-files-found: error
