@@ -63,6 +63,7 @@ data class ProductEntity(
     val batchNo: String = "",
     val expiryDate: String = "",
     val taxPercent: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val catalogOrder: Int = 0,
     val syncId: String = UUID.randomUUID().toString(),
     val synced: Boolean = false,
     val updatedAt: Long = System.currentTimeMillis()
